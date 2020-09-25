@@ -466,5 +466,5 @@ switchNameHandler = () => {
 
 - **useState** does not actually merge the info as **setState** which means you have oto use several **useState** properties for the app
 
-  ## TEST
+  
 
