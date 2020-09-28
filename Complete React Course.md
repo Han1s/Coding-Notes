@@ -459,12 +459,96 @@ switchNameHandler = () => {
 
 - **hooks** are the way to use state in functional components
 
-- **useState** returns array with two elemtns
+- **useState** returns array with two elements
 
   - the first element is the current state
   - the second element is always a function that allows us to update the state
 
-- **useState** does not actually merge the info as **setState** which means you have oto use several **useState** properties for the app
+- **useState** does not actually merge the info as **setState** which means you have to use several **useState** properties for the app
 
-  
+
+## Stateful vs Stateless Components
+
+- Good practice to use as many **stateless** components as you can
+- Only a couple **statefull** components
+  - This makes app easier to manage and maintain
+- Have as many **pure** components as possible
+
+## Passing method references between components
+
+- You can pass a method to the child through props (no method call, only a method refernece)
+- Two methods how to pass a argument with it as well
+  - `click={this.switchNameHandler.bind(this, 'Max!')}` 
+    - preferred way. More efficient.
+  - `onClick={() => this.switchNameHandler('Maximilan!!')}`
+    - less efficient, preferably dont use
+
+```jsx
+  render() {
+    return (
+      <div className='App'>
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>
+        <button onClick={() => this.switchNameHandler('Maximilan!!')}>Switch Name</button>
+        <Person 
+        name={this.state.persons[0].name} 
+        age={this.state.persons[0].age}></Person>
+        <Person 
+        name={this.state.persons[1].name} 
+        age={this.state.persons[1].age}
+        click={this.switchNameHandler.bind(this, 'Max!')}></Person>
+        <Person 
+        name={this.state.persons[2].name} 
+        age={this.state.persons[2].age}></Person>
+      </div>
+    );
+  }
+```
+
+## Adding a two way binding
+
+- for example for an input field you can create
+
+```jsx
+  nameChangedHandler = (event) => {
+    this.setState( {
+      persons: [
+        { name: 'Max', age: 28 },
+        { name: event.target.value, age: 29 },
+        { name: 'Stephanie', age: 26 },
+      ]
+    })
+  }
+```
+
+- and set value for the person 
+
+```jsx
+const Person = ( props ) => {
+    return (
+        <div>
+            <p onClick={props.click}>I'm {props.name}</p>
+            <p>{props.children}</p>
+            <input type='text' onChange={props.changed} value={props.name}/>
+        </div>
+    )
+}
+```
+
+- and pass it as
+
+```jsx
+<Person 
+    name={this.state.persons[1].name} 
+    age={this.state.persons[1].age}
+    click={this.switchNameHandler.bind(this, 'Max!')}
+    changed={this.nameChangedHandler}>
+</Person>
+```
+
+## Adding Extra Styling
+
+Two ways:
+
+- Create a css file with the same name in the component folder and import it to the component.
 
