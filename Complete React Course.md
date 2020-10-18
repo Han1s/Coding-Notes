@@ -288,7 +288,7 @@ Actually copying the object
 
 1. Install npm
 2. `npm install create-react-app -g` 
-3. `create react app project-name`
+3. `create-react-app project-name`
 4. `npm start` to run the server  in the folder
 5. **localhost:3000** then runs the active server
 
@@ -455,15 +455,14 @@ switchNameHandler = () => {
 }
 ```
 
-## useState() Hook sfor State Maniupulation
+## useState() Hooks for State Maniupulation
 
 - **hooks** are the way to use state in functional components
 
 - **useState** returns array with two elements
-
-  - the first element is the current state
+- the first element is the current state
   - the second element is always a function that allows us to update the state
-
+  
 - **useState** does not actually merge the info as **setState** which means you have to use several **useState** properties for the app
 
 
@@ -521,7 +520,7 @@ switchNameHandler = () => {
   }
 ```
 
-- and set value for the person 
+- evand set value for the person 
 
 ```jsx
 const Person = ( props ) => {
@@ -552,3 +551,471 @@ Two ways:
 
 - Create a css file with the same name in the component folder and import it to the component.
 
+## Working with inline styles
+
+```jsx
+  render() {
+    const style = {
+      backgroundColor: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer',
+    };
+    // ...
+  }
+
+// ...
+<button 
+    style={style}
+    onClick={() => this.switchNameHandler('Maximilan!!')}>Switch Name
+</button>
+// ...
+```
+
+- Problems
+  - if you use css file, the css will get applied globally,
+  - if you use inline styles, there are certain limitations
+  - golden way later in the course.
+
+# Working with Lists and Conditionals
+
+## Rendering Content conditionally
+
+- One way is to use ternary in jsx with null in the other condition
+
+- Other cleaner way:
+
+  ```jsx
+  render() {
+      const style = {
+          backgroundColor: 'white',
+          font: 'inherit',
+          border: '1px solid blue',
+          padding: '8px',
+          cursor: 'pointer',
+      };
+  
+      let persons = null;
+  
+      if (this.state.showPersons) {
+          persons = (
+              <div>
+                  <Person 
+                      name={this.state.persons[0].name} 
+                      age={this.state.persons[0].age}></Person> 
+                  <Person 
+                      name={this.state.persons[1].name} 
+                      age={this.state.persons[1].age}
+                      click={this.switchNameHandler.bind(this, 'Max!')}
+                      changed={this.nameChangedHandler}></Person>
+                  <Person 
+                      name={this.state.persons[2].name} 
+                      age={this.state.persons[2].age}></Person>
+              </div>
+          )
+      }
+  
+      return (
+          <div className='App'>
+              <h1>Hi, I'm a React App</h1>
+              <p>This is really working!</p>
+              <button 
+                  style={style}
+                  onClick={this.togglePersonsHandler}>Toggle Persons</button>
+              {persons}
+          </div>
+      );
+  }
+  ```
+
+## Outputting lists
+
+- **map()** method
+
+  ```jsx
+  <div>
+      {   this.state.persons.map((person) => {
+          return <Person 
+                     name={person.name} 
+                     age={person.age} />
+      })}
+  </div>
+  ```
+
+## Lists and state
+
+- **When mutating arrays you should create a copy first, otherwise this will lead to a buggy behavior**
+
+```jsx
+  deletePersonHandler = (index) => {
+    // const persons = this.state.persons.slice(); OPTION 1
+    const persons = [...this.state.persons]; // OPTION 2
+    persons.splice(index, 1);
+    this.setState({persons: persons});
+  }
+```
+
+- **List key has to be an unique value, say DB Id, NOT index of the array, because that mutates as array changes and does not help react**
+
+# Styling React Components
+
+## Outlining the problem set
+
+- If you use inline styles, you cannot use pseudo-selectors (such as ::hover)
+- but if we create css file it will apply globally
+- how about changing styling dynamically?
+
+## Setting Styles Dynamically
+
+```jsx
+  render() {
+    const style = {
+      backgroundColor: 'green',
+      color: 'white',
+      font: 'inherit',
+      border: '1px solid blue',
+      padding: '8px',
+      cursor: 'pointer',
+    };
+
+    let persons = null;
+    
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return (
+            <Person 
+              key={person.id}
+              click={() => this.deletePersonHandler(index)}
+              name={person.name} 
+              age={person.age}
+              changed={(event) => this.nameChangedHandler(event, person.id)} />)
+          })}
+        </div>
+      )
+
+      // Here the style is changed if the condition is met
+      style.backgroundColor = 'red';
+    }
+  
+    return (
+      <div className='App'>
+        <h1>Hi, I'm a React App</h1>
+        <p>This is really working!</p>
+        <button 
+          style={style}
+          onClick={this.togglePersonsHandler}>Toggle Persons</button>
+          {persons}
+      </div>
+    );
+```
+
+## Setting Class Names Dynamically
+
+```jsx
+    const classes = [];
+    if (this.state.persons.length <= 2) {
+      classes.push('red');
+    }
+
+    if (this.state.persons.length <= 1) {
+      classes.push('bold');
+    }
+  
+    return (
+      <div className='App'>
+        <h1>Hi, I'm a React App</h1>
+        <p className={classes.join(' ')}>This is really working!</p>
+        <button 
+          style={style}
+          onClick={this.togglePersonsHandler}>Toggle Persons</button>
+          {persons}
+      </div>
+    );
+```
+
+## Adding and Using Radium
+
+- `npm install --save radium` 
+
+- using radium:
+
+  ```jsx
+  import Radium from 'radium';
+  // ... now wrap the app or a component exported with the higher order function
+  export default Radium(App);
+  ```
+
+- using radium features:
+
+  ```jsx
+    render() {
+      const style = {
+        backgroundColor: 'green',
+        color: 'white',
+        font: 'inherit',
+        border: '1px solid blue',
+        padding: '8px',
+        cursor: 'pointer',
+        ':hover': {  // RADIUM FEATURE
+          backgroundColor: 'lightgreen',
+          color: 'black',
+        }
+      };
+  
+      let persons = null;
+      
+      if (this.state.showPersons) {
+        persons = (
+          <div>
+            {this.state.persons.map((person, index) => {
+              return (
+              <Person 
+                key={person.id}
+                click={() => this.deletePersonHandler(index)}
+                name={person.name} 
+                age={person.age}
+                changed={(event) => this.nameChangedHandler(event, person.id)} />)
+            })}
+          </div>
+        )
+  
+        style.backgroundColor = 'red';
+        style[':hover'] = {  // RADIUM FEATURE
+          backgroundColor: 'lightred',
+          color: 'black',
+        }
+      }
+  ```
+
+  ## Using Radium for Media Queries
+
+  ```jsx
+  import React from 'react';
+  import './Person.css';
+  import Radium from 'radium';
+  
+  const Person = ( props ) => {
+      const style = {
+          '@media (min-width: 500px)': {  // RADIUM
+              width: '450px',
+          }
+      }
+  
+      return (
+          <div className="Person" style={style}>
+              <p onClick={props.click}>I'm {props.name}</p>
+              <p>{props.children}</p>
+              <input type='text' onChange={props.changed} value={props.name}/>
+          </div>
+      )
+  }
+  
+  export default Radium(Person);  // RADIUM
+  ```
+
+  - then import styleroot
+
+  ```jsx
+  import Radium, { StyleRoot } from 'radium';
+  ...
+  return (
+      <StyleRoot>
+          <div className='App'>
+              <h1>Hi, I'm a React App</h1>
+              <p className={classes.join(' ')}>This is really working!</p>
+              <button 
+                  style={style}
+                  onClick={this.togglePersonsHandler}>Toggle Persons</button>
+              {persons}
+          </div>
+      </StyleRoot>
+  );
+  ```
+
+  ## Introducing Styled Components
+
+  - `npm install --save styled-components`
+
+  ```jsx
+  import React from 'react';
+  import './Person.css';
+  import styled from 'styled-components';
+  
+  const StyledDiv = styled.div`  // Styled components
+      width: 60%;
+      margin: 16px auto;
+      border: 1px sold #eee;
+      box-shadow: 0 2px 3px #ccc;
+      padding: 16px;
+      text-align: center;
+  
+      @media (min-width: 500px) {
+          width: 450px;
+      }
+  `;
+  
+  const Person = ( props ) => {
+      return (
+          <StyledDiv>  // Styled components
+              <p onClick={props.click}>I'm {props.name}</p>
+              <p>{props.children}</p>
+              <input type='text' onChange={props.changed} value={props.name}/>
+          </StyledDiv>
+      )
+  }
+  
+  export default Person;
+  ```
+
+  ## More on Styled Components
+
+  - it creates classes automatically so it is not global
+  - adding hover and stuff
+
+  ```jsx
+  const StyledButton = styled.button`
+    background-color: green,
+    color: white,
+    font: inherit, 
+    border: 1px solid blue,
+    padding: 8px,
+    cursor: pointer,
+    
+    &:hover {
+      background-color: lightgreen,
+      color: black,
+    }
+  `;
+  ```
+
+  ## Styled Components & Dynamic Styles
+
+  ```jsx
+  const StyledButton = styled.button`
+    background-color: ${props => props.alt ? 'red' : 'green'},
+    color: white,
+    font: inherit, 
+    border: 1px solid blue,
+    padding: 8px,
+    cursor: pointer,
+    
+    &:hover {
+      background-color: ${props => props.alt ? 'salmon' : 'lightgreen'},
+      color: black,
+    }
+  `;
+  
+  ...
+   <StyledButton alt={this.state.showPersons} onClick={this.togglePersonsHandler}>
+      Toggle Persons
+  </StyledButton>
+  ...
+  ```
+
+  ## Working with CSS Modules
+
+  - first eject `npm run eject`
+
+  - this will display the config folder in which you will find **webfack.config.dev.js** and **webpack.config.prod.js** files.   
+
+  - Do this in both of the files
+
+    ![image-20201018181814217](C:\Users\honza\AppData\Roaming\Typora\typora-user-images\image-20201018181814217.png)
+
+  - now we can:
+
+  ```jsx
+  import classes from './App.css';
+  ```
+
+  - This will import all the classes as properties of classes object
+  - then we can do:
+
+  ```jsx
+  <button className={classes.button} onClick={this.togglePersonsHandler}>
+  ```
+  - In  React-scripts 2.0 + you can use modules automatically with a little tweak - watch the video 74.
+
+  ## More on CSS Modules
+
+  - Projects
+
+    - https://medium.com/nulogy/how-to-use-css-modules-with-create-react-app-9e44bec2b5c2
+
+  - More information about modules
+
+    - https://github.com/css-modules/css-modules
+
+    
+
+# Debugging React Apps
+
+## Finding Logical Errors by using Dev Tools & Sourcemaps
+
+- In **developer tools** > **sources** tab you can access your original code and place a breakpoint. Afterwards you just trigger the function
+
+## Using Error Boundaries
+
+- ```jsx
+  import React, { Component } from 'react';
+  
+  class ErrorBoundary extends Component {
+      state = {
+          hasError: false,
+          errorMessage: '',
+      }
+  
+      componentDidCatch = (error, info) => {
+          this.setState({
+              hasError: true,
+              errorMessage: error,
+          })
+      }
+  
+      render() {
+          if (this.state.hasError) {
+              return <h1>{this.state.errorMessage}</h1>;
+          } else {
+              return this.props.children;
+          }
+      }
+  }
+  
+  export default ErrorBoundary;
+  ```
+
+- should go to ErrorBoundary folder for its own component
+
+- wrap only the code that can fail
+
+## Useful resources and Links
+
+- Error boundaries: https://reactjs.org/docs/error-boundaries.html
+- Chrome Dev Tool Debugging https://developers.google.com/web/tools/chrome-devtools/javascript/
+
+# Diving Deeper into Components & React Internals
+
+## A Better Project Structure
+
+- No need to setup smaller components unless there is a reason for it
+- The statefull components should actually have as little jsx as possible in its render method
+- **The root**
+  - **assets**
+    - imges, etc
+  - **components**
+    - Cockpit
+      - Cockpit.js
+    - Persons
+      - Person
+        - Person.js
+        - Person.css
+  - **containers**
+    - App.css
+    - App.js
+    - App.test.js
+    - ...
+
+## Splitting an App Into Components
