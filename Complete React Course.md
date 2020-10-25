@@ -1018,4 +1018,53 @@ Two ways:
     - App.test.js
     - ...
 
-## Splitting an App Into Components
+## Class-based vs Functional Components
+
+- **class-based**
+  - class
+  - can access state
+  - lifecycle hooks
+  - needs `this` keyword
+- **functional**
+  - const
+  - access to state
+  - lifecycle hooks still not supported
+  - props are argument and therefore normal variable
+
+## Component Lifecycle
+
+- only available in class-based components
+- **constructor(props)**
+  - when a component is created, default ES6 feature.
+  - This constructor receives props and you have to call `super(props)` if you wanna own constructor
+  - you should not do side-effects in constructor (sending request, doing something, etc)
+- **getDerivedStateFromProps(props, state)** 
+  - sync state, if props can change and then you wanna update something then this is the hook
+  - dont cause side effects
+- **render**()
+  - prepares structure
+  - do your jsx here
+- **render child components**
+- **componentDidMount()**
+  - can cause side effects
+  - you should not update state here, triggers rerender cycle
+
+## Component Update Lifecycle
+
+- **getDerivedStateFromProps(props, state)**
+- **shouldComponentUpdate(nextProps, nextState)**
+  - decide whether or not react should rerender component
+  - this is mostly for performance reasons
+- **render()**
+  - prepare and structure jsx code here
+- react then goes ahead and **updates child component props**
+- **getSnapshotBeforeUpdate(prevProps, prevState)**
+  - for last minute DOM operations, (getting current scrolling position of the user etc)
+- **componentDidUpdate()**
+  - can cause side-effects here, but
+  - you should not update state here
+- **componentDIdMount, componentDidUpdate, shouldComponentUpdate** are the most important by far
+
+## Using useEffect() in Functional Components
+
+- conditional array usage
