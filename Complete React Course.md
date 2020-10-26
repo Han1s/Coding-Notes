@@ -1068,3 +1068,602 @@ Two ways:
 ## Using useEffect() in Functional Components
 
 - conditional array usage
+- empty conditional array if run for the first time
+
+## Cleaning up with lifecycle hooks
+
+- ending lifeconnections etc
+- in a class-based component you can use **componentWillUnmount()**
+- with hooks you can use **useEffect** hook you can return a function, this function will run when the useEffect runs for  the last time
+  - but it has to have empty conditional array, if it does not it triggers every time
+- example with a hook:
+
+```jsx
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        const timer = setTimeout(() => {
+             alert('Saved data to cloud!');
+        }, 1000);
+        return () => {
+            clearTimeout(timer);
+            console.log('[Cockpit.js] cleanup work in useEffect');
+        }
+    }, [])
+```
+
+## Using should component update for Optimization
+
+```jsx
+  shouldComponentUpdate(nextProps, nextState) {
+    console.log('[Persons.js] shouldComponentUpdate')
+    return nextProps.persons !== this.props.persons;
+  }
+```
+
+- **Note!** - this works only because when mutating state we are creating a copy of the state. If we adjusted the state directly this would still be the same pointer
+
+## Optimizing Functional Components with React.memo()
+
+- **React.memo**
+
+```jsx
+export default React.memo(cockpit);
+```
+
+- need to study this more.
+
+## When should you optimize?
+
+- only when the check is necessary.
+- If the component really should rerender almost allways these checks slow down performance
+
+## PureComponents instead of shouldComponentUpdate
+
+- if you impletemt **shouldComponentUpdate** when you are comparing all the props you can use **PureComponent**
+  - it already implements **shouldComponentUpdate** with all props check
+
+```jsx
+class Persons extends PureComponent {
+    ...
+}
+```
+
+## How React Updates The Dom
+
+- **render()**  does not immediately rerender, it is bascially a suggestion. Even if we do not catch the unnecessary update calls, it does not mean it hits the real DOM. It compares **Virtual DOMs**. It has a virtual DOM and a real DOM. React takes the Virtual one because it is faster. (It is a pure JavaScript basically). So React keeps the old one and the new one. Rerendering does not immediately update the DOM. It compares them and checks for differences. If it detects differences it updates the real dom, but only the places that are different. So if a text changes, it only updates the text. If no differences were found the real dom is not touched. Accessing the DOM is slow so you wanna do it as little as possible. This is what react does.
+
+## Rendering Adjacent JSX Elements
+
+- you can only return one root JSX element
+- this can also be an array as long as its elements have a key
+- bypass this like this:
+
+```jsx
+class Person extends Component {
+    render() {
+        console.log('[Person.js] rendering...');
+        return [
+            <p key={'i1'} onClick={this.props.click}>I'm {this.props.name}</p>,
+            <p key={'i2'}>{this.props.children}</p>,
+            <input key={'i3'} type='text' onChange={this.props.changed} value={this.props.name}/>
+        ]
+    }
+}
+```
+
+- another method
+- you can create a **hoc** folder with **Aux.js** (Auxilliary.js for windows) which looks like this
+
+```jsx
+const aux = props => props.children;
+
+export default aux;
+```
+
+- this then becomes a wrapping element that solves this exact problem
+
+## Using React Fragment
+
+```jsx
+import React, { Component } from 'react';
+
+class Person extends Component {
+    render() {
+        console.log('[Person.js] rendering...');
+        return (
+            <React.Fragment>
+                <p key={'i1'} onClick={this.props.click}>I'm {this.props.name}</p>,
+                <p key={'i2'}>{this.props.children}</p>,
+                <input key={'i3'} type='text' onChange={this.props.changed} value={this.props.name}/>
+            </React.Fragment>
+        )
+    }
+}
+
+export default Person;
+```
+
+- same as Auxilliary component
+
+## Higher Order Components
+
+- component wrapping other components and adding something to it. Might be styling, other HTML or some logic.
+
+```jsx
+import React from 'react';
+
+const withClass = props => (
+    <duv className={props.classes}>
+        {props.children}
+    </duv>
+);
+
+export default withClass;
+```
+
+## Another Form of HOCs
+
+- usually if you wanna handle behind the scene logic like errors etc, these might go with the another form
+- others adding style / html etc probably the first form
+
+```jsx
+import React from 'react';
+
+const withClass = (WrappedComponent, className) => {
+    return props => (
+        <div className={className}>
+            <WrappedComponent />
+        </div>
+    );
+};
+
+export default withClass;
+```
+
+```jsx
+export default withClass(App, classes.App);
+```
+
+## Passing Unknown Props
+
+```jsx
+import React from 'react';
+
+const withClass = (WrappedComponent, className) => {
+    return props => (
+        <div className={className}>
+            <WrappedComponent {...props} />
+        </div>
+    );
+};
+
+export default withClass;
+```
+
+## Setting State Correctly
+
+- when referencing the state the update does not happen synchronously, so the state might be unexpected.
+- when you depend on the old state you should use optional syntax where first argument is prevState and the second argument are current props
+
+```jsx
+this.setState( {
+    persons: persons, 
+    nameChangedCounter: this.state.nameChangedCounter + 1 }  // This is INCORRECT!
+);
+```
+
+```jsx
+// CORRECT SOLUTION
+
+this.setState((prevState, props) => {
+    return {
+        persons: persons, 
+        nameChangedCounter: prevState.nameChangedCounter + 1 };
+	}
+)
+```
+
+## Using PropTypes
+
+- `npm install --save prop-types`
+
+```jsx
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import withClass from '../../../hoc/WithClass';
+import classes from './Person.css';
+
+class Person extends Component {
+    render() {
+        console.log('[Person.js] rendering...');
+        return (
+            <React.Fragment>
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input type='text' onChange={this.props.changed} value={this.props.name}/>
+            </React.Fragment>
+        )
+    }
+}
+
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func,
+}
+
+export default withClass(Person, classes.Person);
+```
+
+- feel free to use them on any components where other people might be using your components
+
+## Using Refs
+
+- on any element you can pass **ref** keyword. You can pass a function there and the argument you are getting is the reference to the element you place it on. In the body you can then use it
+
+```jsx
+    componentDidMount() {
+        this.inputElement.focus();
+    }
+
+    render() {
+        console.log('[Person.js] rendering...');
+        return (
+            <React.Fragment>
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input 
+                    ref={(inputEl) => {this.inputElement = inputEl}}
+                    type='text' 
+                    onChange={this.props.changed} 
+                    value={this.props.name}/>
+            </React.Fragment>
+        )
+    }
+}
+```
+
+- other way of using
+
+```jsx
+class Person extends Component {
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    componentDidMount() {
+        // this.inputElement.focus();
+        this.inputElementRef.current.focus();
+    }
+
+    render() {
+        console.log('[Person.js] rendering...');
+        return (
+            <React.Fragment>
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input 
+                    // ref={(inputEl) => {this.inputElement = inputEl}}
+                    ref={this.inputElementRef}
+                    type='text' 
+                    onChange={this.props.changed} 
+                    value={this.props.name}/>
+            </React.Fragment>
+        )
+    }
+}
+...
+```
+
+## Refs in functional components
+
+- not usable in functional components, but we can use react hooks
+
+```jsx
+import React, { useEffect, useRef } from 'react';
+import classes from './Cockpit.css';
+
+const cockpit = (props) => {
+    const toggleBtnRef = useRef(null);  // SEUP REF HERE
+
+    useEffect(() => {
+        console.log('[Cockpit.js] useEffect');
+        // setTimeout(() => {
+        //      alert('Saved data to cloud!');
+        // }, 1000);
+        toggleBtnRef.current.click();  // CLICK HERE
+        return () => {
+            console.log('[Cockpit.js] cleanup work in useEffect');
+        }
+    }, [])
+
+    useEffect(() => {
+        console.log('[Cockpit.js] 2nd useEffect');
+        return () => {
+            console.log('[Cockpit.js] cleanup work in 2nd useEffect')
+        }
+    })
+
+    const assignedClasses = [];
+    let btnClass = '';
+
+    if (props.showPersons) {
+        btnClass = classes.Red;
+    }
+
+    if (props.personsLength <= 2) {
+      assignedClasses.push(classes.red);
+    }
+
+    if (props.personsLength <= 1) {
+      assignedClasses.push(classes.bold);
+    }
+
+    return (
+        <div className={classes.Cockpit}>
+            <h1>{props.title}</h1>
+            <p className={assignedClasses.join(' ')}>This is really working!</p>
+            <button
+                ref={toggleBtnRef}  // REF HERE
+                className={btnClass} 
+                onClick={props.clicked}>
+            Toggle Persons
+            </button>
+        </div>
+    );
+}
+
+export default React.memo(cockpit);
+```
+
+## Understanding Prop Chain Problems
+
+- what if you have props that is passing through several components but is only relevant for the last one ?
+- **context** is the answer
+
+## Context API
+
+- context is globally available variable (or whatever scope you wanna use it in)
+- context should be used as a component
+- context should wrap all the parts of the application that need access to the context
+- we create a context component:
+
+```jsx
+import React from 'react';
+
+const authContext = React.createContext({
+    authenticated: false, 
+    login: () => {}
+});
+
+export default authContext;
+```
+
+- then we wrap what we need with this
+
+```jsx
+import React, { Component } from 'react';
+import classes from './App.css';
+import Persons from '../components/Persons/Persons';
+import Cockpit from '../components/Cockpit/Cockpit';
+import withClass from '../hoc/WithClass';
+import AuthContext from '../context/auth-context'; // IMPORTING CONTEXT
+
+class App extends Component {
+  constructor(props) {
+    super(props);
+    console.log('[App,js] constructor');
+  }
+
+  state = {
+    persons: [
+      { id: 1, name: 'random 1', age: 10 },
+      { id: 2, name: 'random 2', age: 20 },
+      { id: 3, name: 'random 3', age: 30 }
+    ],
+    showCockpit: true,
+    nameChangedCounter: 0,
+    authenticated: false,
+  }
+
+  static getDerivedStateFromProps(props, state) {
+    console.log('[App.js] getDerviedStateFromProps', props);
+    return state;
+  }
+
+  conponentWillMount() {
+    console.log('[App.js] componentWillMount');
+  }
+
+  componentDidMount() {
+    console.log('[App.js] componentDidMount');
+  }
+
+  deletePersonHandler = (index) => {
+    // const persons = this.state.persons.slice(); OPTION 1
+    const persons = [...this.state.persons]; // OPTION 2
+    persons.splice(index, 1);
+    this.setState({persons: persons});
+  }
+
+  nameChangedHandler = (event, id) => {
+    const personIndex = this.state.persons.findIndex((p) => {
+      return p.id === id;
+    })
+    
+    const person = {
+      ...this.state.persons[personIndex]
+    }
+
+    person.name = event.target.value;
+
+    const persons = [...this.state.persons];
+
+    persons[personIndex] = person;
+
+    this.setState((prevState, props) => {
+      return {
+        persons: persons, 
+        nameChangedCounter: prevState.nameChangedCounter + 1 };
+      }
+    )
+  }
+
+  togglePersonsHandler = () => {
+    this.setState({
+      showPersons: !this.state.showPersons,
+    })
+  }
+
+  loginHandler = () => {
+    this.setState({authenticated: true});
+  }
+
+  render() {
+    console.log('[App.js] render');
+    let persons = null;
+    
+    if (this.state.showPersons) {
+      persons = (
+        <Persons 
+        persons={this.state.persons}
+        clicked={this.deletePersonHandler}
+        changed={this.nameChangedHandler}
+        isAuthenticated={this.state.authenticated} />
+      );
+    }
+  
+    return (
+      <React.Fragment>
+        <button 
+          onClick={() => {
+            this.setState({showCockpit: false}
+          )}}>Remove Cockpit
+        </button>
+        <AuthContext.Provider value={{  // CONTEXT HERE
+          authenticated: this.state.authenticated,
+          login: this.loginHandler,
+        }}>
+        { this.state.showCockpit ?  <Cockpit
+          title={this.props.appTitle}
+          showPersons={this.state.showPersons} 
+          personsLength={this.state.persons.length}
+          clicked={this.togglePersonsHandler}
+          login={this.loginHandler} /> : null }
+        {persons}
+        </AuthContext.Provider>
+      </React.Fragment>
+    );
+  }
+}
+
+export default withClass(App, classes.App);
+
+```
+
+- To consume:
+
+  ```jsx
+  import React, { Component } from 'react';
+  import PropTypes from 'prop-types';
+  import withClass from '../../../hoc/WithClass';
+  import classes from './Person.css';
+  import AuthContext from '../../../context/auth-context';
+  
+  class Person extends Component {
+      constructor(props) {
+          super(props);
+          this.inputElementRef = React.createRef();
+      }
+  
+      componentDidMount() {
+          // this.inputElement.focus();
+          this.inputElementRef.current.focus();
+      }
+  
+      render() {
+          console.log('[Person.js] rendering...');
+          return (
+              <React.Fragment>
+                  <AuthContext.Consumer>
+                      {(context) =>  context.authenticated ? <p>authenticated!</p> : <p>Please log In</p>}
+                  </AuthContext.Consumer>
+                  <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                  <p>{this.props.children}</p>
+                  <input 
+                      // ref={(inputEl) => {this.inputElement = inputEl}}
+                      ref={this.inputElementRef}
+                      type='text' 
+                      onChange={this.props.changed} 
+                      value={this.props.name}/>
+              </React.Fragment>
+          )
+      }
+  }
+  
+  Person.propTypes = {
+      click: PropTypes.func,
+      name: PropTypes.string,
+      age: PropTypes.number,
+      changed: PropTypes.func,
+  }
+  
+  export default withClass(Person, classes.Person);
+  ```
+
+  ## contextType  &useContext
+
+  - usage:
+
+  ```jsx
+  import React, { Component } from 'react';
+  import PropTypes from 'prop-types';
+  import withClass from '../../../hoc/WithClass';
+  import classes from './Person.css';
+  import AuthContext from '../../../context/auth-context';
+  
+  class Person extends Component {
+      constructor(props) {
+          super(props);
+          this.inputElementRef = React.createRef();
+      }
+  
+      static contextType = AuthContext;
+  
+      componentDidMount() {
+          // this.inputElement.focus();
+          this.inputElementRef.current.focus();
+          console.log(this.context.authenticated);
+      }
+  
+      render() {
+          console.log('[Person.js] rendering...');
+          return (
+              <React.Fragment>
+                  { this.context.authenticated ? <p>Authenticated!</p> : <p>Please log In</p> }
+                  <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                  <p>{this.props.children}</p>
+                  <input 
+                      // ref={(inputEl) => {this.inputElement = inputEl}}
+                      ref={this.inputElementRef}
+                      type='text' 
+                      onChange={this.props.changed} 
+                      value={this.props.name}/>
+              </React.Fragment>
+          )
+      }
+  }
+  
+  Person.propTypes = {
+      click: PropTypes.func,
+      name: PropTypes.string,
+      age: PropTypes.number,
+      changed: PropTypes.func,
+  }
+  
+  export default withClass(Person, classes.Person);
+  ```
+
+- in functional components not available, you have to use **useContext** hook
