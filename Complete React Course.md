@@ -1667,3 +1667,97 @@ export default withClass(App, classes.App);
   ```
 
 - in functional components not available, you have to use **useContext** hook
+
+```jsx
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import withClass from '../../../hoc/WithClass';
+import classes from './Person.css';
+import AuthContext from '../../../context/auth-context';
+
+class Person extends Component {
+    constructor(props) {
+        super(props);
+        this.inputElementRef = React.createRef();
+    }
+
+    static contextType = AuthContext;
+
+    componentDidMount() {
+        // this.inputElement.focus();
+        this.inputElementRef.current.focus();
+        console.log(this.context.authenticated);
+    }
+
+    render() {
+        console.log('[Person.js] rendering...');
+        return (
+            <React.Fragment>
+                { this.context.authenticated ? <p>Authenticated!</p> : <p>Please log In</p> }
+                <p onClick={this.props.click}>I'm {this.props.name} and I am {this.props.age} years old!</p>
+                <p>{this.props.children}</p>
+                <input 
+                    // ref={(inputEl) => {this.inputElement = inputEl}}
+                    ref={this.inputElementRef}
+                    type='text' 
+                    onChange={this.props.changed} 
+                    value={this.props.name}/>
+            </React.Fragment>
+        )
+    }
+}
+
+Person.propTypes = {
+    click: PropTypes.func,
+    name: PropTypes.string,
+    age: PropTypes.number,
+    changed: PropTypes.func,
+}
+
+export default withClass(Person, classes.Person);
+```
+
+# A Real App: The Burger Builder (Basic Version)
+
+## Planning an App in React - Core Steps
+
+- **Component Tree / Component Structure**
+  - split app into react components
+  - this naturally changes throughout the development
+  - very important to have an idea about what should be a component and what not
+- **Application State (Data)**
+  - data youre planning to manipulate
+- **Components vs Containers**
+  - which components dumb / stateless & which components stateful
+
+## Planning an App - Layout and Component Tree
+
+- use firgma or something
+- **App**
+  - **Layout** - could be a part of the root component
+    - **Toolbar**
+      - Drawer Toggle
+      - Logo
+      - Navigation Items
+    - **SideDrawer**
+      - Logo
+      - Navigation Items
+    - **BackDrop**
+    - **props.children** - other pages
+      - **BurgerBuilder** will be our starting page
+        - build controls
+          - **list** of individual build control components
+          - Order Button
+        - burger
+          - **list** of ingredients dynamically managed
+        - Modal giving checkout preview
+          - takes props children to display all sorts of stuff
+
+## Planning the State
+
+- **Ingredients**
+  - { meat: n, cheese: x, ... }
+- **purchased**: true / false
+- **total price**: int
+- state will be managed in the burger - builder component. New pages will manage the components as well and will not be interested in this.
+- so burger builder will be stateful. Other components might be stateless.
