@@ -288,5 +288,131 @@ const secondPerson = {
 
 Actually copying the object
 
+# 3. React Basics & Working With Components
+
+## 25. What are components and why is react all about them
+
+- react is library for simplifying building UIs.
+- It makes more sense to use it for more complex UIs.
+- Its less error prone.
+- React is all about Components
+  - all UIs are made of components
+  - Components are reusable building blocks in your UIs
+- Components are great due to **reusability** and **separation of concerns**
+
+## 26. React is written in declarative way
+
+- how is A component built?
+  - HTML + CSS + JS ==> All combined in React
+    - CSS is the least important part
+    - mostly React is combining HTML + JS
+  - React uses **declarative approach**
+    - You will not tell steps to react.
+    - You just define desired target state and its the reacts job to figure out what to add / remove / update. We do not write these steps.
+
+## 27. Creating a new React Project
+
+- **Create React App**
+  - First install NodeJS
+  - install **create-react-app**
+  - `npx create-react-app name-of-the-folder`
+    - check for vpn, antivirus, etc errors when installing
+  - now you can **cd** into the folder and run `npm start` to start the development web server **:3000**
+  - install **visual studio code**
+
+## 29. Analyzing a standard React project
+
+- React is just **JavaScript**
+- **index.js** is the first file that is executed
+- **public folder** holds **index.html**, which is the only html that we deliver to the browser
+- **App.js** holds the **JS** logic
+
+## 30. Introducing JSX
+
+- stands for **JS xtml**. Its a xtml code inside JavaScript
+
+## 31. How React Works
+
+- we define target state and React is responsible for the rest
+
+## 39. The concept of Composition
+
+```jsx
+import './Card.css';
+
+function Card(props) {
+  const classes = 'card ' + props.className;
+  return (
+    <div className={classes}>
+      {props.children}
+    </div>
+  )
+}
+
+export default Card;
+```
+
+## 41. Closer Look at JSX
+
+- you no longer need to import React in CRA apps
+- **jsx** is basically just **React.createElement()** function called
+
+## 42. Organizing component files
+
+- usually components go to subfolders
+- UI to separate folders, etc.
+
+## 43. Alternative function syntax
+
+- standard function syntax
+
+```jsx
+function App() {
+    ...
+}
+```
+
+- arrow function syntax
+
+```jsx
+const App = () => {
+    ...
+}
+```
 
 
+
+# 4. React State & Working with Events
+
+## 46. Listening to events and working with event handlers
+
+```jsx
+import ExpenseDate from './ExpenseDate';
+import './ExpenseItem.css';
+import Card from '../UI/Card';
+
+const ExpenseItem = (props) => {
+  const clickHandler = () => {
+    console.log('clicked!');
+  }
+
+  return (
+    <Card className="expense-item">
+      <ExpenseDate date={props.date}/>
+      <div className="expense-item__description">
+        <h2>{props.title}</h2>
+        <div className="expense-item__price">${props.amount}
+        </div>
+      </div>
+      <button onClick={clickHandler}>Change Title</button>
+    </Card>
+  )
+}
+
+export default ExpenseItem;
+```
+
+## 48. Working with state
+
+- all the React hooks start with **use...**
+- hooks should not be called in the nested functions
