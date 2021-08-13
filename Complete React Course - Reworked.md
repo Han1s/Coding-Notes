@@ -416,3 +416,43 @@ export default ExpenseItem;
 
 - all the React hooks start with **use...**
 - hooks should not be called in the nested functions
+- you can just use a single state, depends on you
+
+## 55. Updating a state depending on the previous state
+
+- whenever you update a state and you depend on the previous state, you should pass an anonymous arrow function to that receives **prevState** snapshot and now you can return new state snapshot
+- this is because React schedules state updates so you could be depending on incorrect state snapshots in some cases
+
+```javascript
+const titleChangeHandler = (event) => {
+    setUserInput((prevState) => {
+        return { 
+	        ...prevState,
+            enteredTitle: event.target.value
+        }
+    })
+}
+```
+
+## 56. Form Submission
+
+- whenever form is submitted the browser reloads, that we dont want so we have to use **event.preventDefault()**
+
+```jsx
+const submitHandler = (event) => {
+    event.preventDefault(); // prevent page reload
+
+    const expenseData = {
+      title: enteredTitle,
+      amount: enteredAmount,
+      date: new Date (enteredDate)
+    }
+
+    console.log(expenseData);
+  }
+
+  return (
+    <form onSubmit={submitHandler}>
+          ...
+```
+
