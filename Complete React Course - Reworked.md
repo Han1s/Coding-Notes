@@ -456,3 +456,8 @@ const submitHandler = (event) => {
           ...
 ```
 
+## Controlled Components & Stateless vs Stateful components
+
+- controlled are components with two-way binding
+  - the component is controlled by its parent
+  - most components in the app should be stateless
