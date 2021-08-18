@@ -1668,6 +1668,7 @@ export default withClass(App, classes.App);
 
 - in functional components not available, you have to use **useContext** hook
 
+<<<<<<< Updated upstream
 ```jsx
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
@@ -1761,3 +1762,142 @@ export default withClass(Person, classes.Person);
 - **total price**: int
 - state will be managed in the burger - builder component. New pages will manage the components as well and will not be interested in this.
 - so burger builder will be stateful. Other components might be stateless.
+=======
+# React Router
+
+## TODO
+
+# REDUX
+
+## Understanding State
+
+**State** 
+
+- ingredients added to Burger
+- is User authenticated?
+- is a Modal open?
+- list of Blog Posts
+- ...
+
+## Understanding the Redux Flow
+
+- **Central Store** stores entire application state
+- **Action** is predefined information package holding a payload we are sending to redux.
+  - the action does not hold any logic, its just a messanger
+- **Reducers** change the central store
+  - action reaches the reducer
+  - the reducer then checks the type of action
+  - the reducer finds the reaction and spits out the updated state
+  - the reducer has to reduce synchronous code only - I/O
+  - the updated store is then replacing Central Store stat
+- **Subscription (module)**
+  - is triggered whenever state changes
+
+## Setting Up Reducer and Store
+
+- `npm install --save redux` 
+
+## Basic Redux Schema
+
+```javascript
+const redux = require('redux');
+const createStore = redux.createStore;
+
+const initialState = {
+  counter: 0,
+}
+
+// Reducer
+const rootReducer = (state = initialState, action) => {
+  if (action.type === 'INC_COUNTER') {
+    return {
+      ...state,
+      counter: state.counter + 1,
+    }
+  }
+  
+  if (action.type === 'ADD_COUNTER') {
+    return {
+      ...state,
+      counter: state.counter + action.value,
+    }
+  }
+
+  return state;
+};
+
+// Store
+const store = createStore(rootReducer);
+console.log(store.getState());
+
+// Subscription
+store.subscribe(() => {
+  console.log('[Subscription]', store.getState());
+});
+
+// Dispatching Action
+store.dispatch({type: 'INC_COUNTER'});
+store.dispatch({type: 'ADD_COUNTER', value: 10});
+console.log(store.getState());
+```
+
+## Connecting Redux to React
+
+- `npm install --save react-redux` 
+- create **store** folder in root folder next to **components** and **containers** folder
+- **index.js** holds the **store** since its the place where our application roots
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+import './index.css';
+import App from './App';
+import registerServiceWorker from './registerServiceWorker';
+import reducer from './store/reducer';
+import { createStore } from 'redux';
+import { Provider } from 'react-redux';
+
+const store = createStore(reducer);
+
+ReactDOM.render(<Provider store={store}><App /></Provider>, document.getElementById('root'));
+registerServiceWorker();
+
+```
+
+- **store** contains **reducer.js**
+
+```javascript
+const initialState = {
+  counter: 0
+}
+
+const reducer = (state = initialState, action) => {
+  return state;
+}
+
+export default reducer;
+```
+
+Example:
+
+```jsx
+import React, { Component } from 'react';
+import {connect} from 'react-redux';
+
+import CounterControl from '../../components/CounterControl/CounterControl';
+import CounterOutput from '../../components/CounterOutput/CounterOutput';
+
+class Counter extends Component {
+ ...
+}
+
+const mapStateToProps = state => {
+    return {
+        ctr: state.counter
+    }
+}
+
+export default connect(mapStateToProps)(Counter);
+```
+
+>>>>>>> Stashed changes

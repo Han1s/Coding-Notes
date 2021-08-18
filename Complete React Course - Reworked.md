@@ -456,8 +456,13 @@ const submitHandler = (event) => {
           ...
 ```
 
-## Controlled Components & Stateless vs Stateful components
+## 58. Controlled Components & Stateless vs Stateful components
 
 - controlled are components with two-way binding
   - the component is controlled by its parent
   - most components in the app should be stateless
+
+## 62. Rendering lists of data
+
+- use **map()**
+  - React can render list of elements
