@@ -1,0 +1,29 @@
+# CRON
+
+- `crontab -l` - lists all scheduled jobs for the user
+- **crontab.guru** - online schedule translator
+- have to use **vim** or **nano** or some editor to use cron
+- `crontab -e` edit the crontab
+- `crontab -u eser2 -e` - edit user 2 crontab
+- `sudo crontab -l` - view root crontab
+- `sudo crontab -e` - edit sudo crontab
+- `crontab -r`- removes the crontab for the user
+- its a good practice to comment every reocurring command
+- you specify ***minute - hour - day of the month - month - day of the week - command***
+  - **\* \* \* \* \*** - every minute of every hour of every day of the month of every month on every day of the week
+  - **30 \* \* \* \*** - every 30 minutes of every hour of every day of the month of every month on every day of the week
+  - **30 5 \* \* \*** - 5:30 every single day
+  - **30 5 1 \*** \* - 5:30 first of every month
+  - **30 5 1 1 \*** - 5:30 first of the month of january
+  - **0 0 \* \* 1** - midnight any day any month on monday (so every monday)
+- to specify multiple values
+  - **0 0 1,15 \* \*** - run on midnight every 1st and 15th day
+  - **\* \* 1,15 \* \*** - every minute of the day of the 1st and 15th of the month (watch out for this)
+- to schedule intervals
+  - ***/10 \* \* \* \*** - run every 10 minutes of every day
+  - **0 0 */3 \* \*** - run every third day of the month on midnight. Dont forget to specify the minutes and hours
+- to specify ranges
+  - **0 0 -5 * * *** - run the command every hour between zero to five
+  - **0 12 * 5-8 *** - run every day of the month through may to august
+- complex examples:
+  - ***/30 9-17 * * 1-5** - every 30 minutes Mo-Fri 9am-5pm
