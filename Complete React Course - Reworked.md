@@ -552,3 +552,134 @@ const CourseInput = props => {
 };
 ```
 
+## 75. Using styled components
+
+`npm install --save styled-components`
+
+- you can also install **vscode-styled-components** extension for the markup
+
+```jsx
+import styled from 'styled-components';
+
+const Button = styled.button`
+  font: inherit;
+  padding: 0.5rem 1.5rem;
+  border: 1px solid #8b005d;
+  color: white;
+  background: #8b005d;
+  box-shadow: 0 0 4px rgba(0, 0, 0, 0.26);
+  cursor: pointer;
+  width: 100%;
+
+  @media (min-width: 700px) {
+    width: auto;
+  }
+
+  &:focus {
+    outline: none;
+  }
+
+  &:hover,
+  &:active {
+    background: #ac0e77;
+    border-color: #ac0e77;
+    box-shadow: 0 0 8px rgba(0, 0, 0, 0.26);
+  }
+`;
+
+export default Button;
+
+```
+
+## 77. Styled components and dynamic mapping
+
+```jsx
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
+import Button from '../../UI/Button/Button';
+import './CourseInput.css';
+
+const FormControl = styled.div`
+  margin: 0.5rem 0;
+
+  & label {
+    font-weight: bold;
+    display: block;
+    margin-bottom: 0.5rem;
+    color: ${props => (props.invalid ? 'red' : 'black')};
+  }
+
+  & input {
+    display: block;
+    width: 100%;
+    border: 1px solid ${props => (props.invalid ? 'red' : '#ccc')};
+    background: ${props => (props.invalid? '#ffd7d7' : 'transparent')};
+    font: inherit;
+    line-height: 1.5rem;
+    padding: 0 0.25rem;
+  }
+
+  & input:focus {
+    outline: none;
+    background: #fad0ec;
+    border-color: #8b005d;
+  }
+`;
+
+const CourseInput = props => {
+  const [enteredValue, setEnteredValue] = useState('');
+  const [isValid, setIsValid] = useState(true);
+
+  const goalInputChangeHandler = event => {
+    if (event.target.value) setIsValid(true);
+    setEnteredValue(event.target.value);
+  };
+
+  const formSubmitHandler = event => {
+    event.preventDefault();
+    if (!enteredValue.trim().length) {
+      setIsValid(false);
+      return;
+    }
+    props.onAddGoal(enteredValue);
+  };
+
+  return (
+    <form onSubmit={formSubmitHandler}>
+      <FormControl invalid={!isValid}>
+        <label>Course Goal</label>
+        <input type="text" onChange={goalInputChangeHandler} />
+      </FormControl>
+      <Button type="submit">Add Goal</Button>
+    </form>
+  );
+};
+
+export default CourseInput;
+
+```
+
+## 79. CSS Modules
+
+- need a specific configuration (**CRA** for example)
+
+```jsx
+import styled from 'styled-components';
+
+import styles from './Button.module.css'; 
+# rename the css file and the import syntax\
+# call classes with styles.*
+
+const Button = (props) => {
+  return (
+    <button type={props.type} className={styles.button} onClick={props.onClick}>
+      {props.children}
+    </button>
+  )
+}
+
+export default Button;
+
+```
+
