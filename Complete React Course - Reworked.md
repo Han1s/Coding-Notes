@@ -683,3 +683,34 @@ export default Button;
 
 ```
 
+# 8. Time to practice
+
+- to pass normal class as well as a props classes:
+
+  ```jsx
+  const Card = (props) => {
+      return (
+          <div className={`${classes.card} ${props.className}`}>
+              {props.children}
+          </div>
+      )
+  }
+  ```
+
+- to create a button with style and onClick
+
+  ```jsx
+  const Button = (props) => {
+      return (
+          <button 
+              className={classes.button} 
+              type={props.type || 'button'}
+              onClick={props.onClick}>
+              {props.children}
+          </button>
+      )
+  }
+  ```
+
+  
+
