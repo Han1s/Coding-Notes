@@ -712,5 +712,60 @@ export default Button;
   }
   ```
 
-  
+
+
+
+# 9. Fragments, Portals, Ref
+
+## 104. Working with Portals
+
+```html
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="backdrop-root"></div>
+    <div id="overlay-root"></div>
+    <div id="root"></div>
+    <!--
+      This HTML file is a template.
+      If you open it directly in the browser, you will see an empty page.
+
+      You can add webfonts, meta tags, or analytics to this file.
+      The build step will place the bundled scripts into the <body> tag.
+
+      To begin the development, run `npm start` or `yarn start`.
+      To create a production bundle, use `npm run build` or `yarn build`.
+    -->
+  </body>
+```
+
+```jsx
+import React from 'react';
+import ReactDOM from 'react-dom';
+
+import Card from './Card';
+import Button from './Button';
+import classes from './ErrorModal.module.css';
+
+const Backdrop = (props) => (
+	# ...
+)
+
+const ModalOverlay = (props) => (
+	# ...
+)
+
+const ErrorModal = (props) => {
+  return (
+    <React.Fragment>
+      {ReactDOM.createPortal(<Backdrop onConfirm={props.onConfirm}/>, document.getElementById('backdrop-root'))}
+      {ReactDOM.createPortal(<ModalOverlay title={props.title} message={props.message} onConfirm={props.onConfirm} />, document.getElementById('overlay-root'))}
+    </React.Fragment>
+  );
+};
+
+export default ErrorModal;
+
+```
+
+
 
