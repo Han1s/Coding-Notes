@@ -1,3 +1,7 @@
+Notes for work:
+
+- debouncing into return
+
 # I. Getting Started
 
 ## 2. What is react
@@ -712,5 +716,73 @@ export default Button;
   }
   ```
 
-  
 
+# 9. Diving Deeper: Fragments, Portals, Refs
+
+## 103. React Portals
+
+- for example relevant with **modals**
+- Render componetn somewhere else
+- e.g. to move modals or backdrop directly below the body
+
+## 110. UseEffect() hook
+
+```jsx
+function App() {
+  const [isLoggedIn, setIsLoggedIn] = 
+     ...
+  useEffect(() => {
+    const storedUserLoggedIn = localStorage.getItem('isLoggedIn');
+    if (storedUserLoggedIn === '1') {
+      setIsLoggedIn(true);
+    }
+  }, []);
+    ...
+}
+```
+
+## 111. UseEffect() and dependencies
+
+```jsx
+	# trigger every time the enteredEmail or enteredPassword change
+  useEffect(() => {
+    setFormIsValid(
+      enteredEmail.includes('@') && enteredPassword.trim().length > 6
+    )
+  }, [enteredEmail, enteredPassword])
+```
+
+- you can use as dependencies:
+  - **state**
+  - **variables**
+  - **props**
+  - **functions** 
+  - all has to be defined inside the components
+
+## 113. UseEffect Cleanup Function
+
+- **Debouncing**
+- cleanup runs when the function is run again or component is removed from the dom
+- with empty dependency array the cleanup runs only when the component is removed
+
+```jsx
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      setFormIsValid(
+        enteredEmail.includes('@') && enteredPassword.trim().length > 6
+      )
+    }, 500)
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    }
+  }, [enteredEmail, enteredPassword])
+```
+
+## 115. UseReducer() Hook
+
+- useful for more complex state
+- its a replacement if you need more powerful state management
+- for majority of cases you will use useState
+- its good to use if you have two states that are related or if you update state that depend on other state
