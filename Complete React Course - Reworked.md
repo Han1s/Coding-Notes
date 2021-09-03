@@ -767,5 +767,96 @@ export default ErrorModal;
 
 ```
 
+## 105. Working with Refs
 
+- allow us to access and work with other dom elements
+- **Usage**: If you only want to read a value, and not change anything. To use state as a keylogger is not really nice.
+
+```jsx
+import React, { useState, useRef } from 'react';
+
+import Card from '../UI/Card';
+import Button from '../UI/Button';
+import ErrorModal from '../UI/ErrorModal';
+import classes from './AddUser.module.css';
+
+const AddUser = (props) => {
+  const nameInputRef = useRef();
+  const ageInputRef = useRef();
+
+  const [error, setError] = useState();
+
+  const addUserHandler = (event) => {
+    event.preventDefault();
+    const enteredName = nameInputRef.current.value;
+    const enteredUserAge = ageInputRef.current.value;
+    if (enteredName.trim().length === 0 || enteredUserAge.trim().length === 0) {
+      setError({
+        title: 'Invalid input',
+        message: 'Please enter a valid name and age (non-empty values).',
+      });
+      return;
+    }
+    if (+enteredUserAge < 1) {
+      setError({
+        title: 'Invalid age',
+        message: 'Please enter a valid age (> 0).',
+      });
+      return;
+    }
+    props.onAddUser(enteredName, enteredUserAge);
+    nameInputRef.current.value = '';
+    ageInputRef.current.value = '';
+  };
+
+  const errorHandler = () => {
+    setError(null);
+  };
+
+  return (
+    <div>
+      {error && (
+        <ErrorModal
+          title={error.title}
+          message={error.message}
+          onConfirm={errorHandler}
+        />
+      )}
+      <Card className={classes.input}>
+        <form onSubmit={addUserHandler}>
+          <label htmlFor="username">Username</label>
+          <input
+            id="username"
+            type="text"
+            ref={nameInputRef}
+          />
+          <label htmlFor="age">Age (Years)</label>
+          <input
+            id="age"
+            type="number"
+            ref={ageInputRef}
+          />
+          <Button type="submit">Add User</Button>
+        </form>
+      </Card>
+    </div>
+  );
+};
+
+export default AddUser;
+
+```
+
+## 106. Controlled vs Uncontrolled Components
+
+- **Uncontrolled Components** - values accessed with a ref. Their internal value is not controlled by React. We rely on the input and we just fetch it. We dont feed data back to the input. The native state is utilized by the input element.
+- **Controlled component** - has its own internal state controlled by react
+
+# 10. Advanced: Handling Side Effects, Reducers, Context API
+
+## 109. Side Effects, useEffect
+
+- main job of react is to render UI and react to user input
+- **side effects** are everything else (e.g. http requests or storing things inside browser storage, utilizing timers, etc.). These happen outside component evaluation and render cycle, especially since they may block or delay rendering
+- **useEffect()** hook is a special hook to handle side effects
 
