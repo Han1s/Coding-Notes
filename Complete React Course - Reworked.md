@@ -1,6 +1,7 @@
 Notes for work:
 
 - debouncing into return
+- refactor using context
 
 # I. Getting Started
 
@@ -930,3 +931,246 @@ function App() {
 - its a replacement if you need more powerful state management
 - for majority of cases you will use useState
 - its good to use if you have two states that are related or if you update state that depend on other state
+
+```jsx
+import React, { useState, useEffect, useReducer } from 'react';
+
+import Card from '../UI/Card/Card';
+import classes from './Login.module.css';
+import Button from '../UI/Button/Button';
+
+const emailReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.val,
+      isValid: action.val.includes('@')
+    }
+  }
+
+  if (action.type === 'INPUT_BLUR') {
+    return {
+      value: state.value,
+      isValid: state.value.includes('@')
+    }
+  }
+
+  return {
+    value: '',
+    isValid: ''
+  }
+}
+
+const passwordReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.value,
+      isValid: action.value.trim().length > 6
+    }
+  }
+
+  if (action.type === 'INPUT_BLUR') {
+    return {
+      value: state.value,
+      isValid: state.value.trim().length > 6
+    }
+  }
+
+  return {
+    value: '',
+    isValid: ''
+  }
+}
+
+const Login = (props) => {
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [emailState, dispatchEmail] = useReducer(
+    emailReducer,
+    {value: '', isValid: null}
+  );
+  const [passwordState, dispatchPassword] = useReducer(
+    passwordReducer,
+    {value: '', isValid: null}
+  )
+
+  const { isValid: emailIsValid } = emailState;  # Using destructuring for more concrete useEffect
+  const { isValid: passwordIsValid } = passwordState;  # Using destructuring for more concrete useEffect
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('CHecking form validity!');
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500)
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    }
+  }, [emailIsValid, passwordIsValid])
+
+  const emailChangeHandler = (event) => {
+    dispatchEmail({type: 'USER_INPUT', val: event.target.value})
+
+    setFormIsValid(
+      event.target.value.includes('@') && passwordState.isValid
+    );
+  };
+
+  const passwordChangeHandler = (event) => {
+    dispatchPassword({type: 'USER_INPUT', value: event.target.value});
+
+    setFormIsValid(
+      event.target.value.trim().length > 6 && emailState.isValid
+    );
+  };
+
+  const validateEmailHandler = () => {
+    dispatchEmail({type: 'INPUT_BLUR'});
+  };
+
+  const validatePasswordHandler = () => {
+    dispatchPassword({type: 'INPUT_BLUR'});
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    props.onLogin(emailState.value, passwordState.value);
+  };
+
+  return (
+    <Card className={classes.login}>
+      <form onSubmit={submitHandler}>
+        <div
+          className={`${classes.control} ${
+            emailState.isValid === false ? classes.invalid : ''
+          }`}
+        >
+          <label htmlFor="email">E-Mail</label>
+          <input
+            type="email"
+            id="email"
+            value={emailState.value}
+            onChange={emailChangeHandler}
+            onBlur={validateEmailHandler}
+          />
+        </div>
+        <div
+          className={`${classes.control} ${
+            passwordState.isValid === false ? classes.invalid : ''
+          }`}
+        >
+          <label htmlFor="password">Password</label>
+          <input
+            type="password"
+            id="password"
+            value={passwordState.value}
+            onChange={passwordChangeHandler}
+            onBlur={validatePasswordHandler}
+          />
+        </div>
+        <div className={classes.actions}>
+          <Button type="submit" className={classes.btn} disabled={!formIsValid}>
+            Login
+          </Button>
+        </div>
+      </form>
+    </Card>
+  );
+};
+
+export default Login;
+
+```
+
+
+
+## 120. React Context
+
+- useful when you pass a lot of state through a lot of components
+
+- we have the component-wide **State Storage**
+
+- You need to
+
+  - **Create it**
+
+  ```jsx
+  # src/store/auth-context.js
+  import React from 'react';
+  
+  const AuthContext = React.createContext({
+    isLoggedIn: false,
+  });
+  
+  export default AuthContext;
+  ```
+
+  - **Provide it**
+
+  ```jsx
+  function App() {
+      ...
+  
+    return (
+      <AuthContext.Provider value={{isLoggedIn: isLoggedIn}}>
+        <MainHeader onLogout={logoutHandler} />
+        <main>
+          {!isLoggedIn && <Login onLogin={loginHandler} />}
+          {isLoggedIn && <Home onLogout={logoutHandler} />}
+        </main>
+      </AuthContext.Provider>
+    );
+  }
+  
+  export default App;
+  ```
+
+  
+
+  - **Hook into it** (consume it)
+
+  First way:
+
+  ```jsx
+  import React from 'react';
+  import AuthContext from '../../store/auth-context';
+  
+  import classes from './Navigation.module.css';
+  
+  const Navigation = (props) => {
+    return (
+      <AuthContext.Consumer>
+        {(ctx) => {
+          return (
+          <nav className={classes.nav}>
+            <ul>
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Users</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <a href="/">Admin</a>
+                </li>
+              )}
+              {ctx.isLoggedIn && (
+                <li>
+                  <button onClick={props.onLogout}>Logout</button>
+                </li>
+              )}
+            </ul>
+          </nav>
+          )
+        }}
+        
+      </AuthContext.Consumer>
+    );
+  };
+  
+  export default Navigation;
+  
+  
+  ```
+
+  
+
