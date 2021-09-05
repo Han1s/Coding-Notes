@@ -1111,8 +1111,9 @@ export default Login;
       ...
   
     return (
-      <AuthContext.Provider value={{isLoggedIn: isLoggedIn}}>
-        <MainHeader onLogout={logoutHandler} />
+      <AuthContext.Provider 
+      value={{isLoggedIn: isLoggedIn, onLogout: logoutHandler}} >
+        <MainHeader />
         <main>
           {!isLoggedIn && <Login onLogin={loginHandler} />}
           {isLoggedIn && <Home onLogout={logoutHandler} />}
@@ -1122,14 +1123,14 @@ export default Login;
   }
   
   export default App;
-  ```
-
+```
   
 
-  - **Hook into it** (consume it)
-
-  First way:
-
+  
+- **Hook into it** (consume it)
+  
+First way:
+  
   ```jsx
   import React from 'react';
   import AuthContext from '../../store/auth-context';
@@ -1170,7 +1171,46 @@ export default Login;
   export default Navigation;
   
   
-  ```
-
+```
   
-
+  The second, preferred way:
+  
+  ```jsx
+  import React, { useContext } from 'react';
+  import AuthContext from '../../store/auth-context';
+  
+  import classes from './Navigation.module.css';
+  
+  const Navigation = (props) => {
+    const ctx = useContext(AuthContext);
+    
+    return (
+      <nav className={classes.nav}>
+        <ul>
+          {ctx.isLoggedIn && (
+            <li>
+              <a href="/">Users</a>
+            </li>
+          )}
+          {ctx.isLoggedIn && (
+            <li>
+              <a href="/">Admin</a>
+            </li>
+          )}
+          {ctx.isLoggedIn && (
+            <li>
+              <button onClick={props.onLogout}>Logout</button>
+            </li>
+          )}
+        </ul>
+      </nav>
+    );
+  };
+  
+  export default Navigation;
+  
+  ```
+  
+  ## 123. Making context dynamic
+  
+  
