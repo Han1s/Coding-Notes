@@ -1172,9 +1172,9 @@ First way:
   
   
 ```
-  
+
   The second, preferred way:
-  
+
   ```jsx
   import React, { useContext } from 'react';
   import AuthContext from '../../store/auth-context';
@@ -1210,7 +1210,24 @@ First way:
   export default Navigation;
   
   ```
-  
+
   ## 123. Making context dynamic
-  
+
+## 125. Context Limitations
+
+- not optimized for high frequency changes
+  - e.g. state changes every second
+  - so good for themes / login
+  - redux is the alternative for faster updates
+- Context shouldnt be used to replace all component communications
+
+## 126. Rules of Hooks
+
+- Only call hooks (all use... functions) in component functions
+- Only call hooks at the top level of the functions
+  - dont call them in nested functions or block statements
+- Always add everything you refer to inside the **useEffect** hook as a dependency unless there is a good reason for that
+
+
+
   
