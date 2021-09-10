@@ -1228,6 +1228,235 @@ First way:
   - dont call them in nested functions or block statements
 - Always add everything you refer to inside the **useEffect** hook as a dependency unless there is a good reason for that
 
+## 128. Diving into forwardRefs
+
+- avoid at all costs, but useful with focusing and scrolling often
+
+```jsx
+import React, { useRef, useImperativeHandle } from 'react';
+
+import classes from './Input.module.css';
+
+const Input = React.forwardRef((props, ref) => {
+  const inputRef = useRef();
+
+  const activate = () => {
+    inputRef.current.focus();
+  }
+
+  useImperativeHandle(ref, () => {
+    return {
+      focus: activate
+    }
+  }) 
+
+  return (
+    <div
+      className={`${classes.control} ${
+        props.isValid === false ? classes.invalid : ''
+      }`}
+    >
+      <label htmlFor={props.id}>{props.label}</label>
+      <input
+        ref={inputRef}
+        type={props.type}
+        id={props.id}
+        value={props.value}
+        onChange={props.onChange}
+        onBlur={props.onBlur}
+      />
+    </div>
+  );
+});
+
+export default Input;
+```
+
+```jsx
+import React, { useState, useEffect, useReducer, useContext, useRef } from 'react';
+
+import Card from '../UI/Card/Card';
+import classes from './Login.module.css';
+import Button from '../UI/Button/Button';
+import AuthContext from '../../store/auth-context';
+import Input from '../UI/Input/Input';
+
+const emailReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.val,
+      isValid: action.val.includes('@')
+    }
+  }
+
+  if (action.type === 'INPUT_BLUR') {
+    return {
+      value: state.value,
+      isValid: state.value.includes('@')
+    }
+  }
+
+  return {
+    value: '',
+    isValid: ''
+  }
+}
+
+const passwordReducer = (state, action) => {
+  if (action.type === 'USER_INPUT') {
+    return {
+      value: action.value,
+      isValid: action.value.trim().length > 6
+    }
+  }
+
+  if (action.type === 'INPUT_BLUR') {
+    return {
+      value: state.value,
+      isValid: state.value.trim().length > 6
+    }
+  }
+
+  return {
+    value: '',
+    isValid: ''
+  }
+}
+
+const Login = () => {
+  const authCtx = useContext(AuthContext);
+
+  const emailInputRef = useRef();
+  const passwordInputRef = useRef();
+
+  const [formIsValid, setFormIsValid] = useState(false);
+  const [emailState, dispatchEmail] = useReducer(
+    emailReducer,
+    {value: '', isValid: null}
+  );
+  const [passwordState, dispatchPassword] = useReducer(
+    passwordReducer,
+    {value: '', isValid: null}
+  )
+
+  const { isValid: emailIsValid } = emailState;
+  const { isValid: passwordIsValid } = passwordState;
+
+  useEffect(() => {
+    const identifier = setTimeout(() => {
+      console.log('CHecking form validity!');
+      setFormIsValid(emailIsValid && passwordIsValid);
+    }, 500)
+
+    return () => {
+      console.log('CLEANUP');
+      clearTimeout(identifier);
+    }
+  }, [emailIsValid, passwordIsValid])
+
+  const emailChangeHandler = (event) => {
+    dispatchEmail({type: 'USER_INPUT', val: event.target.value})
+
+    setFormIsValid(
+      event.target.value.includes('@') && passwordState.isValid
+    );
+  };
+
+  const passwordChangeHandler = (event) => {
+    dispatchPassword({type: 'USER_INPUT', value: event.target.value});
+
+    setFormIsValid(
+      event.target.value.trim().length > 6 && emailState.isValid
+    );
+  };
+
+  const validateEmailHandler = () => {
+    dispatchEmail({type: 'INPUT_BLUR'});
+  };
+
+  const validatePasswordHandler = () => {
+    dispatchPassword({type: 'INPUT_BLUR'});
+  };
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    if (formIsValid) {
+      authCtx.onLogin(emailState.value, passwordState.value);
+    } else if (!emailIsValid) {
+      emailInputRef.current.focus();
+    } else {
+      passwordInputRef.current.focus();
+    }
+  };
+
+  return (
+    <Card className={classes.login}>
+      <form onSubmit={submitHandler}>
+        <Input
+          ref={emailInputRef}
+          id='email' 
+          label='E-Mail' 
+          type='email' 
+          isValid={emailIsValid} 
+          value={emailState.value} 
+          onChange={emailChangeHandler} 
+          onBlur={validateEmailHandler} />
+        <Input
+          ref={passwordInputRef}
+          id='password'
+          label='password'
+          type='password'
+          isValid='passwordIsValid'
+          value={passwordState.value}
+          onChange={passwordChangeHandler}
+          onBlur={validatePasswordHandler} />
+        <div className={classes.actions}>
+          <Button type="submit" className={classes.btn}>
+            Login
+          </Button>
+        </div>
+      </form>
+    </Card>
+  );
+};
+
+export default Login;
+
+```
+
+# 11. Practice Project - food order app
+
+## 132.  Adding header
+
+- to add Image
+
+  ```jsx
+  import React, { Fragment } from 'react';
+  import mealsImage from '../../assets/meals.jpg';
+  import classes from './Header.module.css';
+  
+  const Header = props => {
+    return (
+      <Fragment>
+        <header className={classes.header}>
+          <h1>ReactMeals</h1>
+          <button>Cart</button>
+        </header>
+        <div className={classes['main-image']}>
+          <img src={mealsImage} alt="A table full of delicious food!" />
+        </div>
+      </Fragment>
+    );
+  };
+  
+  export default Header;
+  ```
+
+  
+
+
+
 
 
   
+
