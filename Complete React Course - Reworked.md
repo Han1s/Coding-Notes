@@ -4,6 +4,10 @@ Notes for work:
 - refactor using context
 - utilize React.memo()
 
+TODO:
+
+- check https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+
 # I. Getting Started
 
 ## 2. What is react
@@ -1526,5 +1530,44 @@ export default App;
 
 ## 156. useCallback() and its dependencies
 
+- the function is saved exactly as it is, so if something internal to that function changes we need to set up dependencies.
 
+```jsx
+import React, { useState, useCallback } from 'react';
+import Button from '../src/components/UI/Button/Button';
 
+import './App.css';
+import DemoOutput from './components/Demo/DemoOutput';
+
+function App() {
+  const [showParagraph, setShowParagraph] = useState(false);
+  const [allowToggle, setAllowToggle] = useState(false);
+
+  console.log('APP RUNNING');
+
+  const toggleParagraphHandler = useCallback(() => {
+    if (allowToggle) {
+      setShowParagraph((prevShowParagraph) => !prevShowParagraph);
+    }
+  }, [allowToggle]);
+
+  const allowToggleHandler = () => {
+    setAllowToggle(true);
+  }
+
+  return (
+    <div className="app">
+      <h1>Hi there!</h1>
+      <DemoOutput show={showParagraph} />
+      <Button onClick={allowToggleHandler}>Allow Toggling</Button>
+      <Button onClick={toggleParagraphHandler}>Show Paragraph!</Button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+## 158. A Closer Look at State & Components
+
+- the state is initiatized only for the first run, for others run it does not unless the component was removed from DOM.
