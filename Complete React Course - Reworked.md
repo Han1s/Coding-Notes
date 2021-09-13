@@ -2,6 +2,7 @@ Notes for work:
 
 - debouncing into return
 - refactor using context
+- utilize React.memo()
 
 # I. Getting Started
 
@@ -1454,9 +1455,76 @@ export default Login;
 
   
 
+# 12. A Look Behind The Scenes Of  Optimization Techniques
+
+  ## 151. How does React work?
+
+- JS library for building UI
+- Component based
+- **ReactDOM** is interface to the web. It is responsible for working with the real **DOM**
+- React uses **Virtual DOM**. This determines how does the component tree looks like and what it should look like after the component update. ReactDOM then knows what to update.
+- Whenever state, props, or a context of component changes that component is reevaluated. But that is not re-rendering. Real DOM is updated only where it changes. 
+  - all its child components are also revaluated
+
+## 154. Preventing Unnecessary Re-Evaluations with React.memo()
+
+- this tells react to check the props, and only if props changed reevaluate component.
+- If the parent changed but the prop did not change the execution will be skipped.
+- this optimization comes at a cost. You're trading the performance cost of reevaluating a component for a performance cost of performing the comparison. Cost depends on the complexity of the component, number of props, number of children etc. It is a great tool if you wanna avoid the reevaluation of an entire tree at the top of the tree though.
+- If the props usually change anyways then it does not make sense.
+- For small component trees its probably not worth it.
+- You wanna pick some key parts in the component tree that allows you to cut off the entire branch.
+- keep in mind that passing a handler as props means the function will recreate when the parent changes. Which means the memo wont work.
+
+```jsx
+import React from "react";
+
+import MyParagraph from "./MyParagraph";
+
+const DemoOutput = (props) => {
+  console.log('DemoOutput RUNNING');
+  return (
+    <MyParagraph>{props.show ? 'This is new!' : ''}</MyParagraph>
+  );
+};
+
+export default React.memo(DemoOutput);
+```
+
+## 155. Preventing Function Re-Creation with useCallback()
+
+- **useCallback** says we want to save a function and it should not recreate with each execution
+- just wrap a function to save and add array of dependencies
+
+```jsx
+import React, { useState, useCallback } from 'react';
+import Button from '../src/components/UI/Button/Button';
+
+import './App.css';
+import DemoOutput from './components/Demo/DemoOutput';
+
+function App() {
+  const [showParagraph, setShowParagraph] = useState(false);
+
+  console.log('APP RUNNING');
+
+  const toggleParagraphHandler = useCallback(() => {  # use callback
+    setShowParagraph((prevShowParagraph) => !prevShowParagraph);
+  }, []);
+
+  return (
+    <div className="app">
+      <h1>Hi there!</h1>
+      <DemoOutput show={false} />
+      <Button onClick={toggleParagraphHandler}>Show Paragraph!</Button>
+    </div>
+  );
+}
+
+export default App;
+```
+
+## 156. useCallback() and its dependencies
 
 
-
-
-  
 
