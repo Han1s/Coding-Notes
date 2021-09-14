@@ -7,6 +7,7 @@ Notes for work:
 TODO:
 
 - check https://developer.mozilla.org/en-US/docs/Web/JavaScript/Closures
+- module 13.
 
 # I. Getting Started
 
@@ -1128,6 +1129,7 @@ export default Login;
   }
   
   export default App;
+  ```
 ```
   
 
@@ -1570,4 +1572,58 @@ export default App;
 
 ## 158. A Closer Look at State & Components
 
-- the state is initiatized only for the first run, for others run it does not unless the component was removed from DOM.
+- the state is initiali zed only for the first run, for others run it does not unless the component was removed from DOM.
+
+## 159. Understanding State Scheduling & Batching
+
+- state changes are processed almost instantly but react reserves right to postpone the state changs. It guarantees the order tho.
+
+## 160. Optimizing with useMemo
+
+- to store objects and rerun them only if arguments changed
+- good for for example sorting
+- can be used for other objects such as arrays etc with empty dependency array
+
+```jsx
+# this function will only rerun if items props changes
+const sortedList = useMemo(() => {
+    return items.sort((a, b) => a - b);
+}, [items]) 
+```
+
+# 13. Class-based components
+
+TODO: optional
+
+# 14. HTTP Requests
+
+## 173. How to (Not) connect to the database
+
+- React app does not talk to the database directly
+- Separated back-end and front-end
+
+## 175. Sending a GET request
+
+- you can use **axios** or **fetch API** (native browser)
+
+## 176. Using async / await
+
+- a bit easier to read
+
+```jsx
+  async function fetchMoviesHandler() {
+    const response = await fetch('https://swapi.dev/api/films');
+    const data = await response.json();
+    
+    const transformedMovies = data.results.map(movie => {
+      return {
+        id: movie.episode_id,
+        title: movie.title,
+        openingText: movie.opening_crawl,
+        releaseDate: movie.release_date
+      }
+    });
+    setMovies(transformedMovies);
+  }
+```
+
