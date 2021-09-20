@@ -1699,3 +1699,43 @@ export default App;
 
 # 15. Building Custom React Hooks
 
+- they can use react hooks and react state
+- the custom hook function **has** to start with **use...**
+- if you use **useEffect** or **useState** in the custom hook, it will get tied to the components its used in
+- the custom hooks are generally a good idea for implementation in places where you need to abstract some reused logic that utilizes state/hooks
+
+```jsx
+# use-counter.js
+import { useState, useEffect } from 'react';
+
+const useCounter = () => {
+  const [counter, setCounter] = useState(0);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCounter((prevCounter) => prevCounter + 1);
+    }, 1000);
+
+    return () => clearInterval(interval);
+  }, []);
+
+  return counter;
+}
+
+export default useCounter;
+```
+
+```jsx
+# usage
+import Card from './Card';
+import useCounter from '../hooks/use-counter';
+
+const ForwardCounter = () => {
+  const counter = useCounter();
+
+  return <Card>{counter}</Card>;
+};
+
+export default ForwardCounter;
+```
+
