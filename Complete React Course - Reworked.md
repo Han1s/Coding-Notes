@@ -1092,53 +1092,47 @@ export default Login;
 ## 120. React Context
 
 - useful when you pass a lot of state through a lot of components
-
 - we have the component-wide **State Storage**
-
 - You need to
 
   - **Create it**
 
-  ```jsx
-  # src/store/auth-context.js
-  import React from 'react';
-  
-  const AuthContext = React.createContext({
-    isLoggedIn: false,
-  });
-  
-  export default AuthContext;
-  ```
+```jsx
+# src/store/auth-context.js
+import React from 'react';
 
-  - **Provide it**
+const AuthContext = React.createContext({
+  isLoggedIn: false,
+});
 
-  ```jsx
-  function App() {
-      ...
-  
-    return (
-      <AuthContext.Provider 
-      value={{isLoggedIn: isLoggedIn, onLogout: logoutHandler}} >
-        <MainHeader />
-        <main>
-          {!isLoggedIn && <Login onLogin={loginHandler} />}
-          {isLoggedIn && <Home onLogout={logoutHandler} />}
-        </main>
-      </AuthContext.Provider>
-    );
-  }
-  
-  export default App;
-  ```
+export default AuthContext;
 ```
-  
 
-  
+- **Provide it**
+
+```jsx
+function App() {
+    ...
+
+  return (
+    <AuthContext.Provider 
+    value={{isLoggedIn: isLoggedIn, onLogout: logoutHandler}} >
+      <MainHeader />
+      <main>
+        {!isLoggedIn && <Login onLogin={loginHandler} />}
+        {isLoggedIn && <Home onLogout={logoutHandler} />}
+      </main>
+    </AuthContext.Provider>
+  );
+}
+
+export default App;
+```
+
 - **Hook into it** (consume it)
-  
-First way:
-  
-  ```jsx
+  - the first way
+
+```jsx
   import React from 'react';
   import AuthContext from '../../store/auth-context';
   
