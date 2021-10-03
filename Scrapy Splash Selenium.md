@@ -14,7 +14,7 @@
       - Sitemap Spider
   - Pipelines
     - how to process the data
-    - cleaning it,
+    - cleaning it
     - remove duplication
     - store data
   - Middlewares

@@ -1733,5 +1733,170 @@ const ForwardCounter = () => {
 export default ForwardCounter;
 ```
 
-# 16. Forms & User input
+example of a custom hook:
+
+```jsx
+# use-http.js
+import React, { useState, useCallback } from 'react';
+
+const useHttp = () => {
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
+
+  const sendRequest = useCallback(async (requestConfig, applyData) => {
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await fetch(requestConfig.url, {
+        method: requestConfig.method ? requestConfig.method : 'GET',
+        headers: requestConfig.headers ? requestConfig.headers : {},
+        body: requestConfig.body ? JSON.stringify(requestConfig.body) : null,
+      });
+
+      if (!response.ok) {
+        throw new Error('Request failed!');
+      }
+
+      const data = await response.json();
+      applyData(data);
+    } catch (err) {
+      setError(err.message || 'Something went wrong!');
+    }
+    setIsLoading(false);
+  }, []);
+
+  return {
+    isLoading,
+    error,
+    sendRequest
+  };
+};
+
+export default useHttp;
+```
+
+example of a form input custom hook:
+
+```jsx
+# use-input.js
+import { useState } from 'react';
+
+const useInput = (validateValue) => {
+  const [value, setValue] = useState('');
+  const [isTouched, setIsTouched] = useState(false);
+
+  const valueIsValid = validateValue(value);
+  const hasError = !valueIsValid && isTouched;
+
+  const valueChangeHandler = event => {
+    setValue(event.target.value);
+  };
+
+  const inputBlurHandler = () => {
+    setIsTouched(true);
+  };
+
+  const reset = () => {
+    setValue('');
+    setIsTouched(false);
+  }
+
+
+  return {
+    value,
+    isValid: valueIsValid,
+    hasError,
+    valueChangeHandler,
+    inputBlurHandler,
+    reset
+  }
+}
+
+export default useInput;
+```
+
+```jsx
+# form component
+import { useEffect, useState } from 'react';
+
+import useInput from '../hooks/use-input';
+
+const SimpleInput = (props) => {
+  const  { 
+    value: name, 
+    isValid: nameIsValid,
+    hasError: nameInputHasError, 
+    valueChangeHandler: nameChangedHandler, 
+    inputBlurHandler: nameBlurHandler,
+    reset: resetName
+  } = useInput((value) => {
+    return value.trim() !== '';
+  });
+
+  const {
+    value: email,
+    isValid: emailIsValid,
+    hasError: emailHasError,
+    valueChangeHandler: emailChangeHandler,
+    inputBlurHandler: emailBlurHandler,
+    reset: resetEmail
+  } = useInput((value) => {
+    return value.includes('@');
+  })
+
+  const formIsValid = nameIsValid && emailIsValid;
+
+  const formSubmissionHandler = event => {
+    event.preventDefault();
+
+    if (!nameIsValid || !emailIsValid) {
+      return;
+    }
+
+    console.log(name);
+    console.log(email);
+
+    resetName();
+    resetEmail();
+  }
+
+
+  const nameInputClasses = nameInputHasError ? 'form-control invalid' : 'form-control';
+  const emailInputClasses = emailHasError ? 'form-control invalid' : 'form-control';
+
+  return (
+    <form onSubmit={formSubmissionHandler}>
+      <div className={nameInputClasses}>
+        <label htmlFor='name'>Your Name</label>
+        <input 
+          type='text' 
+          id='name' 
+          onChange={nameChangedHandler} 
+          value={name}
+          onBlur={nameBlurHandler} />
+        {nameInputHasError && <p className="error-text">Name must not be empty.</p>}
+      </div>
+      <div className={emailInputClasses}>
+        <label htmlFor='name'>Your Email</label>
+        <input 
+          type='email' 
+          id='email' 
+          onChange={emailChangeHandler} 
+          value={email}
+          onBlur={emailBlurHandler} />
+        {emailHasError && <p className="error-text">Email must be valid.</p>}
+      </div>
+      <div className="form-actions">
+        <button disabled={!formIsValid}>Submit</button>
+      </div>
+    </form>
+  );
+};
+
+export default SimpleInput;
+```
+
+
+
+# 16.Forms & User input
 
