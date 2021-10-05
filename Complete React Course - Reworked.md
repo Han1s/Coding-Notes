@@ -1898,5 +1898,99 @@ export default SimpleInput;
 
 
 
-# 16.Forms & User input
+# 16. Forms & User input
+
+# 18. Redux
+
+## 225.  Another look at state
+
+- Redux is **state management system** for cross-component or app-wide state
+- can be used for any JS project, not just react
+- 3 types of state
+  - **local** - belongs to a single component
+  - **cross-component** - affects multiple components, requires prop chains (prop drilling)
+  - **app-wide** - affects the entire app (e.g. user authentication), also requires prop chains. 
+  - for cross components or app-wide state we can use react context.
+
+## 226. Context vs Redux
+
+- context requires a complex setup and becomes cumbersome for bigger apps and you might end up with a lot of nested code / providers. For small to medium apps it might be ok.
+- react context is for low frequency updates. So performance might become an issue.
+
+## 227. How Redux Works
+
+- one central **data store** (state) - you **never** have more than one store. So all the state goes here.
+- components setup **subscriptions** to the central store, and whenever the data changes, the store notifies the components and they get a slice of the central data store.
+- components **never** directly manipulate store data. For that we have **reducer function**. This function is responsible for mutating Store Data.
+- the reducer should be a pure function that always receives the **old state** and **dispatch action** and returns a **new state** object (usually)
+- components dispatch (trigger) **actions**. Actions are JS object describing operations reducer should perform.
+
+## 228. Exploring the Cure Redux Components
+
+```jsx
+# Basic instance of Redux
+const redux = require('redux');
+
+const counterReducer = (state = { counter: 0 }, action) => {
+  if (action.type === 'increment') {
+    return {
+      counter: state.counter + 1
+    };
+  } else if (action.type === 'decrement') {
+    return {
+      counter: state.counter - 1
+    }
+  } else {
+    return state;
+  }
+};
+
+const store = redux.createStore(counterReducer);
+
+console.log(store.getState());
+
+const counterSubscriber = () => {
+  const latestState = store.getState();
+  console.log(latestState);
+}
+
+store.subscribe(counterSubscriber);
+
+store.dispatch({
+  type: 'increment'
+});
+store.dispatch({
+  type: 'decrement'
+})
+```
+
+## 230. Preparing new project
+
+`npm install redux react-redux`
+
+- react-redux makes connecting to react very simple
+
+## 231. Create a Redux Store for React
+
+```jsx
+import { createStore } from 'redux';
+
+const counterReducer = (state = { counter: 0}, action) => {
+  if (action.type === 'increment') {
+    return {
+      counter: state.counter + 1
+    }
+  } else if (action.type === 'decrement') {
+    return {
+      counter: state.counter - 1
+    }
+  } else {
+    return state
+  }
+};
+
+const store = createStore(counterReducer);
+
+export default store;
+```
 
