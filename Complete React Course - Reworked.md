@@ -1905,6 +1905,7 @@ export default SimpleInput;
 ## 225.  Another look at state
 
 - Redux is **state management system** for cross-component or app-wide state
+- consider also using **redux toolkit**
 - can be used for any JS project, not just react
 - 3 types of state
   - **local** - belongs to a single component
