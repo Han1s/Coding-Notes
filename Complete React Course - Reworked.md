@@ -1995,3 +1995,259 @@ const store = createStore(counterReducer);
 export default store;
 ```
 
+Redux store example:
+
+```jsx
+# store/index.js
+import { createStore } from 'redux';
+
+const initialState = { counter: 0, showCounter: true };
+
+export const INCREMENT = 'increment';
+
+const counterReducer = (state = initialState, action) => {
+  if (action.type === INCREMENT) {
+    // always copy and output news objects, never mutate the old ones
+    return {
+      counter: state.counter + 1,
+      showCounter: state.showCounter
+    }
+  } else if (action.type === 'increase') {
+    return {
+      counter: state.counter + action.amount,
+      showCounter: state.showCounter
+    }
+  } else if (action.type === 'decrement') {
+    return {
+      counter: state.counter - 1,
+      showCounter: state.showCounter
+    }
+  } else if (action.type === 'toggle') {
+    return {
+      counter: state.counter,
+      showCounter: !state.showCounter
+    }
+  } else {
+    return state
+  }
+};
+
+const store = createStore(counterReducer);
+
+export default store;
+```
+
+```jsx
+# src/index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+import './index.css';
+import App from './App';
+import store from './store/index';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));
+```
+
+```jsx
+# Component.js
+import { Component } from 'react';
+import { useSelector, useDispatch, connect } from 'react-redux';
+import { INCREMENT } from '../store/index';
+
+import classes from './Counter.module.css';
+
+const Counter = () => {
+  const dispatch = useDispatch();
+  const counter = useSelector(state => state.counter);
+  const show = useSelector(state => state.showCounter);
+
+  const incrementHandler = () => {
+    dispatch({
+      type: INCREMENT,
+    });
+  }
+
+  const increaseHandler = (amount) => {
+    dispatch({
+      type: 'increase',
+      amount: amount
+    })
+  }
+
+  const decrementHandler = () => {
+    dispatch({
+      type: 'decrement'
+    })
+  }
+
+  const toggleCounterHandler = () => {
+    dispatch({
+      type: 'toggle'
+    })
+  };
+
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      {show && <div className={classes.value}>{counter}</div>}
+      <div>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={() => increaseHandler(10)}>Increase by 10</button>
+        <button onClick={decrementHandler}>Decrement</button>
+      </div>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+# Class approach
+// class Counter extends Component {
+//   incrementHandler() {
+//     this.props.increment();
+//   }
+
+//   decrementHandler() {
+//     this.props.decrement();
+//   }
+
+//   render() {
+//     return (
+//       <main className={classes.counter}>
+//         <h1>Redux Counter</h1>
+//         <div className={classes.value}>{this.props.counter}</div>
+//         <div>
+//           <button onClick={this.incrementHandler.bind(this)}>Increment</button>
+//           <button onClick={this.decrementHandler.bind(this)}>Decrement</button>
+//         </div>
+//         <button onClick={this.toggleCounterHandler}>Toggle Counter</button>
+//       </main>
+//     );
+//   }
+// };
+
+// const mapStateToProps = state => {
+//   return {
+//     counter: state.counter,
+//   };
+// }
+
+// const mapDispatchToProps = dispatch => {
+//   return {
+//     increment: () => dispatch({type: 'increment'}),
+//     decrement: () => dispatch({type: 'decrement'})
+//   }
+// }
+
+// export default connect(mapStateToProps, mapDispatchToProps)(Counter);
+
+export default Counter;
+```
+
+## 240. Utilizing redux toolkit
+
+- `npm install @reduxjs/toolkit` - installs the toolkit. You can uninstall redux itself when installing this.
+
+- **the toolkit utilizes a tool that automatically clones and edits the state so you can mutate the state directly.**
+
+```jsx
+# store/index.js
+import { createSlice, configureStore } from '@reduxjs/toolkit';
+
+const initialState = { counter: 0, showCounter: true };
+
+const counterSlice = createSlice({
+  name: 'counter',
+  initialState,
+  reducers: {
+    increment(state) {
+      state.counter++;
+    },
+    decrement(state) {
+      state.counter--;
+    },
+    increase(state, action) {
+      state.counter = state.counter + action.payload
+    },
+    toggleCounter(state) {
+      state.showCounter = !state.showCounter;
+    }
+  }
+});
+
+// Configure store merges the reducers
+const store = configureStore({
+  reducer: counterSlice.reducer
+});
+
+export const counterActions = counterSlice.actions;
+export default store;
+```
+
+```jsx
+# index.js
+import React from 'react';
+import ReactDOM from 'react-dom';
+import { Provider } from 'react-redux';
+
+import './index.css';
+import App from './App';
+import store from './store/index';
+
+ReactDOM.render(
+  <Provider store={store}>
+    <App />
+  </Provider>,
+  document.getElementById('root'));
+```
+
+```jsx
+# component.js
+import { useSelector, useDispatch } from 'react-redux';
+
+import { counterActions } from '../store/index';
+import classes from './Counter.module.css';
+
+const Counter = () => {
+  const dispatch = useDispatch();
+  const counter = useSelector(state => state.counter);
+  const show = useSelector(state => state.showCounter);
+
+  const incrementHandler = () => {
+    dispatch(counterActions.increment());
+  }
+
+  const increaseHandler = (amount) => {
+    dispatch(counterActions.increase(amount));  // { type: uniq_identifier, payload: 10 }
+  }
+
+  const decrementHandler = () => {
+    dispatch(counterActions.decrement());
+  }
+
+  const toggleCounterHandler = () => {
+    dispatch(counterActions.toggleCounter());
+  };
+
+  return (
+    <main className={classes.counter}>
+      <h1>Redux Counter</h1>
+      {show && <div className={classes.value}>{counter}</div>}
+      <div>
+        <button onClick={incrementHandler}>Increment</button>
+        <button onClick={() => increaseHandler(10)}>Increase by 10</button>
+        <button onClick={decrementHandler}>Decrement</button>
+      </div>
+      <button onClick={toggleCounterHandler}>Toggle Counter</button>
+    </main>
+  );
+};
+
+export default Counter;
+```
+
