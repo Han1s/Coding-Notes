@@ -2308,3 +2308,13 @@ export const authActions = authSlice.actions;
 export default store;
 ```
 
+# 19. Advanced Redux
+
+## 249. Reducer & Side Effects
+
+- Reducers must be **pure, side effects-free, synchronous functions**
+- The same is true for the **useReducer** hook
+- Where should we put side effects?
+  - either ot the component, with **useEffect** for example.
+  - or we write our own **action creators**
+
