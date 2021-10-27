@@ -2317,4 +2317,7 @@ export default store;
 - Where should we put side effects?
   - either ot the component, with **useEffect** for example.
   - or we write our own **action creators**
+  - we chose between **fat reducers, fat components, fat actions**
+  - for synchronous, side effect free code, prefer reducers instead of components.
+  - for asynchronous, side effects code prefer action creators or components and never reducers.
 
