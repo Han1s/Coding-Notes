@@ -2474,3 +2474,247 @@ function App() {
 export default App;
 ```
 
+# 20. SPA with React Router
+
+## 256. What is routing and Why?
+
+- `npm install react-router-dom`
+
+## 269 Defining and using routes
+
+```jsx
+# App.js
+import {Route}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+
+function App() {
+  return (
+    <div>
+      <Route path="/welcome">
+        <Welcome />
+      </Route>
+      <Route path="/products">
+        <Products />
+      </Route>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+```jsx
+# index.js
+import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
+
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+<BrowserRouter>
+  <App />
+</BrowserRouter>
+, document.getElementById('root'));
+```
+
+## 270. Working with Links
+
+```jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const MainHeader = () => {
+  return (
+    <header>
+      <ul>
+        <li>
+          <Link to="/welcome">Welcome</Link>
+        </li>
+        <li>
+          <Link to="/products">Products</Link>
+        </li>
+      </ul>
+    </header>
+  );
+};
+
+export default MainHeader;
+```
+
+## 271. Using NavLinks
+
+```jsx
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+import classes from './MainHeader.module.css';
+
+const MainHeader = () => {
+  return (
+    <header className={classes.header}>
+      <ul>
+        <li>
+          <NavLink activeClassName={classes.active} to="/welcome">Welcome</NavLink>
+        </li>
+        <li>
+          <NavLink activeClassName={classes.active} to="/products">Products</NavLink>
+        </li>
+      </ul>
+    </header>
+  );
+};
+
+export default MainHeader;
+```
+
+## 272. Dynamic routing
+
+```jsx
+# App.js
+import {Route}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+
+function App() {
+  return (
+    <div>
+      <MainHeader />
+      <main>
+        <Route path="/welcome">
+          <Welcome />
+        </Route>
+        <Route path="/products">
+          <Products />
+        </Route>
+        <Route path="/product-detail/:productId">
+          <ProductDetail />
+        </Route>
+      </main>
+    </div>
+  );
+}
+
+export default App;
+```
+
+```jsx
+# ProductDetails.js
+import { useParams } from 'react-router';
+
+import React from 'react';
+
+const ProductDetail = () => {
+  const params = useParams();
+
+  return (
+    <section>
+      <h1>Product Detail</h1>
+      <p>{params.productId}</p>
+    </section>
+  );
+};
+
+export default ProductDetail;
+```
+
+## 274. Using Switch + Exact
+
+```jsx
+# App.js
+import {Route, Switch}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+import { Fragment } from 'react';
+
+function App() {
+  return (
+    <Fragment>
+      <MainHeader />
+      <main>
+        <Switch>
+          <Route path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/products" exact>
+            <Products />
+          </Route>
+          <Route path="/products/:productId">
+            <ProductDetail />
+          </Route>
+        </Switch>
+      </main>
+    </Fragment>
+  );
+}
+
+export default App;
+
+```
+
+## 275. Nested Routes
+
+- we can use routes in any component
+
+```jsx
+import React from 'react';
+import { Route } from 'react-router-dom'
+
+function Welcome(props) {
+  return (
+    <section>
+      <h1>The Welcome Page</h1>
+      <Route path='/welcome/new-user'>
+        <p>Welcome, new user!</p>
+      </Route>
+    </section>
+  );
+}
+
+export default Welcome;
+```
+
+## 276. Redirecting the user
+
+```jsx
+import {Route, Switch, Redirect}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+import { Fragment } from 'react';
+
+function App() {
+  return (
+    <Fragment>
+      <MainHeader />
+      <main>
+        <Switch>
+          <Route path='/' exact>
+            <Redirect to='/welcome' />
+          </Route>
+          <Route path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/products" exact>
+            <Products />
+          </Route>
+          <Route path="/products/:productId">
+            <ProductDetail />
+          </Route>
+        </Switch>
+      </main>
+    </Fragment>
+  );
+}
+
+export default App;
+
+```
+
