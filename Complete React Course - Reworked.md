@@ -2153,7 +2153,7 @@ export default Counter;
 
 - `npm install @reduxjs/toolkit` - installs the toolkit. You can uninstall redux itself when installing this.
 
-- **the toolkit utilizes a tool that automatically clones and edits the state so you can mutate the state directly.**
+- **the toolkit utilizes a tool that automatically clones and edits the state so you can mutate the state directly.*
 
 ```jsx
 # store/index.js
@@ -2251,73 +2251,470 @@ const Counter = () => {
 export default Counter;
 ```
 
-## 242. Multiple slices
-
-```jsx
-import { createSlice, configureStore } from '@reduxjs/toolkit';
-
-const initialCounterState = { counter: 0, showCounter: true };
-
-const counterSlice = createSlice({
-  name: 'counter',
-  initialState: initialCounterState,
-  reducers: {
-    increment(state) {
-      state.counter++;
-    },
-    decrement(state) {
-      state.counter--;
-    },
-    increase(state, action) {
-      state.counter = state.counter + action.payload
-    },
-    toggleCounter(state) {
-      state.showCounter = !state.showCounter;
-    },
-  }
-});
-
-const initialAuthState = {
-  isAuthenticated: false
-}
-
-const authSlice = createSlice({
-  name: 'authentication',
-  initialState: initialAuthState,
-  reducers: {
-    login(state) {
-      state.isAuthenticated = true;
-    },
-    logout(state) {
-      state.isAuthenticated = false;
-    },
-  }
-});
-
-// Configure store merges the reducers
-const store = configureStore({
-  reducer: {
-    counter: counterSlice.reducer,
-    auth: authSlice.reducer
-  }
-});
-
-export const counterActions = counterSlice.actions;
-export const authActions = authSlice.actions;
-
-export default store;
-```
-
 # 19. Advanced Redux
 
 ## 249. Reducer & Side Effects
 
 - Reducers must be **pure, side effects-free, synchronous functions**
+- utilize **redux dev tools** for awesome debugging
 - The same is true for the **useReducer** hook
 - Where should we put side effects?
   - either ot the component, with **useEffect** for example.
   - or we write our own **action creators**
-  - we chose between **fat reducers, fat components, fat actions**
-  - for synchronous, side effect free code, prefer reducers instead of components.
-  - for asynchronous, side effects code prefer action creators or components and never reducers.
+
+## 256. Using useEffect with Redux
+
+```jsx
+function App() {
+  const showCart = useSelector(state => state.ui.cartIsVisible);
+  const cart = useSelector((state) => state.cart);
+
+  useEffect(() => {
+    fetch('https://react-http-6a7a1-default-rtdb.europe-west1.firebasedatabase.app/cart.json', {
+      method: 'PUT',
+      body: JSON.stringify(cart)
+    });
+  }, [cart]);
+
+  return (
+    <Layout>
+      {showCart && <Cart />}
+      <Products />
+    </Layout>
+  );
+}
+```
+
+## 259. Using action creator Thunk
+
+- **Thunk** a function that delays an action until later
+  - does not return an action itself but rather a function that eventually returns an action
+
+```jsx
+#cart-slice.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const cartSlice = createSlice({
+  name: 'cart',
+  initialState: {
+    items: [],
+    totalQuantity: 0,
+    changed: false,
+  },
+  reducers: {
+    replaceCart(state, action) {
+      state.totalQuantity = action.payload.totalQuantity;
+      state.items = action.payload.items;
+    },
+    addItemToCart(state, action) {
+      const newItem = action.payload;
+      const existingItem = state.items.find(item => item.id === newItem.id)
+      state.totalQuantity++;
+      state.changed = true;
+      if (!existingItem) {
+        state.items.push({
+          id: newItem.id,
+          name: newItem.title,
+          price: newItem.price,
+          quantity: 1,
+          totalPrice: newItem.price
+        })
+      } else {
+        existingItem.quantity++;
+        existingItem.totalPrice += newItem.price;
+      }
+    },
+    removeItemFromCart(state, action) {
+      const id = action.payload;
+      const existingItem = state.items.find(item => item.id === id);
+      state.totalQuantity--;
+      state.changed = true;
+      if (existingItem.quantity === 1) {
+        state.items = state.items.filter((item) => item.id !== id)
+      } else {
+        existingItem.quantity--;
+        existingItem.totalPrice -= existingItem.price;
+      }
+    }
+  }
+});
+
+export const cartActions = cartSlice.actions;
+
+export default cartSlice;
+```
+
+
+
+```jsx
+#cart-actions.js
+import { uiActions } from "./ui-slice";
+import { cartActions } from './cart-slice';
+
+const URL = 'https://react-http-6a7a1-default-rtdb.europe-west1.firebasedatabase.app/cart.json';
+
+export const fetchCartData = () => {
+  return async (dispatch) => {
+    const fetchData = async () => {
+      const response = await fetch(URL);
+
+      if (!response.ok) {
+        throw new Error('Could not fetch cart data!');
+      }
+  
+      const data = await response.json();
+  
+      return data;
+    };
+
+    try { 
+      const cartData = await fetchData();
+      dispatch(cartActions.replaceCart({
+        items: cartData.items || [],
+        totalQuantity: cartData.totalQuantity
+      }));
+    } catch(error) {
+      dispatch(
+        uiActions.showNotification({
+          status: 'error',
+          title: 'Error!',
+          message: 'Fetching cart data failed!'
+        })
+      )
+    }
+  }
+}
+
+export const sendCartData = (cart) => {
+  return async (dispatch) => {
+    dispatch(uiActions.showNotification({
+      status: 'pending',
+      title: 'Sending',
+      message: 'Sending cart data...'
+    }));
+
+    const sendRequest = async () => {
+      const response = await fetch(URL, {
+        method: 'PUT',
+        body: JSON.stringify({items: cart.items, totalQuantity: cart.totalQuantity})
+      });
+  
+      if (!response.ok) {
+        throw new Error('Sending cart data failed.');
+      }
+    };
+
+    try {
+      await sendRequest();
+      dispatch(uiActions.showNotification({
+        status: 'success',
+        title: 'Success',
+        message: 'Sent cart data'
+      }));
+    } catch (error) {
+      dispatch(uiActions.showNotification({
+        status: 'error',
+        title: 'Error!',
+        message: 'Sending cart data failed!'
+      }));
+    }
+  }
+};
+```
+
+
+
+```jsx
+# app.js
+import { useEffect, Fragment } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import Cart from './components/Cart/Cart';
+import Layout from './components/Layout/Layout';
+import Products from './components/Shop/Products';
+import Notification from './components/UI/Notification';
+import { fetchCartData, sendCartData } from './store/cart-actions';
+
+let isInitial = true;
+
+function App() {
+  const dispatch = useDispatch();
+  const showCart = useSelector(state => state.ui.cartIsVisible);
+  const cart = useSelector((state) => state.cart);
+  const notification = useSelector(state => state.ui.notification);
+
+  useEffect(() => {
+    dispatch(fetchCartData());
+  }, [dispatch])
+
+  useEffect(() => {
+    if (isInitial) {
+      isInitial = false;
+      return;
+    }
+
+    if (cart.changed) {
+      dispatch(sendCartData(cart));
+    }
+  }, [cart, dispatch]);
+
+  return (
+    <Fragment>
+      {notification && <Notification
+        status={notification.status}
+        title={notification.title}
+        message={notification.message} />}
+      <Layout>
+        {showCart && <Cart />}
+        <Products />
+      </Layout>
+    </Fragment>
+  );
+}
+
+export default App;
+```
+
+# 20. SPA with React Router
+
+## 256. What is routing and Why?
+
+- `npm install react-router-dom`
+
+## 269 Defining and using routes
+
+```jsx
+# App.js
+import {Route}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+
+function App() {
+  return (
+    <div>
+      <Route path="/welcome">
+        <Welcome />
+      </Route>
+      <Route path="/products">
+        <Products />
+      </Route>
+    </div>
+  );
+}
+
+export default App;
+
+```
+
+```jsx
+# index.js
+import ReactDOM from 'react-dom';
+import {BrowserRouter} from 'react-router-dom';
+
+import './index.css';
+import App from './App';
+
+ReactDOM.render(
+<BrowserRouter>
+  <App />
+</BrowserRouter>
+, document.getElementById('root'));
+```
+
+## 270. Working with Links
+
+```jsx
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+const MainHeader = () => {
+  return (
+    <header>
+      <ul>
+        <li>
+          <Link to="/welcome">Welcome</Link>
+        </li>
+        <li>
+          <Link to="/products">Products</Link>
+        </li>
+      </ul>
+    </header>
+  );
+};
+
+export default MainHeader;
+```
+
+## 271. Using NavLinks
+
+```jsx
+import React from 'react';
+import { NavLink } from 'react-router-dom';
+
+import classes from './MainHeader.module.css';
+
+const MainHeader = () => {
+  return (
+    <header className={classes.header}>
+      <ul>
+        <li>
+          <NavLink activeClassName={classes.active} to="/welcome">Welcome</NavLink>
+        </li>
+        <li>
+          <NavLink activeClassName={classes.active} to="/products">Products</NavLink>
+        </li>
+      </ul>
+    </header>
+  );
+};
+
+export default MainHeader;
+```
+
+## 272. Dynamic routing
+
+```jsx
+# App.js
+import {Route}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+
+function App() {
+  return (
+    <div>
+      <MainHeader />
+      <main>
+        <Route path="/welcome">
+          <Welcome />
+        </Route>
+        <Route path="/products">
+          <Products />
+        </Route>
+        <Route path="/product-detail/:productId">
+          <ProductDetail />
+        </Route>
+      </main>
+    </div>
+  );
+}
+
+export default App;
+```
+
+```jsx
+# ProductDetails.js
+import { useParams } from 'react-router';
+
+import React from 'react';
+
+const ProductDetail = () => {
+  const params = useParams();
+
+  return (
+    <section>
+      <h1>Product Detail</h1>
+      <p>{params.productId}</p>
+    </section>
+  );
+};
+
+export default ProductDetail;
+```
+
+## 274. Using Switch + Exact
+
+```jsx
+# App.js
+import {Route, Switch}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+import { Fragment } from 'react';
+
+function App() {
+  return (
+    <Fragment>
+      <MainHeader />
+      <main>
+        <Switch>
+          <Route path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/products" exact>
+            <Products />
+          </Route>
+          <Route path="/products/:productId">
+            <ProductDetail />
+          </Route>
+        </Switch>
+      </main>
+    </Fragment>
+  );
+}
+
+export default App;
+
+```
+
+## 275. Nested Routes
+
+- we can use routes in any component
+
+```jsx
+import React from 'react';
+import { Route } from 'react-router-dom'
+
+function Welcome(props) {
+  return (
+    <section>
+      <h1>The Welcome Page</h1>
+      <Route path='/welcome/new-user'>
+        <p>Welcome, new user!</p>
+      </Route>
+    </section>
+  );
+}
+
+export default Welcome;
+```
+
+## 276. Redirecting the user
+
+```jsx
+import {Route, Switch, Redirect}  from 'react-router-dom';
+import Welcome from './pages/Welcome';
+import Products from './pages/Products';
+import MainHeader from './components/MainHeader';
+import ProductDetail from './pages/ProductDetail';
+import { Fragment } from 'react';
+
+function App() {
+  return (
+    <Fragment>
+      <MainHeader />
+      <main>
+        <Switch>
+          <Route path='/' exact>
+            <Redirect to='/welcome' />
+          </Route>
+          <Route path="/welcome">
+            <Welcome />
+          </Route>
+          <Route path="/products" exact>
+            <Products />
+          </Route>
+          <Route path="/products/:productId">
+            <ProductDetail />
+          </Route>
+        </Switch>
+      </main>
+    </Fragment>
+  );
+}
+
+export default App;
+
+```
 
