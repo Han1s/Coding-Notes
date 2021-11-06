@@ -2715,6 +2715,322 @@ function App() {
 }
 
 export default App;
+```
 
+## 277. Nested routes
+
+```jsx
+import React, { Fragment } from 'react';
+import { useParams, Route } from 'react-router';
+import Comments from '../components/comments/Comments';
+
+
+
+const QuoteDetails = () => {
+  const params = useParams();
+
+  console.log(params.quoteId);
+
+  return (
+    <Fragment>
+      <h1>Quote Detail Page</h1>
+      <Route path={`/quotes/${params.quoteId}/comments`}>
+        <Comments />
+      </Route>
+    </Fragment>
+  );
+};
+
+export default QuoteDetails;
+```
+
+## 282. Adding not found page
+
+```jsx
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import AllQuotes from './pages/AllQuotes';
+import NewQuote from './pages/NewQuote';
+import NotFound from './pages/NotFound';
+import QuoteDetails from './pages/QuoteDetails';
+
+function App() {
+  return (
+    <Layout>
+      <Switch>
+        <Route path='/' exact>
+          <Redirect to='/quotes' />
+        </Route>
+        <Route path='/quotes' exact>
+          <AllQuotes />
+        </Route>
+        <Route path='/quotes/:quoteId'>
+          <QuoteDetails />
+        </Route>
+        <Route path='/new-quote'>
+          <NewQuote />
+        </Route>
+        <Route path='*'>
+          <NotFound />
+        </Route>
+      </Switch>
+    </Layout>
+  );
+}
+
+export default App;
+```
+
+## 283. Implementic programmatic navigation
+
+- **history.push()** pushes the link on the stack so user can use go back feature
+- **history.repalce()** replaces the current url so user cannot go back
+
+```jsx
+import { useHistory } from 'react-router-dom';
+import React from 'react';
+import QuoteForm from '../components/quotes/QuoteForm';
+
+const NewQuote = () => {
+  const history = useHistory();
+
+  const addQuoteHandler = (quoteData) => {
+    console.log(quoteData);
+
+    history.push('/quotes')
+  }
+
+  return (
+    <QuoteForm onAddQuote={addQuoteHandler} />
+  );
+};
+
+export default NewQuote;
+```
+
+## 284. Prevent unwanted redirects with prompt
+
+```jsx
+import { Fragment, useRef, useState } from 'react';
+import { Prompt } from 'react-router';
+
+import Card from '../UI/Card';
+import LoadingSpinner from '../UI/LoadingSpinner';
+import classes from './QuoteForm.module.css';
+
+const QuoteForm = (props) => {
+  const [isEntering, setIsEntering] = useState(false);
+
+  const authorInputRef = useRef();
+  const textInputRef = useRef();
+
+  function submitFormHandler(event) {
+    event.preventDefault();
+
+    const enteredAuthor = authorInputRef.current.value;
+    const enteredText = textInputRef.current.value;
+
+    // optional: Could validate here
+
+    props.onAddQuote({ author: enteredAuthor, text: enteredText });
+  }
+
+  const formFocusHandler = () => {
+    setIsEntering(true);
+  };
+
+  const finishEnteringHandler = () => {
+    setIsEntering(false);
+  }
+
+  return (
+    <Fragment>
+      <Prompt when={isEntering} message={(location) => 'Are you sure you want to leave? All your entered data will be lost'} />
+      <Card>
+        <form onFocus={formFocusHandler} className={classes.form} onSubmit={submitFormHandler}>
+          {props.isLoading && (
+            <div className={classes.loading}>
+              <LoadingSpinner />
+            </div>
+          )}
+
+          <div className={classes.control}>
+            <label htmlFor='author'>Author</label>
+            <input type='text' id='author' ref={authorInputRef} />
+          </div>
+          <div className={classes.control}>
+            <label htmlFor='text'>Text</label>
+            <textarea id='text' rows='5' ref={textInputRef}></textarea>
+          </div>
+          <div className={classes.actions}>
+            <button onClick={finishEnteringHandler} className='btn'>Add Quote</button>
+          </div>
+        </form>
+      </Card>
+    </Fragment>
+  );
+};
+
+export default QuoteForm;
+```
+
+## 285. Query Parameters
+
+```jsx
+import { Fragment } from 'react';
+import { useHistory, useLocation } from 'react-router';
+
+import QuoteItem from './QuoteItem';
+import classes from './QuoteList.module.css';
+
+const sortQuotes = (quotes, ascending) => {
+  return quotes.sort((quoteA, quoteB) => {
+    if (ascending) {
+      return quoteA.id > quoteB.id ? 1 : -1;
+    } else {
+      return quoteA.id < quoteB.id ? 1 : -1;
+    }
+  });
+};
+
+const QuoteList = (props) => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const isSortingAscending = queryParams.get('sort') === 'asc';
+
+  const sortedQuotes = sortQuotes(props.quotes, isSortingAscending);
+  
+  const changeSortingHandler = () => {
+    history.push('/quotes?sort=' + (isSortingAscending ? 'desc' : 'asc'))
+  };
+
+  return (
+    <Fragment>
+      <div className={classes.sorting}>
+        <button onClick={changeSortingHandler}>Sort {isSortingAscending ? 'Descending' : 'Ascending'}</button>
+      </div>
+      <ul className={classes.list}>
+        {sortedQuotes.map((quote) => (
+          <QuoteItem
+            key={quote.id}
+            id={quote.id}
+            author={quote.author}
+            text={quote.text}
+          />
+        ))}
+      </ul>
+    </Fragment>
+  );
+};
+
+export default QuoteList;
+```
+
+## 286. Writing more flexible react router code
+
+```jsx
+import { Fragment } from 'react';
+import { useHistory, useLocation } from 'react-router';
+
+import QuoteItem from './QuoteItem';
+import classes from './QuoteList.module.css';
+
+const sortQuotes = (quotes, ascending) => {
+  return quotes.sort((quoteA, quoteB) => {
+    if (ascending) {
+      return quoteA.id > quoteB.id ? 1 : -1;
+    } else {
+      return quoteA.id < quoteB.id ? 1 : -1;
+    }
+  });
+};
+
+const QuoteList = (props) => {
+  const history = useHistory();
+  const location = useLocation();
+
+  const queryParams = new URLSearchParams(location.search);
+
+  const isSortingAscending = queryParams.get('sort') === 'asc';
+
+  const sortedQuotes = sortQuotes(props.quotes, isSortingAscending);
+  
+  # Here
+  const changeSortingHandler = () => {
+    history.push({
+      pathname: location.pathname,
+      search: `?sort=${(isSortingAscending ? 'desc': 'asc')}`
+    })
+  };
+
+  return (
+    <Fragment>
+      <div className={classes.sorting}>
+        <button onClick={changeSortingHandler}>Sort {isSortingAscending ? 'Descending' : 'Ascending'}</button>
+      </div>
+      <ul className={classes.list}>
+        {sortedQuotes.map((quote) => (
+          <QuoteItem
+            key={quote.id}
+            id={quote.id}
+            author={quote.author}
+            text={quote.text}
+          />
+        ))}
+      </ul>
+    </Fragment>
+  );
+};
+
+export default QuoteList;
+
+```
+
+```jsx
+import React, { Fragment } from 'react';
+import { useParams, Route, Link, useRouteMatch } from 'react-router-dom';
+import Comments from '../components/comments/Comments';
+import HighlightedQuote from '../components/quotes/HighlightedQuote';
+
+const DUMMY_DATA = [
+  { id: 'q1', author: 'Max', text: 'Learning React is fun!'},
+  { id: 'q2', author: 'Maxmilian', text: 'Learning React is great!'},
+];
+
+const QuoteDetails = () => {
+  const params = useParams();
+  const match = useRouteMatch();
+
+  const quote = DUMMY_DATA.find((quote) => {
+    return quote.id === params.quoteId;
+  })
+
+  if (!quote) {
+    return <p>No quote found!</p>;
+  }
+
+  console.log(params.quoteId);
+
+  return (
+    <Fragment>
+      <HighlightedQuote text={quote.text} author={quote.author} />
+      <Route path={match.path} exact>
+        <div className='centered'>
+          <Link className='btn--flat' to={`${match.url}/comments`}>
+            Load Comments
+          </Link>
+        </div>
+      </Route>
+      <Route path={`${match.path}/comments`}>
+        <Comments />
+      </Route>
+    </Fragment>
+  );
+};
+
+export default QuoteDetails;
 ```
 
