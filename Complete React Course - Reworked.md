@@ -3140,3 +3140,4 @@ export default App;
 ## 320. Creating New Next.js Project and App
 
 - need to have **node.js** installed
+- `npx create-next-app`
