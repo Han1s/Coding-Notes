@@ -3034,3 +3034,109 @@ const QuoteDetails = () => {
 export default QuoteDetails;
 ```
 
+# 21. Deploying React App
+
+## 293. Deployment steps
+
+- Test code
+- Optimize code (lazy loading)
+- Build App for Production
+- Upload Production code to server
+- Configure server
+
+## 294. Adding lazy loading
+
+- certain chunks of our code are loaded only when needed
+
+```jsx
+import React, { Suspense } from 'react';  # Suspense is important
+
+import { Route, Switch, Redirect } from 'react-router-dom';
+import Layout from './components/layout/Layout';
+import LoadingSpinner from './components/UI/LoadingSpinner';
+
+const NewQuote = React.lazy(() => import('./pages/NewQuote'));
+const QuoteDetails = React.lazy(() => import('./pages/QuoteDetails'));
+const NotFound = React.lazy(() => import('./pages/NotFound'));
+const AllQuotes = React.lazy(() => import('./pages/AllQuotes'));
+
+function App() {
+  return (
+    <Layout>
+      <Suspense fallback={(
+        <div className='centered'>
+          <LoadingSpinner />
+        </div>
+      )}>
+        <Switch>
+          <Route path='/' exact>
+            <Redirect to='/quotes' />
+          </Route>
+          <Route path='/quotes' exact>
+            <AllQuotes />
+          </Route>
+          <Route path='/quotes/:quoteId'>
+            <QuoteDetails />
+          </Route>
+          <Route path='/new-quote'>
+            <NewQuote />
+          </Route>
+          <Route path='*'>
+            <NotFound />
+          </Route>
+        </Switch>
+      </Suspense>
+    </Layout>
+  );
+}
+
+export default App;
+```
+
+## 295. Building for production
+
+- `npm run build`
+  - creates a **build folder** that is all the code that you need to upload to your sever
+
+## 296. Getting Started with deployment
+
+- A react SPA is a **Static Website**
+  - its only HTML, CSS and JS
+  - there is no backend
+- We need a **Static Site Host**, we don't need a provider that offers a backend services
+- We will use **Firebase**
+- `npm install -g firebase-tools`
+- `firebase login`
+- `firebase init` in the root folder of the project
+  - go to hosting and click `space`to select
+  - hit `enter` and chose whether to use existing project or create new one
+  - it asks as what folder we want to use, we want to use the **build** folder
+  - configure your server as url is always ignored and you always return SPA code, so yes on SPA build
+  - do not overwrite index.html
+- `firebase deploy`
+- in the console you can configure to application
+- `firebase hosting:disable`pulls the page down
+
+# 23. Next.js
+
+## 316. What it is and why use it
+
+- Full-stack Framework for Production
+- It adds a lot of missing features that solve common problems
+
+## 317. Added features and benefits
+
+- **Server-side rendering** (built-in)
+  - preparing the content on the page on the server instead of the client
+  - better SEO
+  - search engines see what users see
+  - fetches data on the server and renders finished pages
+- **File-based routing**
+  - Define pages and routes with file structure instead of code
+- **Allows building full-stack apps**
+  - you can add backend code
+  - storing data, getting data, authentication etc can be added to your projects
+
+## 320. Creating New Next.js Project and App
+
+- need to have **node.js** installed
