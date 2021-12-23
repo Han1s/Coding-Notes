@@ -3141,3 +3141,246 @@ export default App;
 
 - need to have **node.js** installed
 - `npx create-next-app`
+
+## 325. Dynamic pages - extracting value
+
+structure:
+
+PAGES/
+
+- index.js
+- NEWS/
+  - index.js
+  - [newsId].js
+
+```jsx
+import { useRouter } from 'next/router';
+
+const Detail = () => {
+  const router = useRouter();
+
+  const newsId = router.query.newsId;
+
+  return (
+    <h1>
+      The Detail Page
+    </h1>
+  );
+};
+
+export default Detail;
+```
+
+## 336. Data fetching for static pages
+
+- if you `npm run build`you can identify SSG page by **full dot**
+
+```jsx
+import React from 'react';
+import MeetupList from '../components/meetups/MeetupList';
+
+const DUMMY_MEETUPS = [
+  {
+    id: 'm1',
+    title: "A first meetup",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
+    address: "Some address 5, 12345 Some City",
+    description: "This is a first meetup!"
+  },
+  {
+    id: 'm2',
+    title: "A second meetup",
+    image: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
+    address: "Some address 4, 12345 Some City",
+    description: "This is a second meetup!"
+  }
+];
+
+const HomePage = (props) => {
+  return (
+    <MeetupList meetups={props.meetups} />
+  );
+};
+
+export async function getStaticProps() {
+  // The code written here will be server side, it will never executed on the client side.
+  // fetch data from an API or something
+  // always need to return object here
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    }
+  };
+};
+
+export default HomePage;
+```
+
+## 337. Incremental static generation
+
+```jsx
+export async function getStaticProps() {
+  // The code written here will be server side, it will never executed on the client side.
+  // fetch data from an API or something
+  // always need to return object here
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    },
+    // incremental static generation
+    revalidate: 10
+  };
+};
+```
+
+## 338. Server-side rendering
+
+- runs after deployment
+
+```jsx
+export async function getServerSideProps(context) {
+  const req = context.req;
+  const res = context.res;
+  // fetch data from an API
+  // this is slower because its not cached and reused
+  // useful if you need req, res, or if you have data changing every second or so.
+  // Rerenders the page for every request
+  // runs on the server, not on the client
+  return {
+    props: {
+      meetups: DUMMY_MEETUPS
+    }
+  }
+}
+```
+
+## 340. getStaticPaths
+
+- needed if you have **dynamic** page with **getStaticProps**
+
+```jsx
+import React, { Fragment, useContext } from 'react';
+import MeetupDetail from '../../components/meetups/MeetupDetail';
+
+const MeetupDetails = () => {
+
+  return (
+    <MeetupDetail
+      image="https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg"
+      title="A first Meetup"
+      address="Some address 5, 12345 Some City"
+      description="This is a first meetup!"
+    />
+  );
+};
+
+export async function getStaticPaths() {
+  return {
+    fallback: false,  // means we defined all paths, in true case we can only define some paths
+    paths: [
+      {
+        params: {
+          meetupId: 'm1',
+        }
+      },
+      {
+        params: {
+          meetupId: 'm2',
+        }
+      }
+    ]
+  }
+}
+
+export async function getStaticProps(context) {
+  // fetch data for a single meetup
+
+  const meetupId = context.params.meetupId;
+
+  console.log(meetupId);
+
+  return {
+    props: {
+      meetupData: {
+        image: "https://upload.wikimedia.org/wikipedia/commons/d/d3/Stadtbild_M%C3%BCnchen.jpg",
+        id: meetupId,
+        title: 'First Meetup', 
+        address: "Some address 5, 12345 Some City",
+        description: "This is a first meetup!"
+      }
+    }
+  }
+}
+
+export default MeetupDetails;
+```
+
+## ## 341. API Routes
+
+- enable you to build your own endpoints
+- run only on the server
+- create folder **api** in **pages** folder
+
+## 342. Working with mongoDB
+
+- we need to create cluster first
+- potentially rewatch the lecture
+
+```jsx
+import { MongoClient } from 'mongodb'
+
+// /api/new-meetup
+
+async function handler(req, res) {
+  if (req.method === "POST") {
+    const data = req.body;
+
+    const client = await MongoClient.connect('mongodb+srv://honza:ngage@cluster0.iewhe.mongodb.net/meetups?retryWrites=true&w=majority');
+    const db = client.db();
+
+    const meetupsCollection = db.collection('meetups');
+
+    const result = await meetupsCollection.insertOne(data);
+
+    console.log(result);
+
+    client.close();
+
+    res.status(201).json({ message: 'Meetup inserted!' });
+  }
+};
+
+export default handler;
+```
+
+# 26. Testing  Apps
+
+- **manual testing**
+- **automated testing**
+  - **unit tests**
+    - writing tests for smallest possible units (functions or components)
+    - projects typically contain a lot of them
+    - the most common / important test
+  - **integration tests**
+    - test the combination of multiple building blocks working together
+    - projects typically contain a couple of integration tests but not as many
+  - **end to end tests**
+    - testing entire workflows or scenarios
+    - reproduce a real human behavior
+    - projects typically contain only a few e2e tests
+
+## 384. What to test and how
+
+- Test different building blocks
+- Test smallest building blocks that make up your app
+- Test success and error cases, also rare (but possible) results
+
+## 285. Technical Setup and Tools
+
+- We need a tool for running a test and asserting results
+  - We typically use **jest**
+- We need a tool for simulating a react app / components
+  - We typically use **React Testing Library**
+- Both tools are set up when you work with **CRA**
+
+- run tests  by `npm test`
