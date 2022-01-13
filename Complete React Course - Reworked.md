@@ -3375,12 +3375,157 @@ export default handler;
 - Test smallest building blocks that make up your app
 - Test success and error cases, also rare (but possible) results
 
-## 285. Technical Setup and Tools
+## 385. Technical Setup and Tools
 
 - We need a tool for running a test and asserting results
   - We typically use **jest**
 - We need a tool for simulating a react app / components
   - We typically use **React Testing Library**
 - Both tools are set up when you work with **CRA**
-
+- best practice is to create files **Component.test.js** within **CRA**
 - run tests  by `npm test`
+
+## 387. Writing our first test
+
+- Three **A's**
+  - **Arrange** - setup the test data, conditions, and environment
+  - **Act** - run logic that should be tested (execute function)
+  - **Assert** - check that results match
+
+```jsx
+import { render, screen } from '@testing-library/react';
+import Greeting from './Greeting';
+
+test('renders Hello World as a text', () => {
+  // Arrange
+  render(<Greeting />);
+
+  // Act
+  // ... nothing
+
+  // Assert
+  const helloWorldElement = screen.getByText('Hello World', { exact: false });
+  expect(helloWorldElement).toBeInTheDocument();
+});
+```
+
+## 388. Tests suits vs Tests
+
+- to organize different tests you can organize them into different testing suits
+
+- to pass test into a suit:
+
+  ```jsx
+  describe('Greeting component', () => {
+    test('renders Hello World as a text', () => {
+      // Arrange
+      render(<Greeting />);
+    
+      // Act
+      // ... nothing
+    
+      // Assert
+      const helloWorldElement = screen.getByText('Hello World', { exact: false });
+      expect(helloWorldElement).toBeInTheDocument();
+    });
+  })
+  ```
+
+## 389. Testing suite with a state
+
+```jsx
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import Greeting from './Greeting';
+
+describe('Greeting component', () => {
+  test('renders Hello World as a text', () => {
+    // Arrange
+    render(<Greeting />);
+  
+    // Act
+    // ... nothing
+  
+    // Assert
+    const helloWorldElement = screen.getByText('Hello World', { exact: false });
+    expect(helloWorldElement).toBeInTheDocument();
+  });
+
+  test('renders good to see you if the button was NOT clicked', () => {
+    render(<Greeting />);
+    const outputElement = screen.getByText('good to see you', { exact: false });
+    expect(outputElement).toBeInTheDocument();
+  });
+
+  test('renders "Changed!" if the button was clicked', () => {
+    // Arrange
+    render(<Greeting />);
+
+    // Act
+    const buttonElement = screen.getByRole('button');
+    userEvent.click(buttonElement);
+
+    // Assert
+    const outputElement = screen.getByText('Changed!');
+    expect(outputElement).toBeInTheDocument();
+  });
+
+  test('does not render "good to see you" if the button was clicked', () => {
+      // Arrange
+      render(<Greeting />);
+
+      // Act
+      const buttonElement = screen.getByRole('button');
+      userEvent.click(buttonElement);
+  
+      // Assert
+      const outputElement = screen.queryByText('good to see you', { exact: false });
+      expect(outputElement).toBeNull();
+  });
+})
+```
+
+## 390. Testing connected components
+
+- happens automatically
+
+## 391. Testing asynchronous code
+
+```jsx
+import { render, screen } from "@testing-library/react";
+
+import Async from "./Async";
+
+describe('Async component', () => {
+  test('renders posts if request succeeds', async () => {
+    render(<Async />);
+
+    const listItemElements = await screen.findAllByRole('listitem');
+    expect(listItemElements).not.toHaveLength(0);
+  });
+})
+```
+
+## 392. Working with mocks
+
+- generally dont want to stress the server
+
+```jsx
+import { render, screen } from "@testing-library/react";
+
+import Async from "./Async";
+
+describe('Async component', () => {
+  test('renders posts if request succeeds', async () => {
+    window.fetch = jest.fn();
+    window.fetch.mockResolvedValueOnce({
+      json: async () => [{id: 'p1', title: 'First post'}],
+    });
+    render(<Async />);
+
+    const listItemElements = await screen.findAllByRole('listitem');
+    expect(listItemElements).not.toHaveLength(0);
+  });
+});
+```
+
