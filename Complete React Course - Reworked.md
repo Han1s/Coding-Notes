@@ -3353,6 +3353,170 @@ async function handler(req, res) {
 export default handler;
 ```
 
+# 24. Animating React Apps
+
+## 353. CSS transitions
+
+```css
+.Modal {
+    position: fixed;
+    z-index: 200;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    top: 30%;
+    left: 25%;
+    width: 50%;
+    transition: all 0.3s ease-out;
+}
+
+.ModalOpen {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.ModalClosed {
+    opacity: 0;
+    transform: translateY(-100%);
+}
+```
+
+## 354. Using CSS Animations
+
+```css
+.Modal {
+    position: fixed;
+    z-index: 200;
+    border: 1px solid #eee;
+    box-shadow: 0 2px 2px #ccc;
+    background-color: white;
+    padding: 10px;
+    text-align: center;
+    box-sizing: border-box;
+    top: 30%;
+    left: 25%;
+    width: 50%;
+    transition: all 0.3s ease-out;
+}
+
+.ModalOpen {
+    animation: openModal 0.4s ease-out forwards;
+}
+
+.ModalClosed {
+    animation: closeModal 0.4s ease-out forwards;
+}
+
+@keyframes openModal {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes closeModal {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateY(60%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+```
+
+## 355. CSS Limitations
+
+- the elements stay present
+- removing the elements happens instantly and does not trigger animation
+
+## 356. React Transition Group
+
+```jsx
+import React, { Component } from "react";
+import Transition from "react-transition-group/Transition";
+
+import "./App.css";
+import Modal from "./components/Modal/Modal";
+import Backdrop from "./components/Backdrop/Backdrop";
+import List from "./components/List/List";
+
+class App extends Component {
+  state = {
+    modalIsOpen: false,
+    showBlock: false
+  }
+
+  showModal = () => {
+    this.setState({
+      modalIsOpen: true
+    })
+  }
+
+  closeModal = () => {
+    this.setState({
+      modalIsOpen: false
+    })
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <h1>React Animations</h1>
+        <button onClick={() => this.setState(prevState => ({showBlock: !prevState.showBlock}))}>Toggle
+        </button>
+        <br />
+          <Transition 
+            in={this.state.showBlock}
+            timeout={300}
+            mountOnEnter
+            unmountOnExit>
+            {state => (
+              <div 
+                style={{
+                  backgroundColor: 'red', 
+                  width: 100, 
+                  height: 100,
+                  margin: 'auto',
+                  transition: 'opacity 1s ease-out',
+                  opacity: state === 'exiting' ? 0 : 1
+                }}>
+              </div> 
+            )}
+          </Transition>
+        <Modal show={this.state.modalIsOpen} closed={this.closeModal} />
+        <Backdrop show={this.state.modalIsOpen}/>
+        <button className="Button" onClick={this.showModal}>Open Modal</button>
+        <h3>Animating Lists</h3>
+        <List />
+      </div>
+    );
+  }
+}
+
+export default App;
+```
+
 # 26. Testing  Apps
 
 - **manual testing**
