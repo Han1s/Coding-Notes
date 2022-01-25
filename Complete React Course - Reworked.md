@@ -3529,3 +3529,8 @@ describe('Async component', () => {
 });
 ```
 
+## 393. Summary and further resources
+
+- **Jest official** docs
+- **React testing library** docs
+- **react-hooks-testing-library** extension also worth mentioning
