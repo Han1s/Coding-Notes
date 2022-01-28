@@ -3517,6 +3517,248 @@ class App extends Component {
 export default App;
 ```
 
+## 361. Using CSSTransition
+
+```jsx
+import React from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+import './Modal.css';
+
+const animationTiming = {
+    enter: 400,
+    exit: 1000
+}
+
+const modal = (props) => {
+    return (
+      <CSSTransition 
+        in={props.show} 
+        timeout={animationTiming}
+        mountOnEnter
+        unmountOnExit
+        onEnter={() => console.log('onEnter')}
+        onEntering={() => console.log('onEntering')}
+        onEntered={() => console.log('onEntered')}
+        onExit={() => console.log('onExit')}
+        onExiting={() => console.log('onExiting')}
+        onExited={() => console.log('onExited')}
+        classNames="fade-slide">
+        <div className="Modal">
+            <h1>A Modal</h1>
+            <button className="Button" onClick={props.closed}>Dismiss</button>
+        </div>
+      </CSSTransition>
+    )
+};
+
+export default modal;
+```
+
+```css
+.fade-slide-enter {
+
+}
+
+.fade-slide-enter-active {
+    animation: openModal 0.4s ease-out forwards;
+}
+
+.fade-slide-exit {
+
+}
+
+.fade-slide-exit-active {
+    animation: closeModal 1s ease-out forwards;
+}
+
+@keyframes openModal {
+    0% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+
+    50% {
+        opacity: 1;
+        transform: translateY(20%);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes closeModal {
+    0% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    50% {
+        opacity: 0.8;
+        transform: translateY(60%);
+    }
+
+    100% {
+        opacity: 0;
+        transform: translateY(-100%);
+    }
+}
+```
+
+## 362. Customizing CSS Classnames
+
+```jsx
+import React from 'react';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+import './Modal.css';
+
+const animationTiming = {
+    enter: 400,
+    exit: 1000
+}
+
+const modal = (props) => {
+    return (
+      <CSSTransition 
+        in={props.show} 
+        timeout={animationTiming}
+        mountOnEnter
+        unmountOnExit
+        onEnter={() => console.log('onEnter')}
+        onEntering={() => console.log('onEntering')}
+        onEntered={() => console.log('onEntered')}
+        onExit={() => console.log('onExit')}
+        onExiting={() => console.log('onExiting')}
+        onExited={() => console.log('onExited')}
+        classNames={{
+            enter: '',
+            enterActive: 'ModalOpen',
+            exit: '',
+            exitActive: 'ModalClosed'
+        }}>
+        <div className="Modal">
+            <h1>A Modal</h1>
+            <button className="Button" onClick={props.closed}>Dismiss</button>
+        </div>
+      </CSSTransition>
+    )
+};
+
+export default modal;
+```
+
+## 363. Animating Lists
+
+```jsx
+import React, { Component } from 'react';
+import TransitionGroup from 'react-transition-group/TransitionGroup';
+import CSSTransition from 'react-transition-group/CSSTransition';
+
+import './List.css';
+
+class List extends Component {
+    state = {
+        items: [1, 2, 3]
+    }
+
+    addItemHandler = () => {
+        this.setState((prevState) => {
+            return {
+                items: prevState.items.concat(prevState.items.length + 1)
+            };
+        });
+    }
+
+    removeItemHandler = (selIndex) => {
+        this.setState((prevState) => {
+            return {
+                items: prevState.items.filter((item, index) => index !== selIndex)
+            };
+        });
+    }
+
+    render () {
+        const listItems = this.state.items.map( (item, index) => (
+            <CSSTransition key={index} classNames="fade" timeout={300}>
+                <li 
+                    className="ListItem" 
+                    onClick={() => this.removeItemHandler(index)}>
+                    {item}
+                </li>
+            </CSSTransition>
+        ) );
+
+        return (
+            <div>
+                <button className="Button" onClick={this.addItemHandler}>Add Item</button>
+                <p>Click Item to Remove.</p>
+                <TransitionGroup 
+                    component="ul"
+                    className="List"
+                >
+                    {listItems}
+                </TransitionGroup>
+            </div>
+        );
+    }
+}
+
+export default List;
+```
+
+```css
+.List {
+    list-style: none;
+    margin: 0 auto;
+    padding: 0;
+    width: 280px;
+}
+
+.ListItem {
+    margin: 0;
+    padding: 10px;
+    box-sizing: border-box;
+    width: 100%;
+    border: 1px solid #521751;
+    background-color: white;
+    text-align: center;
+    cursor: pointer;
+}
+
+.ListItem:hover,
+.ListItem:active {
+    background-color: #ccc;
+}
+
+.fade-enter {
+    opacity: 0;
+}
+
+.fade-enter-active {
+    opacity: 1;
+    transition: opacity 0.3s ease-out;
+}
+
+.fade-exit {
+    opacity: 1;
+}
+
+.fade-exit-active {
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+
+```
+
+## 364.
+
+- Alternatives:
+  - **React Motion**
+  - **React Move**
+  - **React router transition** - for animating routing
+
 # 26. Testing  Apps
 
 - **manual testing**
