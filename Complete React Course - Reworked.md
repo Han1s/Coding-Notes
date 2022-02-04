@@ -3940,3 +3940,96 @@ describe('Async component', () => {
 - **Jest official** docs
 - **React testing library** docs
 - **react-hooks-testing-library** extension also worth mentioning
+
+# 27. React + TypeScript
+
+- **TS** is a **superset** to **JS** (extends Javascript)
+- Most importantly it adds **static typing** to **JS**
+  - JavaScript is **dynamically tipped**
+- https://www.typescriptlang.org/
+- full course potentially by Maxmillian
+- to install
+  - `npm install typescript`
+  - `npx tsc file_name`- runs the compiler
+- TS does NOT run in the browser
+  - it needs to be compiled to javascript
+  - our ts annotations are removed during these compliations, but we are notified here
+
+````ts
+// Primitives: number, string, boolean
+// More complet types: arrays, objects
+// Functions types, parameters
+
+// Primitives
+let age: number;
+age = 12;
+
+let userName: string;
+userName = 'Max';
+
+let isInstructor: boolean;
+isInstructor = true;
+
+// More complex types
+let hobbies: string[];
+hobbies = ['Sports', 'Cooking'];
+
+type Person = {
+  name: string,
+  age: number;
+};
+
+let person: Person;
+
+person = {
+  name: 'Max',
+  age: 32
+};
+
+let peope: Person[]; 
+
+// Type union
+let course: string | number = 'React - The Complete Guide';
+course = 3;
+
+// Functions & types
+function add(a: number, b: number): number {
+  return a + b;
+}
+
+function print(value: any) {
+  console.log(value);
+}
+
+// Generics
+function insertAtBeginning<T>(array: T[], value: T) {
+  const newArray = [value, ...array];
+  return newArray;
+}
+
+const demoArray = [1, 2, 3];
+
+const updatedArray = insertAtBeginning(demoArray, -1); // [-1, 1, 2, 3]
+const stringArray = insertAtBeginning(['a', 'b', 'c'], 'd');
+````
+
+## 406. Create react app with typescript
+
+`npx create-react-app my-app --template typescript`
+
+```jsx
+import React from "react";
+
+const Todos: React.FC<{items: string[]}> = (props) => {
+  return (
+    <ul>
+      {props.items.map((item) => (
+        <li key={item}>{item}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default Todos;
+```
+
