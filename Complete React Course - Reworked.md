@@ -4033,3 +4033,103 @@ const Todos: React.FC<{items: string[]}> = (props) => {
 export default Todos;
 ```
 
+## 409. Adding a data model
+
+```ts
+// src/models/todo.ts
+// can be also used as a type
+
+class Todo {
+  id: string;
+  text: string;
+
+  constructor(todoText: string) {
+    this.text = todoText;
+    this.id = new Date().toISOString();
+  }
+}
+
+export default Todo;
+```
+
+```tsx
+import React from "react";
+import Todo from "../models/todo";
+
+const Todos: React.FC<{items: Todo[]}> = (props) => {
+  return (
+    <ul>
+      {props.items.map((item) => (
+        <li key={item.id}>{item.text}</li>
+      ))}
+    </ul>
+  );
+};
+
+export default Todos;
+```
+
+## 411. Form Submissions In TypeScript Projects
+
+```tsx
+import React, { useRef } from "react";
+
+const NewTodo: React.FC<{onAddTodo: (text: string) => void}> = (props) => {
+  const todoTextInputRef = useRef<HTMLInputElement>(null);
+
+  const submitHandler = (event: React.FormEvent) => {
+    event.preventDefault();
+
+    const enteredText = todoTextInputRef.current!.value;
+
+    if (enteredText.trim().length === 0) {
+      // throw an error
+      return;
+    }
+
+    props.onAddTodo(enteredText);
+  };
+
+  return (
+    <form onSubmit={submitHandler}>
+      <label htmlFor="text">Todo text</label>
+      <input type="text" id='text' ref={todoTextInputRef} />
+      <button>Add Todo</button>
+    </form>
+  );
+};
+
+export default NewTodo;
+```
+
+## 414. Managing State & Typescript
+
+```tsx
+import { useState } from 'react';
+
+import NewTodo from './components/NewTodo';
+import Todos from './components/Todos';
+import Todo from './models/todo';
+
+function App() {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const addTodoHandler = (text: string) => {
+    const newTodo = new Todo(text);
+
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
+  return (
+    <div>
+      <NewTodo onAddTodo={addTodoHandler}/>
+      <Todos items={todos}/>
+    </div>
+  );
+}
+
+export default App;
+```
+
+
+
