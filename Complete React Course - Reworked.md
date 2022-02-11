@@ -4105,6 +4105,7 @@ export default NewTodo;
 ## 414. Managing State & Typescript
 
 ```tsx
+// store/todos-context.tsx
 import { useState } from 'react';
 
 import NewTodo from './components/NewTodo';
@@ -4133,3 +4134,69 @@ export default App;
 
 
 
+## 417 TS and context
+
+```tsx
+import React, { useState } from 'react';
+
+import Todo from '../models/todo';
+
+type TodosContextObj = {
+  items: Todo[];
+  addTodo: (text: string) => void;
+  removeTodo: (id: string) => void;
+}
+
+export const TodosContext = React.createContext<TodosContextObj>({
+  items: [],
+  addTodo: () => {},
+  removeTodo: (id: string) => {}
+});
+
+const TodosContextProvider: React.FC = (props) => {
+  const [todos, setTodos] = useState<Todo[]>([]);
+
+  const addTodoHandler = (text: string) => {
+    const newTodo = new Todo(text);
+
+    setTodos((prevTodos) => [...prevTodos, newTodo]);
+  };
+
+  const removeTodoHandler = (todoId: string) => { 
+    setTodos((prevTodos) => {
+      return prevTodos.filter(todo => todo.id !== todoId);
+    })
+  };
+
+  const contextValue:  TodosContextObj = {
+    items: todos,
+    addTodo: addTodoHandler,
+    removeTodo: removeTodoHandler
+  };
+
+  return (
+  <TodosContext.Provider value={contextValue}>
+    {props.children}
+  </TodosContext.Provider>)
+};
+
+export default TodosContextProvider;
+```
+
+# 30. Course Roundup
+
+## 485. What now? Next steps.
+
+	- build demo and dummy projects
+	- clone popular websites & web apps
+
+## 486. Explore the React Ecosystem
+
+- **gatsby.js**
+  - static site generator using react
+- **Next.js**
+- **Preact**
+  - React with way smaller footprint
+  - Same API but way smaller
+- **React Native**
+  - Framework for react build by facebook for mobile apps
