@@ -2781,7 +2781,7 @@ function App() {
 export default App;
 ```
 
-## 283. Implementic programmatic navigation
+## 283. Implementing programmatic navigation
 
 - **history.push()** pushes the link on the stack so user can use go back feature
 - **history.repalce()** replaces the current url so user cannot go back
@@ -3351,6 +3351,106 @@ async function handler(req, res) {
 };
 
 export default handler;
+```
+
+
+
+## 343. Posting Data to the Mongo
+
+```jsx
+import { MongoClient } from 'mongodb';
+
+// /api/new-meetup
+
+async function handler(req, res) {
+  if (req.method === "POST") {
+    try {
+      const data = req.body;
+
+      const client = await MongoClient.connect('mongodb+srv://honza:8FLv2ItL6TQGi481@cluster0.iewhe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+
+      console.log('awaited client');
+
+      const db = client.db();
+
+      const meetupsCollection = db.collection('meetups');
+
+      const result = await meetupsCollection.insertOne(data);
+
+      console.log(result);
+
+      client.close();
+
+      res.status(201).json({ message: 'Meetup inserted!' });
+    } catch(e) {
+      console.log(e);
+    }
+  }
+};
+
+export default handler;
+```
+
+
+
+
+
+## 344. Getting Data from The Mongo
+
+```jsx
+// pages/index.js
+
+import React from 'react';
+import MeetupList from '../components/meetups/MeetupList';
+import { MongoClient } from 'mongodb';
+
+const HomePage = (props) => {
+  return (
+    <MeetupList meetups={props.meetups} />
+  );
+};
+
+// export async function getServerSideProps(context) {
+//   const req = context.req;
+//   const res = context.res;
+//   // fetch data from an API
+//   // runs on the server, not on the client
+//   return {
+//     props: {
+//       meetups: DUMMY_MEETUPS
+//     }
+//   }
+// }
+
+export async function getStaticProps() {
+  // The code written here will be server side, it will never executed on the client side.
+  const client = await MongoClient.connect('mongodb+srv://honza:8FLv2ItL6TQGi481@cluster0.iewhe.mongodb.net/myFirstDatabase?retryWrites=true&w=majority');
+
+  console.log('awaited client');
+
+  const db = client.db();
+
+  const meetupsCollection = db.collection('meetups');
+
+  const meetups = await meetupsCollection.find().toArray();
+
+  client.close();
+
+  return {
+    props: {
+      meetups: meetups.map(meetup => ({
+        title: meetup.title,
+        address: meetup.address,
+        image: meetup.image,
+        id: meetup._id.toString()
+      }))
+    },
+    // incremental static generation
+    revalidate: 10
+  };
+};
+
+export default HomePage;
 ```
 
 # 24. Animating React Apps
