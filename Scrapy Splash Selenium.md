@@ -1,4 +1,4 @@
-# Introduction
+# I. Introduction
 
 - libraries:
   - Requests
@@ -45,16 +45,17 @@ Example:
     - disallow - pages forbidden to scrape
   - example.www.facebook.com/robots.txt
 
-# Setting up Scrapy Development environment
+ ## 2.Setting up Scrapy Development environment
 
 - Use **Anaconda**
   - Anaconda Navigator
   - Install **scrapy**
+    - `conda install -c conda-forge scrapy pylint autopep8 -y` 
   - Install vs code from the anaconda and launch it through anaconda
 
-# Scrapy Fundamentals
+# II. Scrapy Fundamentals
 
-## Part 1
+## 6. Part 1
 
 - open the environment we created 
 - open its terminal
@@ -69,13 +70,17 @@ Example:
 - `scrapy version` returns a version youre using
 - `scrapy view` opens up a website of your choice as seen by Scapy - spider can see the website as a normal user.
 
-## Part 2
+## 7. Part 2
 
 - `scrapy startproject projectname` creates a basic project
 - `cd projectname` 
 - `scrapy genspider spidername www.xxx.com`  creates a spider
+  - if you open the spider `spidername` 
+    - **allowed domains** can never have http protocol
+    - **start_urls** can start with https as scrapy by default starts with http
 
-## Part 3
+
+## 7. Part 3
 
 - `conda install ipython` 
 - `scrapy shell` opens scrapy shell
@@ -90,7 +95,7 @@ Example:
   - **note that bots see sites without js**
   - F12 and ctrl+shift+P and `disable javascript` disables javascript
 
-## Part 4
+## 9. Part 4
 
 - to test the xpath expression before implementing it in scrapy
   - in console press `ctrl+F` 
@@ -112,7 +117,7 @@ Example:
   - `countries_css = response.css("td a::text").getall()`
   - `countries`
 
-## Part 5
+## 10. Part 5
 
 - install **python** extension in VS
 
@@ -152,15 +157,15 @@ Example:
 
   - `source activate workspace_name`
 
-# Xpath expressions & CSS Selectors
+# III. Xpath expressions & CSS Selectors
 
-## Xpath & CSS selectors
+## 11. Xpath & CSS selectors
 
 - **Xpath** is XML path language to query XML path
 - **CSS** - cascading style sheet selectors
 - Xpath has the ability to go up and down, but CSS sometimes looks cleaner
 
-## Css selectors fundamentals
+## 12. Css selectors fundamentals
 
 - by tag - `h1` 
 - by class name - `.intro` 
@@ -178,6 +183,64 @@ Example:
 - select first li of unorderer list - `li:nth-child(1)`
 - select first and third li of unorderer list - `li:nth-child(1), li:nth-child(3)`
 - select all odd / even elements of the list - `li:nth-child(odd)` / `li:nth-child(even)`
+
+## 15. XPath fundamentals
+
+- by tag name - `//h1` 
+- element based on the class names - `//div[@class='intro' or @class='outro']/p/text()`
+- get href attribute value - `//a/@href`
+- get href starting with https - `//a[starts-with(@href, 'https')]`
+- get href ending with something - `//a[ends-with(@href, 'fr')]`
+  - supporting only in version 2.0 (might not work in chrome)
+- search for text in between - `//a[contains(@href, 'google')]` or `//a[contains(text(), 'France')]`
+- based on position - `//ul[@id='items']/li[1]`  or `//ul[@id='items']/li/[position() = 1 or position() = last()]` or `//ul[@id='items']/li/[position() > 1]`
+
+## 16. Navigating Up using Xpath
+
+- `//div[@class='intro']/p`
+- `//p[@id='unique']/parent::div` - search for parent that is a div
+- `//p[@id='unique']/parent::div` - search for any parent
+- `//p[@id='unique']/ancestor::node()`- ancestor includes all the ancestors generations
+- `//p[@id='unique']/ancestor-or-self::node()` - get self as well
+- `//p[@id='unique']/preceding::node()` - all the elements preceding the child excluding the ancestors
+- `//p[@id='unique']/preceding::h1` - get h1 preceding the element
+- `//p[@id='outside']/preceding-sibling::node()` - get sibling
+
+## 17. Navigating Down using Xpath
+
+- `//div[@class='intro']/p`  or `//div[@class='intro']/child::p`  or `//div[@class='intro']/child:node()` for non specific children.
+- `//div[@class='intro']/following::node()` - get all elements after the elements
+- `//div[@class='intro']/following-sibling::node()` - get elements with same parent that are siblings after
+- `//div[@class='intro']/descendant:node()` - get all descendant elements (opposite of ancestors)    
+
+## 19. Worldometers
+
+- when executing xpath against an object (not a response, we need to have a dot at the beginning)
+
+```python
+# -*- coding: utf-8 -*-
+import scrapy
+
+
+class CountriesSpider(scrapy.Spider):
+    name = 'countries'
+    allowed_domains = ['www.worldometers.info/']
+    start_urls = ['https://www.worldometers.info/world-population/population-by-country/']
+
+    def parse(self, response):
+        countries = response.xpath("//td/a")
+
+        for country in countries:
+            name = country.xpath(".//text()").get()
+            link = country.xpath(".//@href").get()
+        
+            yield {
+                'country_name': name,
+                'country_link': link
+            }
+```
+
+
 
 # Building datasets
 
