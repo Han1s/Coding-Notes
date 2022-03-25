@@ -3117,6 +3117,104 @@ export default App;
 - in the console you can configure to application
 - `firebase hosting:disable`pulls the page down
 
+# 22. Authentication
+
+## 301. What, How, Why?
+- some content should be protected.
+- it's a two step process
+  - get an access
+    - request with user credentials sent from client to server and get a permission
+    - this utilizes **server-side** sessions and **authentication tokens**
+    - client then sends the identifier along with requests
+    - server knows a key to verify a token
+  - send request to protected resource
+
+## 303. First setup
+- use **firebase auth rest api**
+
+- example of a sign up form
+```jsx
+  import { useState, useRef } from 'react';
+
+  import classes from './AuthForm.module.css';
+
+  const AuthForm = () => {
+    const [isLogin, setIsLogin] = useState(true);
+
+    const emailInputRef = useRef();
+    const passwordInputRef = useRef();
+
+    const switchAuthModeHandler = () => {
+      setIsLogin((prevState) => !prevState);
+    };
+
+    const submitHandler = (event) => {
+      event.preventDefault();
+
+      const enteredEmail = emailInputRef.current.value;
+      const enteredPassword = passwordInputRef.current.value;
+
+      // optional: Add validation
+      if (isLogin) {
+        
+      } else {
+        fetch(
+          'https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=AIzaSyDlZuR3UTPhM_5DTqvVP20LZmnAbnGV3zU',
+          {
+            method: "POST",
+            body: JSON.stringify({
+              email: enteredEmail,
+              password: enteredPassword,
+              returnSecureToken: true,
+            }),
+            headers: {
+              'Content-Type': 'application/json'
+            }
+          }
+        ).then(res => {
+          if (res.ok) {
+            // ...
+          } else {
+            return res.json().then(data => {
+              // show an error modal
+              console.log(data);
+            });
+          }
+        });
+      }
+    };
+
+    return (
+      <section className={classes.auth}>
+        <h1>{isLogin ? 'Login' : 'Sign Up'}</h1>
+        <form onSubmit={submitHandler}>
+          <div className={classes.control}>
+            <label htmlFor='email'>Your Email</label>
+            <input type='email' id='email' required ref={emailInputRef} />
+          </div>
+          <div className={classes.control}>
+            <label htmlFor='password'>Your Password</label>
+            <input type='password' id='password' required ref={passwordInputRef} />
+          </div>
+          <div className={classes.actions}>
+            <button>{isLogin ? 'Login' : 'Create Account'}</button>
+            <button
+              type='button'
+              className={classes.toggle}
+              onClick={switchAuthModeHandler}
+            >
+              {isLogin ? 'Create new account' : 'Login with existing account'}
+            </button>
+          </div>
+        </form>
+      </section>
+    );
+  };
+
+  export default AuthForm;
+
+```
+
 # 23. Next.js
 
 ## 316. What it is and why use it
