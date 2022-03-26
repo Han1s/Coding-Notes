@@ -373,7 +373,7 @@ class CountriesSpider(scrapy.Spider):
     FEED_EXPORT_ENCODING = 'utf-8'
     ```
 
-## Dealing with pagination
+## 30. Dealing with pagination
 
 - usually the best way is to check whether next button exists, if it does you can move to the next URL
 
@@ -399,7 +399,7 @@ class SpecialOffersSpider(scrapy.Spider):
             yield scrapy.Request(url=next_page, callback=self.parse, dont_filter=True) 
 ```
 
-## Spoofing request headers
+## 31. Spoofing request headers
 
 - use `scrapy shell "https:....html"`
 
