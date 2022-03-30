@@ -467,7 +467,7 @@ class SpecialOffersSpider(scrapy.Spider):
 
 
 
-# Debugging Spiders
+# VII. Debugging Spiders
 
 - bugs can be **logical** or **syntactical**
 
