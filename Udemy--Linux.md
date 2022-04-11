@@ -1,6 +1,7 @@
 ## 19. Linux Installation (CentOS)
 
 - cjose GUI server in the mode, the minimal installation does not instal the GUI
+- ethernet **ON**
 - in **network & hostname** click on configure and check automatically connect
 
 ## 26. Linux Desktop GUI
