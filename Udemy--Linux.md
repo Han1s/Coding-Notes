@@ -189,3 +189,21 @@ There are 3 types of root on linux
   - day
   - time
   - name
+
+## 46. Creating Files and Directories
+
+- Files
+  - **touch**
+  - **cp**
+  - **vi**
+- Directories
+  - **mkdir**
+
+- `ls -ltr` lists everything in the directory in the order in which it was created
+- `touch [filename]` create a filename
+- `cp [filename] [newfilename]` 
+- `vi [filename]` - create a file 
+- `touch [filename1] [filename2] [filename3]` 
+- `mkdir [dirname]`
+- `mkdir [filename1] [filename2] [filename3]`
+
