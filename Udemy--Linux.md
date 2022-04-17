@@ -440,3 +440,71 @@ There are 3 types of root on linux
   - **more** makes a long output as pages
 - `ll | tail -1`
   - **tail** returns the last x lines of a output
+
+## 68. File Maintanance commands
+
+- **cp** - copies a file
+  - `cp [oldfilename] /path/filename`
+- **rm** - remove
+- **mv** - move a file
+  - `mv [filename] [newfilename]` rename a file
+- **mkdir** - make a directory
+- **rmdir** or **rm -r** or **rm -Rf**
+- **chgrp** - change group ownership
+  - `chgrp [newowner] [file]`
+- **chown** - change ownership at the user level
+  - `chown [newowner] [filename]`
+
+
+## 69. File display Commands
+
+- **cat** - views the entire content
+- **more** - views the content as a one page at a time
+  - `more [filename]`
+- **less** - views the content one page at a time in a reverse order
+  - `less [filename]`
+- **head** - view just top couple of lines
+  - `head -2 [filename]` sees the first two lines
+- **tail** - view just bottom couple of lines
+  - `tail -2 [filename]` sees the last two lines of the file
+
+## 70. Filters / Text Processors Commands
+
+- **cut** cuts the output
+- **awk** lists by the columns
+- **grep** and **egrep** searches by a keyword
+- **sort** sortys the output in alphabetical order
+- **uniq** does not show any duplicates if there are any duplicates
+- **wc** word count command
+
+## 71. cut command
+
+- cuts a parts of lines or piped data by position, delimiter and characters
+- `cut -c1 [filename]` prints only first characters
+- `cut -c1,2,3 [filename]` prints only first, second and third characters
+- `cut -c1-3 [filaneme]` the same
+- `cut -c1-3,6-8 [filename]`
+- `cut -d:- -f 6 [filename]`
+  - delimiter will be dash and we want sixth field
+- `ls -l | cut -c2-4`
+  - take the ouput of the list as an input
+
+## 73. awk command
+
+- utility designed for data extraction, usually fields.
+- `awk '{print $1}' [filename]`
+  - print first column of a file
+- `ls -l | awk '{print $1, $3}'`
+- `ls -l | awk '{print $NF}'`
+  - get the last column of the output
+- `awk '/[word]/ {print}' filename`
+  - print first occurrence of the word
+- `awk -F: '{print $%1}' [filename]`
+  - outputs ony first field of a file
+- `echo "Hello Tom" | awk '{$2="Adam"; print $0}'` 
+  - replace the second column with Adam and print everything you find
+- `awk 'length($0) > 15' [filename]`
+  - print lines with more than 15 bytes
+- `ls -l | awk '{print NF}'`
+  - print number of columns
+
