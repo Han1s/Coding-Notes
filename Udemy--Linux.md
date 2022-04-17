@@ -1,3 +1,7 @@
+Todo: The first couple lectures
+
+# 2. Download, Install and Configure
+
 ## 19. Linux Installation (CentOS)
 
 - chose GUI server in the mode, the minimal installation does not instal the GUI
@@ -86,6 +90,8 @@
   - used in linux to access to path
 - **Right control key**
   - release mouse from the window
+
+# 3. System Access and File System
 
 ## 34. Command prompts
 
@@ -207,3 +213,230 @@ There are 3 types of root on linux
 - `mkdir [dirname]`
 - `mkdir [filename1] [filename2] [filename3]`
 
+## 47. Copt directories
+
+- **cp -R**
+- `cp -R [dirname] [newdirname]`
+
+## 48. Linux file types
+
+1. **-** a regular file
+2. **d** directory
+3. **l** link
+4. **c** special file or device
+5. **s** socket
+6. **p** named pipe
+7. **b** block device
+
+## 49. Finding files and directories
+
+- **find**
+- **locate**
+
+- `find . -name "filename"`
+  - look for a file with a name starting from local directory
+- `locate [filename]`
+
+## 50. Difference between find and locale
+
+- **locale** 
+  - uses prebuilt db which should be regularly update
+  - can be innacurate if its not updated
+  - much faster
+  - `updatedb` command updates the db. Otherwise os updates it itself after some time.
+- **find** 
+  - iterates over a filesystem to locate files
+
+## 51. Changing password
+
+- you should change the initial password as soon as you login
+- `passwd userid` 
+  - if asks you for your old password
+  - then it asks you for your new password
+  - reconfirm the new password
+  - if you just type it without the userid it changes passwd of the current user
+
+## 52. Wildcards
+
+- ***** - represents zero or more characters
+- **?** - represents a single character
+- **[]** - represents a range of characters
+- \ - escape character
+- **^** - beginning of the line
+- **$** - end of the line
+- `touch abc{1...9}-xyz`
+  - creates 9 files named accordingl
+- `ls -l abc*`
+  - list all the files starting with abc
+- `rm abc*`
+  - removes all the files starting with abc
+- rm *xzy`
+  - remove all files ending with xyz
+- `ls -l *[cd]*`
+  - list everything that has c or d in the name
+
+## 53. Soft and Hard Links
+
+- **inode** - pointer or number of a file on the hard disk
+- **soft link** - link will be removed if file is removed or renamed
+- **hard link** - deleting renaming or moving the original file will not affect the hard link
+  - hard links only work within the same partition
+- you cannot create a link within the same directory with the same name
+- `ln` creates hard link
+- `ln -s` creates a soft link
+- `echo "hulk is a  superhero" > hulk`
+  - write phrase hulk is a superhero to a file hulk
+- `echo '123' >> hulk` 
+  - append a phrase, do not overwrite
+- `ls -li` list inedoes
+
+# 4. Linux fundamentals
+
+## 57. Linux command syntax
+
+- usually **command option(s) argument(s)**
+- **options** 
+  - modify the way the command works
+  - usually consists of a dash followed by a single letter
+  - some commands accept multiple options which can usually be grouped together after a single hyphen
+- **arguments**
+  - most commands are used together with one or more arguments
+  - some commands assume a defualt argument if none is supplied
+  - arguments are optional for some commands and required by others
+- `ls -lt` 
+  - list all the content by the time
+- `ls -ltr`
+  - list all the newest files at the bottom
+- `ls -l bart`
+  - list a file bart
+  - **bart** is an argument here
+- `man [command]` will always list all the oiptions etc.
+
+## 58. File and directory permissions
+
+- **File permissions**
+  - UNIX is a multi-user system thats why the protection is necessary
+  - to access a directory you need to have executable right
+  - Permission for a file or directory may be restricted to by types
+    - **r** - read right
+    - **w** - write right
+    - **e** - execute right
+  - each permission can be controlled at three levels
+    - **u** - user level
+    - **g** - group level
+    - **o** other (everyone on the system)
+  - command to change permission
+    - **chmod**
+  - `chmod g-w jerry` 
+    - remove the write right for the group for the file jerry
+  - `chmod a-r jerry`
+    - remove read permission for the file jerry for all
+  - `chmod u+rw jerry`
+    - give the user right for read and write
+  - `chmod o+r jerry`
+    - give the oether right to read
+
+## 59. File Permissions: Using numeric mode
+
+- `chmod ugo+r [file]` == `chmod 444 [file]`
+- **Permission types**
+  - 0 - no permission
+  - 1 - execute
+  - 2 - write
+  - 3 - execute + write
+  - 4 - read
+  - 5 - read + execute
+  - 6 - read + write
+  - 7 - read write execute
+
+## 60. File Ownership
+
+- there are 2 owners of a file or directory
+- **user** and a **grouo**
+- **chown**
+  - changes the ownership of a file
+- **chgrp**
+  - changes the group ownership of the file
+- **-R** 
+  - do the same for the recursive directories.
+- `chown root [filename]`
+  - changes the ownership to root
+- `chgrp root [filename]`
+  - change the group to root
+- reardless of the file rights, if you own the parent directory you have the rights for that directory anyways
+
+## 61. Access Control List (ACL)
+
+- additional, more flexible permission mechanism for file systems. It allows you to give permissions for any user or group to any disc resource.
+- classic for scenarios when member is not a member of a group but still needs access.
+- **setfacl** and **getfacl**
+- `setfacl -m u:user:rwx /path/to/file` 
+  - add permission for user
+- `setfacl -m g:group:rw /path/to/file`
+  - add permission for a group
+- `setfacl -Rm 'entry' /path/to/dir`
+  - allow all files or directories to inherit acl entries from the directory it is within
+- `setfacl -x u:user /path/to/file` 
+  - remove a specific entry for a specific user
+- `setfacl -b path/to/file`
+  - remove all entries
+- ass you assign ACL permission, it will add + sign at the end of the permission
+- setting w permission with ACL does not allow to remove a file
+
+## 62. Help commands
+
+- `whatis [command]`
+- `[command] --help`
+- `man [command]`
+
+## 63. Tab completion and arrow keys
+
+- **Tab** completes the available commands, files or directories
+- **Up arrow key** returns the last ran command
+- `date` gives you  date of your system
+
+## 64. Adding Text to Files (Redirects)
+
+- **vi** - vi editor. It is a command that is used to create a file and add text to it.
+- redirect command output **>** or **>>**
+- **echo >** or **>>**
+- `echo [phrase] > [filename]` write the phrase to that name
+- `cat [filename]` read the file
+- `echo [phrase] >> [filename]` append the line to the file
+- `ll > [filename]` collect the output of the command and parse it to the file
+- `date >> [filename]` append the output of a command to a file
+
+## 65. Input and output redirects
+
+- **stdin** standard input - number is 0
+  - input is used when feeding file contents to a file
+  - e.g. `cat < [filename]`
+  - `mail -s "office memo" addres@gmail.com < [filename]`
+- **stdout** standard output - number is 1
+  - by default when running a command the output goes to terminal
+  - it can be routed to a file using **>** sign
+- **stderr** standard error - number is 2
+  - when a command is executed we use a keyboard that is also considered stdin (0)
+  - that command output goes to the monitor and that output is stdout (1)
+  - if the command produced error on the screen, then its considerred stderr (2)
+  - we can use redirects to route errors from the screen
+  - e.g. `ls -l /root 2> [errorfilename]`
+- `ls -la` give all the contents of the current directory including the hidden files (those that have .. in front of it)
+
+
+
+## 66. Stdout to a file (using <u>tee</u> command)
+
+- **tee** is used to store and view the output of a any command
+- it coppies the the output of a program to a file and at the same time displays it
+- `echo [phrase] | tee [filename]` display output and store it to a filename
+- `echo [phrase] | tee -a [filename]` append the output instead\
+
+## 67. Pipes
+
+- used by a shell to connect the output of one command directly to the input of another command
+- `command [arguments] | command2 [arguments]`
+- `ll | more`
+  - **more** makes a long output as pages
+- `ll | tail -1`
+  - **tail** returns the last x lines of a output
