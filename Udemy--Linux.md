@@ -489,7 +489,7 @@ There are 3 types of root on linux
 - `ls -l | cut -c2-4`
   - take the ouput of the list as an input
 
-## 73. awk command
+## 72. awk command
 
 - utility designed for data extraction, usually fields.
 - `awk '{print $1}' [filename]`
@@ -507,4 +507,76 @@ There are 3 types of root on linux
   - print lines with more than 15 bytes
 - `ls -l | awk '{print NF}'`
   - print number of columns
+
+## 73. Grep Command
+
+- global regex print
+- processes text line by line and prints lines that match the pattern
+- its basically a search
+- `grep [phrase] [file]` searches the phrase in the file
+- `grep -c [phrase] [file]` returns the count of the findings
+- `grep -i [phrase] [file]` ignore case
+- `grep -n [phrase] [title]` return line numbers
+- `grep -v [phrase] [title]` lines that do not include the phrase
+- `ls -l | grep Desktop` only search for Desktop file
+- **egrep** when you want to search two words from a file
+- `egrep i "[phrase1|phrase2]" [file]` searches for either phrase one or phrase two
+
+## 73. sort / uniq commands
+
+- **sort** 
+
+  - sorts in alphabetical order
+  - `sort [file` sorts lines alphabetically]
+  - `sort -r [file]` sorts in reverse order
+  - `sort -k2 [file]` sorts by second column
+  - `ls -l | sort -k9` sort by the last column
+
+- **uniq**
+
+  - filters repeated or duplicated lines
+  - `sort [file] | uniq` eliminate duplicates
+
+  - **always sort** the file before the uniq applicatio
+  - `sort [file] | uniq -c` give me the count
+  - `sort [file] | uniq -d` give me the duplicate lines
+
+## 75. wc command (word count)
+
+- reads input or list of files and generates **newline count, word count and byte count**
+- `wc [file]` - return newline count, word count and byte count
+- `wc -l [file]` 
+- `wc -w [file]` 
+- `wc -c [file]` - return bytes
+- **wc** is not allowed on directory
+- `ll | wc -l` return the number of files and directories (-1)
+
+## 76. Compare files (diff and cmp)
+
+- **diff**
+  - compares two files line by line
+  - `diff [file] [file2]` return the difference
+- **cmp**
+  - compare two files byte by byte
+  - `cmp [file] [file2]`
+
+## 77. Compressing and uncompressing files
+
+- **tar**
+  - take a bunch of files and put them in one container
+  - `tar cvf [name].tar .` - put everything in the directory into name.tar file
+  - `tar xvf [name].tar` - extract the file
+- **gzip**
+  - compresses a file
+  - `gzip [fi;e]` compress the file into gz
+- **gzip -d** or **gunzip**
+  - `gzip -d [file]` uncompress it
+
+## 78. Truncate file size
+
+- **truncate**
+  - shrink or extend the size of a file to the specified size
+  - it chops the file into the specified size
+  - `truncate -s 10 [file`] - reduce the file to the 10 bytes size
+    - this can also be used to make it bigger
 
