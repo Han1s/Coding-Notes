@@ -580,3 +580,45 @@ There are 3 types of root on linux
   - `truncate -s 10 [file`] - reduce the file to the 10 bytes size
     - this can also be used to make it bigger
 
+## 79. Combining and splitting files
+
+- multiple files can be combined into one
+- one file can be split into multiple files
+- `split -l 2 [file] [filename]` split file into filenamea, filenameb, filenamec, etc for every two lines
+- `cat [file1] [file2] [file3] > [file4]` combines files
+
+## 80. Linux vs Windows commands
+
+- **dir / ll**
+- **ren** / **mv**
+- **copy / cp**
+- **move / mv**
+- **cls / clear**
+- **del rm**
+- **fc / diff**
+- **find / grep**
+- **command / ?** / **man command**
+- **chdir / pwd**
+- **time / date**
+
+# 5. System Administration
+
+## 84. File Editor
+
+- vi
+- ed
+- ex
+- emacs
+- pico
+- vim
+
+- **vi**
+  - **i** - insert
+  - **Esc** - escape out of any mode
+  - **r** - replace
+  - **u** - bring back changes
+  - **x** - remove character
+  - **d** - delete
+  - **:q!** - quit without saving
+  - **:wq!** - quit and save
+    - also can be done with **shift + zz**
