@@ -611,7 +611,6 @@ There are 3 types of root on linux
 - emacs
 - pico
 - vim
-
 - **vi**
   - **i** - insert
   - **Esc** - escape out of any mode
@@ -619,6 +618,46 @@ There are 3 types of root on linux
   - **u** - bring back changes
   - **x** - remove character
   - **d** - delete
+  - **/phrase** - search for the phrase
+  - **a** - advance to the next space
+  - **o** - create a new line
   - **:q!** - quit without saving
   - **:wq!** - quit and save
     - also can be done with **shift + zz**
+
+## 85. Difference between vi and vim editors
+
+- learning vim is much easier
+- **vim** has extra
+  - completion
+  - spell check
+  - comparison
+  - merging
+  - unicode
+  - regex
+  - scripting languages
+  - plugins 
+  - gui
+  - folding
+  - syntax highlighting
+- **vim interactive learning tools**
+  - www.openvim.com
+  - www.vimgenius.com
+  - www.vim-adventures.com - teaches through games
+
+## 86. sed command
+
+- replace a string in a file with a newstring'
+  - `sed -i's/[phrasetoreplace]/[replacingphrase]/g [file]`
+    - s for substitute
+    - g for global
+    - i for insert into the file
+  - `sed -i 's/[phrasetoremove]//g' [file]`
+    - to remove words
+- find and delete a line
+- remove empty lines
+- remove n lines in a file
+- replace tabs with spaces
+- show defined lines from a file
+- substitute within vi editor
+- ...
