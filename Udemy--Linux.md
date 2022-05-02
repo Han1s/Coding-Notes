@@ -661,3 +661,77 @@ There are 3 types of root on linux
 - show defined lines from a file
 - substitute within vi editor
 - ...
+
+
+## 86. sed command
+
+- replace a string in a file with a newstring'
+  - `sed -i's/[phrasetoreplace]/[replacingphrase]/g [file]`
+    - s for substitute
+    - g for global
+    - i for insert into the file
+  - `sed -i 's/[phrasetoremove]//g' [file]`
+    - to remove words
+- find and delete a line
+- remove empty lines
+- remove n lines in a file
+- replace tabs with spaces
+- show defined lines from a file
+- substitute within vi editor
+- ...
+
+## 87. User Account Management (useradd, groupadd, usermod, userdel, groupdel)
+
+- **useradd**
+  - `useradd -g superheroes -s /bin/bash -c "user description" -m -d /home/spiderman spiderman`
+    - g to add a group
+    - s to give shell environment
+    - c for user description
+    - m and d to define home directory and the user itself
+  - `id [user]` checks whether the user is created
+    - you can also verify by checking the home directory
+- **groupadd**
+  - `groupadd [groupname]` adds a group
+  - `cat /etc/group` checks the groups
+- **userdel**
+  - `userdel [user]` deletes user
+  - `userdel -r [user]` deletes the user and its home dir
+- **groupdel**
+  - `groupdel [group`]
+- **usermod**
+  - modifies the users
+  - `usermod -G [groupname] [username]` adds user to the group
+    - verify by `grep [username] /etc/group`
+- `passwd [user]` lets you specify a password for an user
+
+Files
+
+- **/etc/passwd**
+- **/etc/group**
+- **/etc/shadow** 
+  - for passwords etc
+
+## 88. Enable Password Aging
+
+- `chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user`
+  - min is minimum number of days between password changes
+  - max is maximum amount of days, the user has to change the passwd afterwords
+  - Warn is the number of dayts before password is to expire that user is warnied that his/her password must be changed
+  - Inactive - the number of days after password expires that account is disabled
+  - expire - days since Jan 1, 1970 that account is disabled when the login may no longer be used
+- **/etc/login.defs** is a file where you can set defautl aging values when you create new values
+  - UMASS specifies default permission when user creates a file
+  - PASS_MAX_DAYS
+  - PASS_MIN_DAYS
+  - PASS_MIN_LEN
+  - PASS_WARN_AGE
+- **chage** command
+  - used to set parameters around the password
+
+## 89. Switch users and sudo access (su, sudo)
+
+- sudo access is a command that allows ordinary user run root level commands
+- `su - [user]` - switches from one user to another
+- `sudo [command]`- run command if you dont wanna become a root
+- `visudo` - edits the **etc/sudoers** config file that allows user add or remove rights for certain commands
+- root can switch to another user without authentication0
