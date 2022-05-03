@@ -678,3 +678,187 @@ Files
 - `sudo [command]`- run command if you dont wanna become a root
 - `visudo` - edits the **etc/sudoers** config file that allows user add or remove rights for certain commands
 - root can switch to another user without authentication0
+
+## 90. Monitor Users
+
+- **who**
+  - how many people are loggin, their id and the time of the login
+- **w**
+  - works the same as who but gives a bit more information
+- **last**
+  - details of users logged in since the day 1
+- **finger**
+  - program you have to add
+  - traces a user
+  - `yum install finger -y`
+  - 
+- **id**
+  - `id [user]`returns the info about the user. (including the groups etc)
+
+## 91. Talking to Users
+
+- **users**
+- **wall**
+  - broadcast to all users logged in
+  - `wall`, press enter, write a message, send with ctrl + D
+- **write**
+  - broadcast to a one user
+  - `write [user]`, hit enter, write a message, send with enter.
+
+## 92. Linux Account Authentication
+
+- Types of Accounts
+  - Local accounts
+    - created in linux machine
+  - Domain/Directory accounts
+    - authenticated via server
+- Windows has **active directory**
+  - you create an account there and it gets authenticated
+- Usually you use SSH to connect, or LDAP.
+
+## 93. Difference between Active Directory, LDAP, IDM, WinBIND, OpenLDAP, etc.
+
+- **Active Directory** 
+  - for Microsoft
+  - the information is not saved on the linux machine, but in some sort od db that is connected to the linux
+- **IDM**
+  - Identity manager
+- **WinBIND**
+  - Used in Linux to communicate with windows active directory
+- **OpenLDAP** (open source)
+- **IBM Directory Server**
+  - developed by IBM and sold to the customers
+- **LDAP**
+  - lightweight Directory Access Protocol
+  - just a protocol
+  - you need protocol to communicate with any aforementioned services
+
+## 94. Utility commands (date, uptime, hostname, uname, which, call, bc)
+
+- **date**
+  - show date and time of the system
+- **uptime**
+  - how long the system has been up and load average
+- **hostname**
+  - identify the system you are logged into
+- **uname**
+- **which**
+  - gives you location of a command
+  - `which pwd`
+- **cal**
+  - give me calendar
+- **bc**
+  - binary calculator
+
+## 95. Processes, Jobs and Scheduling
+
+- **Application**
+  - Service that runs for your computer, like Powerpoint, Apache etc.
+- **Script**
+  - list of instructions
+- **Process**
+  - Starting application generates processs.
+- **Daemon**
+  - Something that continuosly runs until interrupted.
+  - It is also process.
+- **Thread**
+  - Every process could have multiple threads associated with it
+- **Job**
+  - Something that is supposed to run at a scheduled time
+
+- for processes and services
+  - we have **systemctl** or **service**
+  - **ps** command
+    - allows you to see processes running in Linux systems
+  - **top** command
+    - see all the processes running in  the system based on the load and memory, cpu information
+  - **kill** command
+    - kills the process by name or id
+  - **crontab**
+    - used to schedule services
+  - **at**
+    - like crontab, difference is that at is scheduled for one time bases.
+
+## 96. systemctl command
+
+- system control command
+- used to start applications
+- something like double click in linux
+- `systemctl start|stop|status servicename.service` (firewall for example)
+- `systemctl enable servicename.service`
+- `systemctl restart|reload servicename.service`
+- `systemctl list-units --all`
+  - show all the processes that we can manage
+- to add a service under systemctl management
+  - create a unit file in **/etc/systemd/system/servicename.service**
+
+## 97. Ps command
+
+- process status
+- kind of equivalent to the task manager in windows
+- display all currently running processes in the linux system
+- `ps` - shows the processes of the current shell
+  - **PID** - the unique process ID
+  - **TTY** - terminal type that the user logged-in to
+  - **TIME** - amount of CPU in minutes and seconds that the process has been running
+  - **CMD** - name of the command
+- `ps -e` - shows all processes
+- `ps aux`- shows all running processes in BSD format
+- `ps -ef` - shows all processes in full format listing
+- `ps -u [username]`= shows all processes by username
+
+## 98. top command
+
+- show linux processes and their real time view of the system
+- refreshes the information every 3 seconds
+- summary of information and list of processes managed by the Kernel
+- you can exit the interactive mode by hitting **q**
+- **PID** - process id
+- **USER** - owner of the task
+- **PR** - priority of a task
+- **NI** - nice value of the task - negative value 
+- **VIRT** - total virtual memory used by the task
+- **RES** - memory consumed by the process in RAM
+- **SHR** - represents the amount of shared memory used by a task
+- **S** - shiows the process state in a single letter form
+- **CPU** - cpu usage
+- **MEM** - memory usage
+- `top -u [user]`- shows task/processes owned by a user
+- `top and then press c`- gives absolute path of the processes running
+- `top and press k`- kill process by pid within a session
+- `top and press M and P`- list processes by memory usage
+
+**99. Kill command**
+
+- used to terminate processes manually
+- sends a signal to kill a particular processes or group of processes
+- **'kill [OPTION] [PID]**
+  - Option - signal name or signal number
+  - pid - process id
+  - [OPTION] is skippable to kill process directly
+- `kill -l`- get a list of all signal names or numbers
+- `kill [pid`- kill process
+- `kill -1`restart
+- `kill -2`- interrupt from the keyboard like CTRL + c
+- `kill -9`- forcefully kill the process
+- `kill -15`- kill a process gracefully
+- `killall`- kill all related process as well
+- `pkill`- kills process by name
+
+## 100. crontab command
+
+- used to schedule tasks
+- usage:
+  - `crontab -e`lets you edit the crontab
+  - `crontab -l`list the crontab entries
+  - `crontab -r`remove the crontab
+  - `crond`- ccrontab daemon/service that manages scheduling
+  - `systemctl status crond`to manage the crond service
+  - stopping the service means the cron does not execute them
+  - columns:
+    - minute
+    - hour
+    - day of the month
+    - month
+    - day of the week
+    - command to execute
