@@ -4,7 +4,7 @@ Todo: The first couple lectures
 
 ## 19. Linux Installation (CentOS)
 
-- chose GUI server in the mode, the minimal installation does not instal the GUI
+- chose GUI server in the mode, the minimal installation does not install the GUI
 - ethernet **ON**
 - in **network & hostname** click on configure and check automatically connect
 
@@ -12,10 +12,10 @@ Todo: The first couple lectures
 
 - linux will be installed with **GNOME** or **KDE**
 
-## 27. ORacle VM management
+## 27. Oracle VM management
 
 - most corporates run on Virtual environment
-- setup **bridget adapter likely**
+- setup **bridged adapter likely**
 
 ## 28. Linux vs Windows
 
@@ -24,7 +24,7 @@ Todo: The first couple lectures
   - not user friendly
   - very reliable
   - often runs for months or years
-  - mostly enterprise level softwares
+  - mostly enterprise level software
   - best for multi-tasking
   - very secure
 - Windows
@@ -919,3 +919,91 @@ Files
     - month
     - day of the week
     - command to execute
+    - 
+
+## 101. at command
+
+- allows you to schedule a task but only once
+
+- exit interactive mode by **Ctrl + D**
+
+- Usage
+
+  - **at HH:MM PM** = Schedule a job
+  - **atq** = List the entries
+  - **atrm #** = remove at entry
+  - **atd status atd** = To manage the atd service
+
+- Example
+
+  - **at 4:45 PM -> enter** 
+
+    **echo "This is my first at entry">  at -entry**
+
+  - **at 2:45 AM 101621** = schedule a job to run on october 16 2021 at 2:45
+  
+  - **at 4PM + 4 days**
+  
+  - **at now + 5 hours**
+  
+  - **at 8:00 AM Sun**
+  
+  - **at 10:00 AM next month**
+
+## 102. Additional Cron Jobs
+
+- by default there are 4 different types of cronjobs
+  - hourly
+  - daily
+  - weekly
+  - monthly
+- All the above crons are setup in **/etc/cron.__** (directory)
+- timing of each are set in **/etc/anacrontab** (except hourly)
+
+## 103. Process Management (bg, fg, nice)
+
+- backgounrd = **ctrl-z** to stop a process, **jobs** to list jobs, and **bg** to move the process in the background
+- foregrounf = **fg**
+- Run process even after exit = **nohup process &**
+  - nohup means dont send any kind of signal to stop it
+  - or **nohup process > /dev/null 2>&1 &**
+- **pkill** kills a process by name
+- **nice** - process priority - e.g. **nice -n 5 [process]**
+  - the scale goes from -20 to 19. The lower te number the more priority that task gets.
+- process monitoring = **top**
+- list processes = **ps**
+
+## 104. System monitoring commands
+
+- **top**
+- **df** 
+  - disk partition information
+  - tells things file system
+  - **df -h** - human readable
+- **dmesg**
+  - gives output of the system error messages
+- **iostat 1**
+  - what is going in and out
+- **netstat**
+  - shows connections and stuff
+  - **netstat -rnv** for gateway information
+- **free**
+  - gives physical and virtual memory
+- **cat /proc/cpuinfo**
+- **cat /proc/meminfo**
+
+## 105. System logs monitoring (/var/logs)
+
+- another and the most important way of system administration
+- **/var/log** = log directory
+- **boot**
+  - log when system boots up / reboots
+- **chronyd**
+- **cron**
+- **maillog**
+- **secure**
+  - all login logout activity
+- **messages**
+  - everything
+- **httpd**
+
