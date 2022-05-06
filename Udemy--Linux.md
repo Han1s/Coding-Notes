@@ -1007,3 +1007,42 @@ Files
   - everything
 - **httpd**
 
+## 106. System maintenance commands
+
+- **shutdown**
+- **init 0-7**
+  - 0 to shutdown
+  - 6 to reboot
+  - 3 to multiuser mode
+- **reboot**
+- **halt**
+  - shuts down the computer right away
+
+## 107. Changing System Hostname
+
+- `hostnamectl set-hostname newhostname`
+- /etc/hostname is the file used to store hostname
+
+## 108. Finding system Information
+
+- **cat /etc/redhat-release**
+  - gives info about os (version and distro)
+- **uname -a**
+  - also kernel version, version (64bit etc, build date, etc)
+- **dmidecode**
+  - info about processes, memory, etc
+
+## 109. Finding system architecture
+
+- differences between 32-bit and 64-bit CPU
+  - number of calculations per second they can perform. 64 come in dual core.
+  - usually prgrams operate more sufficiently on 64-bit processors.
+- **arch**
+
+## 110. Terminal control keys
+
+- holding ctrl and pressing a key
+- **u** = erase everything youve typed on the lcommand line
+- **c** = stops / kills a command
+- **z** = suspend a command
+- **d** = exit from an interactive program
