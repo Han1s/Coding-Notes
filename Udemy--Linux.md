@@ -1046,3 +1046,48 @@ Files
 - **c** = stops / kills a command
 - **z** = suspend a command
 - **d** = exit from an interactive program
+
+## 111. Terminal Commands
+
+- `clear`= clears your screen
+- `exit`= exit out of shell, terminal or user session
+- `script`= stores terminal activities in a log file that can be named by a user.
+- `script file-name.log`
+  - `exit`exits the script process
+  - useful when troubleshooting an issue or creating a script or smth.
+  - 
+
+## 112. Recover root password
+
+- restart your computer
+- edit grub
+- change password
+- reboot
+
+## 113. SOS Report
+
+- to collect and package diagnostic and support data
+- package name that has to be installed
+  - **sos-version**
+  - `sosrepport`command to perform this report
+
+## 114. Environment variables
+
+- Dynamic named value that can affect the way running processes behave on a computer. They are part of environment in which a process runs.
+- Its a set of defined rules and values to build an envronment
+- to view all env variables run
+  - ` printenv` or ` env` 
+  - `echo $SHELL` to view one environment variable
+- to set environment varlabies
+  - `export TEST=1`
+  - `echo $TEST` 
+- to set environment variable permanently
+  - `vi .bashrc`
+  - `TEST='123'`
+  - `export TEST` (also written in the file)
+- to set global environment variable permanently
+  - `vi /etc/profile or /etc/bashrc`
+  - `Test='123'`
+  - `export TEST`
+- 
+
