@@ -645,23 +645,6 @@ There are 3 types of root on linux
   - www.vimgenius.com
   - www.vim-adventures.com - teaches through games
 
-## 86. sed command
-
-- replace a string in a file with a newstring'
-  - `sed -i's/[phrasetoreplace]/[replacingphrase]/g [file]`
-    - s for substitute
-    - g for global
-    - i for insert into the file
-  - `sed -i 's/[phrasetoremove]//g' [file]`
-    - to remove words
-- find and delete a line
-- remove empty lines
-- remove n lines in a file
-- replace tabs with spaces
-- show defined lines from a file
-- substitute within vi editor
-- ...
-
 
 ## 86. sed command
 
@@ -716,7 +699,7 @@ Files
 - `chage [-m mindays] [-M maxdays] [-d lastday] [-I inactive] [-E expiredate] [-W warndays] user`
   - min is minimum number of days between password changes
   - max is maximum amount of days, the user has to change the passwd afterwords
-  - Warn is the number of dayts before password is to expire that user is warnied that his/her password must be changed
+  - Warn is the number of days before password is to expire that user is warned that his/her password must be changed
   - Inactive - the number of days after password expires that account is disabled
   - expire - days since Jan 1, 1970 that account is disabled when the login may no longer be used
 - **/etc/login.defs** is a file where you can set defautl aging values when you create new values
@@ -816,7 +799,7 @@ Files
 - **Process**
   - Starting application generates processs.
 - **Daemon**
-  - Something that continuosly runs until interrupted.
+  - Something that continuously runs until interrupted.
   - It is also process.
 - **Thread**
   - Every process could have multiple threads associated with it
@@ -877,7 +860,7 @@ Files
 - **VIRT** - total virtual memory used by the task
 - **RES** - memory consumed by the process in RAM
 - **SHR** - represents the amount of shared memory used by a task
-- **S** - shiows the process state in a single letter form
+- **S** - shows the process state in a single letter form
 - **CPU** - cpu usage
 - **MEM** - memory usage
 - `top -u [user]`- shows task/processes owned by a user
@@ -889,12 +872,12 @@ Files
 
 - used to terminate processes manually
 - sends a signal to kill a particular processes or group of processes
-- **'kill [OPTION] [PID]**
+- **kill [OPTION] [PID]**
   - Option - signal name or signal number
   - pid - process id
   - [OPTION] is skippable to kill process directly
 - `kill -l`- get a list of all signal names or numbers
-- `kill [pid`- kill process
+- `kill [pid]`- kill process
 - `kill -1`restart
 - `kill -2`- interrupt from the keyboard like CTRL + c
 - `kill -9`- forcefully kill the process
@@ -919,7 +902,6 @@ Files
     - month
     - day of the week
     - command to execute
-    - 
 
 ## 101. at command
 
@@ -1055,7 +1037,6 @@ Files
 - `script file-name.log`
   - `exit`exits the script process
   - useful when troubleshooting an issue or creating a script or smth.
-  - 
 
 ## 112. Recover root password
 
@@ -1089,5 +1070,52 @@ Files
   - `vi /etc/profile or /etc/bashrc`
   - `Test='123'`
   - `export TEST`
-- 
+
+## 115. Special Permissions with setuid, setgid and stick bit
+
+- all permissions on a file or directory are referred as bits.
+- they can be changed by **chmod** command
+- **setuid **= tells linux to run a program with the effective user id of the owner instead of the executor.
+- **setgid** = tells linux to run a program with the effective gid of the owner instead of the executor (e.g. **locate, wall**)
+- **sticky bit** = a bit set on files / dirs that allows only the owner or root to delete those files
+- To assign special permissions at the user level
+  - **chmod u+s xys.sh**
+- To assign a special permission at the group level
+  - **chmod g+s xys.sh**
+- To remove special permissions at the user or group level
+  - **chmod u-s xys.sh**
+  - **chmod g-s xys.sh**
+- To find all executables in Linux with setuid and setgid permissions
+  - **find / -perm /6000 -type f**
+- these bits work on c programming executables. Not on bash shell scripts.
+- **sticky bit**
+  - assigned to the last bit of permissions
+  - Why?
+    - cannot delete the content of the directory with assigned sticky bit
+
+# 6. Shell Scripting
+
+## 116. Linux Kernel
+
+- its an interface between hw and sw
+- its a program that is stored inside of the OS that keeps running and takes commands from shell
+- Shell and Kernel together form the operating system
+- Shell and application together is Software
+
+## 117. What is Shell
+
+- its like a container
+- interface between users and Kernel/OS
+- CLI is a Shell
+- to find shell you can
+  - **echo $0**
+  - **cat /etc/shells** = available shell
+  - **/etc/passwd** = your shell
+- Windows GUI is a shell
+- Linux KDE GUI is a shell
+- Linux sh, bash etc. is a shell
+
+
+
+TODO: Homework section 5
 
