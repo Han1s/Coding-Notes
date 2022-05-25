@@ -1095,14 +1095,14 @@ Files
 
 # 6. Shell Scripting
 
-## 116. Linux Kernel
+## 119. Linux Kernel
 
 - its an interface between hw and sw
 - its a program that is stored inside of the OS that keeps running and takes commands from shell
 - Shell and Kernel together form the operating system
 - Shell and application together is Software
 
-## 117. What is Shell
+## 121. What is Shell
 
 - its like a container
 - interface between users and Kernel/OS
@@ -1114,6 +1114,70 @@ Files
 - Windows GUI is a shell
 - Linux KDE GUI is a shell
 - Linux sh, bash etc. is a shell
+
+## 121. Types of Shell
+
+- **Gnome** and **KDE** are GUIs and shell as well. You execute commands with your mouse.
+- **sh** = a shell
+- **bash** = a built upon sh, its sh with additional things. means **born again shell**
+- **csh** and **tcsh** = using c syntax
+- **ksh** = kornshell, most of the time used in solaris
+- if you wanna know a list of shells you have available type **cat /etc/shells**
+
+## 122. Shell scripting
+
+- Shell script is an executable file containing multiple shell commands that are executed sequentially
+- The file can contain
+  - **Shell** (#!/bin/bash)
+  - **Comments** (# comments)
+  - **Commands** (echo, cp, grep, etc.)
+  - **Statements** (if, while, for, etc.)
+- shell script should have executable permission (e.g. -rwx r-x r-x)
+- shell script has to be called from absolute path (e.g. /home/userdir/script.bash)
+- if called from current location then **./script.bash**
+
+## 123. Basics scripts
+
+- **Output to screen**
+
+```bash
+#!/bin/bash
+
+echo Hello World
+```
+
+- **Small tasks**
+
+```bash
+#!/bin/bash
+# Define small tasks
+
+whoami
+echo
+pwd
+echo
+hostname
+echo
+ls -ltr
+echo
+```
+
+- **creating variables**
+
+```bash
+#!/bin/bash
+# Example of defining variables
+
+a=Honza
+b=Ranostaj
+c="Linux Class"
+
+echo "My first name $a"
+echo "My surname is $b"
+echo "I study $c"
+```
+
+
 
 
 
