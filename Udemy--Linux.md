@@ -1177,9 +1177,50 @@ echo "My surname is $b"
 echo "I study $c"
 ```
 
+## 124. Input and Output of the script
 
+- **read** - input
+- **echo** - output
 
+```bash
+#!/bin/bash
+# Author
+# Date
+# Desc
+#
 
+a=`hostname` # The ticks have to be here for a command
+echo Hello, my server name is $a
+echo
+echo What is your name?
+read namevar
+echo Hello $namevar
+echo
+```
 
-TODO: Homework section 5
+## 125. If-then scripts
+
+```bash
+#!/bin/bash
+
+count=100
+if [ $count -eq 100 ]
+then
+	echo Count is 100
+else
+	echo Count is not 100
+fi
+```
+
+```bash
+#!/bin/bash
+
+clear
+if [ -e /home/honza/error.txt ]
+then
+	echo "file exists"
+else
+	echo "file does not exist"
+fi
+```
 
