@@ -1224,3 +1224,45 @@ else
 fi
 ```
 
+## 126. For loops
+
+```shell
+#!/bin/bash
+
+for i in 1 2 3 4 5
+do
+echo "Welcome $i times"
+done
+```
+
+```bash
+#!/bin/bash
+for i in eat run jump prey
+do
+echo See honza $i
+done
+```
+
+## 127. do-while scripts
+
+- demons usually have **do-while scripts**
+
+```bash
+#!/bin/bash
+
+count=0
+num=10
+while [ $count -lt 10 ]
+do
+echo
+echo $num seconds left to stop this process $1
+echo
+sleep 1
+num=`expr $num - 1`
+count=`expr $count + 1`
+done
+echo
+echo $1 process is stopped!!!
+echo
+```
+
