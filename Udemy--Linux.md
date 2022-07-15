@@ -1290,3 +1290,31 @@ d) uptime;;
 esac # ends case statement
 ```
 
+## 129. Check Other Servers Connectivity
+
+```bash
+#!/bin/bash
+# Author: Honza
+# Description: This script will ping a remote host and notify
+
+hosts="/home/honza/ps/hosts"
+
+for ip in $(cat $hosts)
+
+do
+        ping  -c1 $ip &> /dev/null
+        if [ $? -eq 0 ]
+        then
+        echo $ip is OK
+        else
+        echo $ip is NOT OK
+        fi
+done
+```
+
+## 130. Aliases
+
+- `alias l='ls -al'`
+  - creates alias **l**
+- `alias pl="pwd; ls"`
+- `alias tell="whoami; "
