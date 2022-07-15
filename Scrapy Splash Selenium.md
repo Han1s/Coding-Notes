@@ -145,7 +145,7 @@ Example:
           }
   ```
 
-- now in terminal with activated wirtual environment
+- now in terminal with activated virtual environment
 
   - `scrapy crawl countries`
 
@@ -172,7 +172,7 @@ Example:
 - by id - `#location`
 - only an element that has a certain class - `div.intro`
 - select element that has two or more classes - `.bold.italic`
-- select element by an attribute - `li[data-identifier='7']` - we can ommit the `li` element
+- select element by an attribute - `li[data-identifier='7']` - we can omit the `li` element
 - conditions in css selectors - e.g. only a elements where href starts with https - `a[href^='https']`
 - element where attribute ends - `a[href$='fr']`
 - element where attribute is in the middle = `a[href*='google']`
@@ -180,8 +180,8 @@ Example:
 - element that are inside including the elements that are inside them - `div.intro p, #location` 
 - select all the children - `div.intro > p` 
 - select all the p elements that are placed **immediately** after an element - `div.intro + p`
-- select first li of unorderer list - `li:nth-child(1)`
-- select first and third li of unorderer list - `li:nth-child(1), li:nth-child(3)`
+- select first li of unordered list - `li:nth-child(1)`
+- select first and third li of unordered list - `li:nth-child(1), li:nth-child(3)`
 - select all odd / even elements of the list - `li:nth-child(odd)` / `li:nth-child(even)`
 
 ## 15. XPath fundamentals
@@ -195,7 +195,7 @@ Example:
 - search for text in between - `//a[contains(@href, 'google')]` or `//a[contains(text(), 'France')]`
 - based on position - `//ul[@id='items']/li[1]`  or `//ul[@id='items']/li/[position() = 1 or position() = last()]` or `//ul[@id='items']/li/[position() > 1]`
 
-## 16. Navigating Up using Xpath
+## 16. Navigating Up using XPath
 
 - `//div[@class='intro']/p`
 - `//p[@id='unique']/parent::div` - search for parent that is a div
@@ -355,6 +355,7 @@ class CountriesSpider(scrapy.Spider):
 # VI. Dealing With Multiple Pages
 
 - we will use https://web.archive.org/
+  
   - https://web.archive.org/web/20190225123327/https://www.tinydeal.com/specials.html
 - before you start a project check robots.txt and make sure the endpoint you're scraping is not listed
 - disable javascript to check the website

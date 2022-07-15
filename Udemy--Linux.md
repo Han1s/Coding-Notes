@@ -1314,7 +1314,71 @@ done
 
 ## 130. Aliases
 
+​	Once you log off these aliases will be removed
+
 - `alias l='ls -al'`
   - creates alias **l**
 - `alias pl="pwd; ls"`
-- `alias tell="whoami; "
+- `alias tell="whoami; ` 
+- `alias tell="whoami; hostname; pwd"`
+- ...
+- `alias`
+  - gives all the created aliases
+- `unalias [aliasName]`
+  - remove the alias
+
+## 131. User and Global Alias
+
+- **User** - applies only to a specific user profile
+  - `/home/user/.bashrc`
+- **Global** - applies to everyone who has account on the system
+  - `/etc/bashrc/`
+
+## 132. Shell history
+
+Saved at **/home/user/.bash_history**
+
+- `history`
+  - get all the listings of the command ran by a specific user
+- `history | more`
+  - show as page
+- `![number]` 
+  - rerun a command [number] from history
+
+
+
+## 7. Networking, Services, System updates
+
+## 136. Enable Internet on Linux VM
+
+- to enable internet switch to **bridged adapter**
+
+
+
+## 137. Network Components
+
+- **IP** - internet protocol. Identifies computer in the site
+- **Subnet mask** - 32-bit number that masks an IP address and divides the the IP into network address and host address.
+- **Gateway** - which route to pick to send traffic in and out
+  - the ip adcress of hte modem is the gateway
+- **Static vs DHCP**
+  - static address is assigned dedicated IP address. Does not change on reboot
+  - DHCP the address changes randomly every time the system reboots.
+- **Interface**
+  - its a port where you connect cable
+  - this interface always has **MAC address** that never changes
+
+## 138. Network Files and Commands
+
+- Interface detection - cable.
+- Interface config files
+  - /etc/nsswitch.conf
+    - tells the system where it should resolve the hostname
+  - /etc/hosts
+  - /etc/sysconfig/network
+    - specify your hostname here
+  - /etc/sysconfig/network-scripts/ifcfg-nic
+  - /etc/resolv.conf
+
+
+
