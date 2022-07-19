@@ -472,7 +472,7 @@ class SpecialOffersSpider(scrapy.Spider):
 
 - bugs can be **logical** or **syntactical**
 
-## Parse Command
+## 35. Parse Command
 
 - checks the output of the spider 
 
@@ -616,7 +616,7 @@ class CountriesSpider(scrapy.Spider):
 
   
 
-## Debugging with debug
+## 36. Debugging with debug
 
 - within a root directory create a **runner.py** file
 
@@ -637,16 +637,16 @@ class CountriesSpider(scrapy.Spider):
 
   - can place watcher variables if you want
 
-# Taking a break
+# VII. Taking a break
 
-## whys and whens
+## 37. Whys and Whens
 
 - scraping usually used for data analysis or machine learning
 - lead generation
 - real estate listings
 - price monitoring
 - stock market tracking
-- drop shipping - **this is super interesting!** - you basically scrape amazon and put a markup and resel
+- drop shipping - **this is super interesting!** - you basically scrape amazon and put a markup and resell
 - when to use/not use web scraping
   - **robots.txt**
   - **does the website have a public API?**
@@ -654,13 +654,17 @@ class CountriesSpider(scrapy.Spider):
   - **does the API have any limitations?**
   - **is the API free/paid?**
 
-## Web scraping challenges
+## 38. Web scraping challenges
 
 - **stability and maintanence of the spider**
   - if website changes UI you can break selectors - e.g. adding javascript
   - the spider might not work tomorrow
 
-# Crawl Spider Structure
+# IX. Crawlers
+
+## 40. Crawl Spider Structure
+
+- time back url: http://web.archive.org/web/20200715000935if_/https://www.imdb.com/search/title/?groups=top_250&sort=user_rating
 
 - the basic template is the default when creating a spider
 - `scrapy genspider -l` puts out all the available templates
@@ -670,7 +674,7 @@ class CountriesSpider(scrapy.Spider):
   - **xmlfeed** - used to scrape xml documents
 - `scrapy genspider -t crawl best_movies imdb.com` generates the spider
 
-## The rule object
+## 41. The rule object
 
 ```python
 # -*- coding: utf-8 -*-
@@ -681,19 +685,22 @@ from scrapy.spiders import CrawlSpider, Rule
 
 class BestMoviesSpider(CrawlSpider):
     name = 'best_movies'
-    allowed_domains = ['imdb.com']
-    start_urls = ['http://imdb.com/']
+    allowed_domains = ['web.archive.org']
+    start_urls = ['http://web.archive.org/web/20200715000935if_/https://www.imdb.com/search/title/?groups=top_250&sort=user_rating']
 
     rules = (
-        Rule(LinkExtractor(restrict_css=('//a[@class="active"]')), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths='//h3[@class="lister-item-header"]/a'), callback='parse_item', follow=True),
     )
 
     def parse_item(self, response):
-        item = {}
-        #item['domain_id'] = response.xpath('//input[@id="sid"]/@value').get()
-        #item['name'] = response.xpath('//div[@id="name"]').get()
-        #item['description'] = response.xpath('//div[@id="description"]').get()
-        return item
+        yield {
+            'title': response.xpath('//div[@class="title_wrapper"]/h1/text()').get(),
+            'year': response.xpath('//span[@id="titleYear"]/a/text()').get(),
+            'duration': response.xpath('normalize-space((//time)[1]/text())').get(),
+            'genre': response.xpath('//div[@class="subtext"]/a[1]/text()').get(),
+            'rating': response.xpath('//span[@itemprop="ratingValue"]/text()').get(),
+            'movie_url': response.url,
+        }
 ```
 
 - If you need to  **normalize space** around the element text just use 
@@ -702,7 +709,10 @@ class BestMoviesSpider(CrawlSpider):
   'duration': response.xpath("normalize-space((//time)[1]/text())").get(),
   ```
 
-## Following links in pagination
+## 42. Following links in pagination
+
+- the order of rules matter. If you put the second rule first, it will be executed first.
+- the callback is not specified because the rule 1 will be triggered automatically
 
 ```python
 # -*- coding: utf-8 -*-
@@ -713,23 +723,24 @@ from scrapy.spiders import CrawlSpider, Rule
 
 class BestMoviesSpider(CrawlSpider):
     name = 'best_movies'
-    allowed_domains = ['imdb.com']
-    start_urls = ['https://www.imdb.com/chart/top/']
+    allowed_domains = ['web.archive.org']
+    start_urls = ['http://web.archive.org/web/20200715000935if_/https://www.imdb.com/search/title/?groups=top_250&sort=user_rating']
 
     rules = (
-        Rule(LinkExtractor(restrict_xpaths="//td[@class='titleColumn']/a"), callback='parse_item', follow=True),
-        Rule(LinkExtractor(restrict_xpaths="(//a[@class-'lister-page-next next-page'])[2]"))
+        Rule(LinkExtractor(restrict_xpaths='//h3[@class="lister-item-header"]/a'), callback='parse_item', follow=True),
+        Rule(LinkExtractor(restrict_xpaths='(//a[@class="lister-page-next next-page"])[1]'))
     )
 
     def parse_item(self, response):
         yield {
-            'title': response.xpath("//div[@class='title_wrapper']/h1/text()").get(),
-            'year': response.xpath("//span[@id='titleYear']/a/text()").get(),
-            'duration': response.xpath("normalize-space((//time)[1]/text())").get(),
-            'genre': response.xpath("//div[@class='subtext']/a/text()").get(),
-            'rating': response.xpath("//span[@itemprop='ratingValue']/text()").get(),
-            'movie_url': response.url
+            'title': response.xpath('//div[@class="title_wrapper"]/h1/text()').get(),
+            'year': response.xpath('//span[@id="titleYear"]/a/text()').get(),
+            'duration': response.xpath('normalize-space((//time)[1]/text())').get(),
+            'genre': response.xpath('//div[@class="subtext"]/a[1]/text()').get(),
+            'rating': response.xpath('//span[@itemprop="ratingValue"]/text()').get(),
+            'movie_url': response.url,
         }
+
 ```
 
 # Spoofing request headers with Crawl spider
