@@ -743,7 +743,7 @@ class BestMoviesSpider(CrawlSpider):
 
 ```
 
-# Spoofing request headers with Crawl spider
+## 43. Spoofing request headers with Crawl spider
 
 - in **settings**
 
@@ -799,9 +799,9 @@ class BestMoviesSpider(CrawlSpider):
             }
     ```
 
-# Splash Crash Course
+# X. Splash Crash Course
 
-## What does Splash solve?
+## 46. What does Splash solve?
 
 - websites using JavaScript
 - its meant to be used with scrapy
