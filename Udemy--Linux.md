@@ -1345,9 +1345,11 @@ Saved at **/home/user/.bash_history**
 - `![number]` 
   - rerun a command [number] from history
 
+## 135. Homework
 
+- progress: 7 sections and 2 scripts
 
-## 7. Networking, Services, System updates
+# 7. Networking, Services, System updates
 
 ## 136. Enable Internet on Linux VM
 
@@ -1360,7 +1362,7 @@ Saved at **/home/user/.bash_history**
 - **IP** - internet protocol. Identifies computer in the site
 - **Subnet mask** - 32-bit number that masks an IP address and divides the the IP into network address and host address.
 - **Gateway** - which route to pick to send traffic in and out
-  - the ip adcress of hte modem is the gateway
+  - the IP address of the modem is the gateway
 - **Static vs DHCP**
   - static address is assigned dedicated IP address. Does not change on reboot
   - DHCP the address changes randomly every time the system reboots.
@@ -1375,10 +1377,35 @@ Saved at **/home/user/.bash_history**
   - /etc/nsswitch.conf
     - tells the system where it should resolve the hostname
   - /etc/hosts
+    - define system IPaddress and system hostname
   - /etc/sysconfig/network
     - specify your hostname here
   - /etc/sysconfig/network-scripts/ifcfg-nic
+    - you can change BOOTPROTO to static and then define address and this way the IP address never changes
   - /etc/resolv.conf
+    - specifies a DNS server
+
+**Commands**
+
+- **ping** - ping [IP] pings a server
+- **ifconfig** - lists your interfaces in the system]
+- **ifup** or **ifdown** - to bring interface up or down
+- **netstat** - tells your gateway, traffic, interface, etc.
+- **tcpdump** - traces transaction from and to your machine
 
 
 
+## 141. NIC Information
+
+- Network interface card (port where you connect the internet), the port is called NIC
+- Examples:
+  - `ethtool enp0s3`
+- Other **NIC**s
+  - **lo** - loopback device that your computer uses to communicate with itself. Mainly for diagnostics and troubleshooting and to connect to servers running on the local machine.
+  - **virb0** - virtual bridge 0 used for Network Address Translation. Venv sometimes use it to connect outside network
+
+## 142. NIC Bonding
+
+- NIC Bonding (Network bonding) is aggregation or combination of multiple NIC into a single bond interface to provide high availability and redundancy.
+- you can combine two interfaces together (via lectures, long procedure)
+- `systemctl network restart` restarts the service 
