@@ -1409,3 +1409,33 @@ Saved at **/home/user/.bash_history**
 - NIC Bonding (Network bonding) is aggregation or combination of multiple NIC into a single bond interface to provide high availability and redundancy.
 - you can combine two interfaces together (via lectures, long procedure)
 - `systemctl network restart` restarts the service 
+
+## 143. New Network Utilities
+
+- **Network manager**
+  - service that provides a set of tools to manage networking config on Linux and is default network management service on RedHat 8
+  - It makes network management easier
+  - Provides easy setup of connection to the user
+    - `nmtui` - **most important**
+      - Network manager text user interface. Can be run within any terminal and allows changes to be made by making menu selections and entering data
+    - `nmcli`
+      - network manager command line interface, useful when access to GUI is not available and to make network config changes
+    - `nm-connection-editor`
+      - Full graphical management tool providing access to most of Network Manager config options. It can only be accessed through the desktop or console
+    - **GNOME Settings**
+      - The network screen of the GNOME desktop that allows basics network settings
+
+## 144. Downloading Files or Apps (wget)
+
+- **wget** - get from www.
+  - `wget http://website.com/filename`
+  - can be used to download packages for **yum** for example
+
+## 145. curl and ping commands
+
+- `curl http://www.google.com`
+- `curl -O file.tar.gz`
+  - downloads a file
+- `ping http://www.google.com`
+- `ping http:/www.google.com`
+
