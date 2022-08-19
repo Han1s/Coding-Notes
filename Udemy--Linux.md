@@ -1439,3 +1439,44 @@ Saved at **/home/user/.bash_history**
 - `ping http://www.google.com`
 - `ping http:/www.google.com`
 
+## 146. FTP - File Transfer Protocol
+
+- **protocol** is a set of rules that tells computer how to communicate
+- **default FTP port** is 21
+- you have to install and configure FTP on the remote server
+  - become root
+  - `rpa -qa | grep ftp`
+  - `ping www.google.com`
+  - `yum install vsftpd
+  - `vi /etc/vsftpd/vsftpd.conf`
+    - **anonymous_enable=NO**
+    - **ascii_upload_enable=YES**
+    - **ascii_download_enable=YES**
+    - **ftpd_banner=Welcome to UNIXMENT FTP service**
+    - **use_localtime=YES**
+  - `systemctl start vsftpd`
+  - `systemctl enable vsftpd`
+  - `systemctl stop firewalld`
+  - `systemctl disable firewalld`
+  - `useradd honza`
+  - install FTP client on the server
+    - become root
+    - `yum install ftp`
+    - `su - honza`
+    - `touch fileName`
+    - `ftp 192.168.1.x`
+    - Enter username and password
+    - bi
+    - hash
+    - put kruger
+    - bye
+
+## 147. SCP - Secure Copy Protocol
+
+- transfer the files securely from local to a remote. Similar to FTP but adds security and authentication.
+- default port is **22** (same as SSH).
+- login as yourself
+- `touch jack`
+- `scp jack honza@192.168.1.x:/home/honza` 
+- Enter username and password
+
