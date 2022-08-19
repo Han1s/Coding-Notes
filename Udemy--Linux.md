@@ -1480,3 +1480,20 @@ Saved at **/home/user/.bash_history**
 - `scp jack honza@192.168.1.x:/home/honza` 
 - Enter username and password
 
+## 148. rsync - Remote Synchronization
+
+- utility for efficiently transferring and synchronizing files within the same computer or to a remote computer by comparing the modification times and sizes of files
+- its a lot faster than ftp or scp
+- mostly used to backup the files and directories from one server to another
+- default port is **22** (same as SSH)
+- basic syntax of the rsync command
+  - `rsync [options] [source] [destination]`
+- install rsync in your Linux machine
+  - `apt-get install rsync`
+- rsync a file on a local machine
+  - `tar cvf backup.tar`  (tar the entire home directory)
+  - `mkdir /tmp/backups`
+  - `rsync -zvh backup.tar /tmp/backups/`
+- rsync a file to a remote machine
+  - `mkdir /tmp/backups`
+  - `rsync -avz backup.tar honza@192.168.1.x:/tmp/backups`
