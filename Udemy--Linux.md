@@ -1420,8 +1420,15 @@ Saved at **/home/user/.bash_history**
       - Network manager text user interface. Can be run within any terminal and allows changes to be made by making menu selections and entering data
     - `nmcli`
       - network manager command line interface, useful when access to GUI is not available and to make network config changes
+      - `ncmli device status`- shows status of the device connection
+      - `nmcli connection show --active`- shows status of the device active connections
+      - `nmcli connection modify enp0s3 +ipv4.addresses 10.0.0.211/24`
+      - `nmcli connection reload` - reload connection
+      - `systemctl reboot`- reboot the system
+      - `ip address show` - show IP addresses belonging to the interfaces
     - `nm-connection-editor`
       - Full graphical management tool providing access to most of Network Manager config options. It can only be accessed through the desktop or console
+      - only available in the gui
     - **GNOME Settings**
       - The network screen of the GNOME desktop that allows basics network settings
 
@@ -1489,6 +1496,7 @@ Saved at **/home/user/.bash_history**
 - basic syntax of the rsync command
   - `rsync [options] [source] [destination]`
 - install rsync in your Linux machine
+  - `yum install rsync` 
   - `apt-get install rsync`
 - rsync a file on a local machine
   - `tar cvf backup.tar`  (tar the entire home directory)
@@ -1497,3 +1505,65 @@ Saved at **/home/user/.bash_history**
 - rsync a file to a remote machine
   - `mkdir /tmp/backups`
   - `rsync -avz backup.tar honza@192.168.1.x:/tmp/backups`
+
+## 148. System Updates and Repos (npm, yum)
+
+- **yum** (CentOS)
+  - go online and get the package
+- **apt-get**
+- **rpm** 
+  - redhat package manager
+  - when you already have the package downloaded and wanna install it locally
+
+
+
+## 149. System upgrade / Patch Management
+
+- two types of upgrades
+  - Major version = 5, 6, 7
+  - Minor version = 7.3 to 7.4
+    - can be done through **yum update**
+    - example: **yum update -y**
+- yum update vs yum upgrade
+  - **upgrade** deletes packages
+  - **update** preserves the old package
+
+## 150. Create a local repository
+
+- **repository** is something where all your packages are stored
+- if you dont have an internet access you can create a local repository
+
+## 151. Advanced Package Management
+
+- installing packages
+- upgrading
+- deleting
+- view package details
+  - `rpm -qf /usr/bin/pwd`- tells which package the command is associated with
+
+
+
+## 152. Rollback Updates and Patches
+
+- create a snapshot before updating or making significant changes if youre using VM
+- in case of physical machines 
+  - rollback a package or a patch
+    - `yum install <package-name>`
+    - `yum history undo <id>`
+  - rollback an update
+    - downgrading a system to a minor version is not recommended as this might leave the system in an undesired or unstable state.
+  - `yum update`- will preserve packages
+  - `yum upgrade`- will delete obsolete packages
+  - `yum history undo <id>` - undoes a specific task you did
+
+
+
+## 153. SSH and Telnet
+
+- **Telnet** - old and unsecure connection between two computers
+- **SSH** - secured, newer connection.
+  - `ssh [ip]`connects to the computer
+- Two types of packages for most of the services
+  - client package
+  - server package
+- stopping **sshd** will prevent the server from receiving any more sessions
