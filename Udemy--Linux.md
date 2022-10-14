@@ -1567,3 +1567,33 @@ Saved at **/home/user/.bash_history**
   - client package
   - server package
 - stopping **sshd** will prevent the server from receiving any more sessions
+
+## 154. DNS
+
+- **Domain Name System**
+  - Hostname to IP (a record)
+  - IP to Hostname (PTR Record)
+  - Hostname to Hostname (CNAME Record)
+- Files
+  - **/etc/named.conf**
+    - name is the name of the process of the DNS
+  - **/var/named**
+    - all the files where you define connections
+- Service
+  - **systemctl restart named**
+
+Download, Install, Configure DNS
+
+- Setup:
+  - Master DNS
+  - Secondary or Slave DNS
+  - Client
+- Domain Name = lab.local
+- IP address = local on **enp0s3**
+- Install DNS package
+  - `yum install bind bind-utils -y`
+- Configure DNS (Summary)
+  - Modify **/etc/named.conf**
+  - Create two zone files (**forward.lab** and **reverse.lab**)
+  - modify DNS file permission and start the service
+

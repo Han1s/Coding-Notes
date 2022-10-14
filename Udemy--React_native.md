@@ -59,7 +59,7 @@ const App = props => {
 
 ## 8. Running First App on the Real Device
 
-- download **Expo** apk
-
-
+- download **Expo** apk on your phone
+- `npm start`
+- scan the QR code
 
