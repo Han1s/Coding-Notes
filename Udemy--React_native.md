@@ -60,6 +60,94 @@ const App = props => {
 ## 8. Running First App on the Real Device
 
 - download **Expo** apk
+- to install a simulator download **Android Studio** for an emulator on your local machine
 
 
 
+# II. React Native Basics (Course Goals App)
+
+## 13. Core Components & Components Styling
+
+- Native elements like **h2** wont work in the native
+  - **div** is **VIew** for examples
+  - https://reactnative.dev/docs/components-and-apis
+- Styling React Native Apps
+  - There is no **css**
+  - you can apply **inline styles** or with help of **StyleSheet Objects**.
+    - Styling is therefore written in **JS**
+
+## 14. Working With Core Components
+
+- stricter than normal html
+- Views are usually meant to hold boxes that form a component. Its a container
+
+
+
+## 15. Styling React Native Apps
+
+- **inline styles** or **StyleSheet Objects**
+  - **SS object** provides validation and autocompletion
+- written in JS
+- based on CSS
+- we use the **style** prop that is supported on some elements
+- **The official styling documentation**: https://reactnative.dev/docs/style
+- **The official article about colors**: https://reactnative.dev/docs/colors
+- **The official API reference for different core components**: https://reactnative.dev/docs/view
+
+```jsx
+import { StyleSheet, Button, Text, View } from "react-native";
+
+export default function App() {
+  return (
+    <View style={styles.container}>
+      <View>
+        <Text style={styles.dummyText}>Another piece of text</Text>
+      </View>
+      <Text style={styles.dummyText}>Hello world!</Text>
+      <Button title="tap me!" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  dummyText: {
+    margin: 16,
+    borderWidth: 2,
+    borderColor: "red",
+    padding: 16,
+  },
+});
+
+```
+
+
+
+## 18. Flexbox
+
+- Layouts are typically created with Flexbox
+- Very similar to css Flexbox
+- Elements are positioned inside of containers
+- Positioning is controlled via style setting applied to the containers
+
+## 19. Using Flexbox to create layout
+
+- cheatsheet: https://reactnative.dev/docs/flexbox
+- in RN every **view** by default uses **FlexBox** and by default organizes them in **colum**
+
+## 24. Differences between iOS and Android Styling
+
+- native elements differ
+- e.g. text elements might not have border radius in iOS
+  - you can also wrap the element in a View to avoid it
+- **The styles do not cascade!**
+
+## 25. Making content Scrollable
+
+- **by default the views are not scrollable!**
+- good to check the component API with this one
