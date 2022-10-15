@@ -151,3 +151,104 @@ const styles = StyleSheet.create({
 
 - **by default the views are not scrollable!**
 - good to check the component API with this one
+
+## 26. Optimizing Lists with FlatList
+
+- scrollView allways renders all the child elements, no matter how long of a list it is.
+- A better solution is **FlatList**
+  - the items are rendered as needed
+  - flat list works well if youre putting a list of objects that have a key property
+
+```jsx
+import {
+  StyleSheet,
+  Button,
+  Text,
+  View,
+  TextInput,
+  ScrollView,
+  FlatList,
+} from "react-native";
+import { useState } from "react";
+
+export default function App() {
+  const [enteredGoalText, setEnteredGoalText] = useState("");
+  const [courseGoals, setCourseGoals] = useState([]);
+
+  const goalInputHandler = (enteredText) => {
+    setEnteredGoalText(enteredText);
+  };
+
+  const addGoalHandler = () => {
+    setCourseGoals((prevCourseGoals) => [
+      ...prevCourseGoals,
+      {
+        text: enteredGoalText,
+        id: Math.random().toString(),
+      },
+    ]);
+  };
+
+  return (
+    <View style={styles.appContainer}>
+      <View style={styles.inputContainer}>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Your course goal"
+          onChangeText={goalInputHandler}
+        />
+        <Button title="Add Goal" onPress={addGoalHandler} />
+      </View>
+      <View style={styles.goalsContainer}>
+        <FlatList
+          data={courseGoals}
+          keyExtractor={(item, index) => item.id}
+          renderItem={(itemData) => (
+            <View style={styles.goalItem}>
+              <Text style={styles.goalText}>{itemData.item.text}</Text>
+            </View>
+          )}
+        />
+      </View>
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  appContainer: {
+    paddingTop: 50,
+    paddingHorizontal: 16,
+    flex: 1,
+  },
+  inputContainer: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 24,
+    borderBottomWidth: 1,
+    borderBottomColor: "grey",
+  },
+  textInput: {
+    borderWidth: 1,
+    borderColor: "#cccccc",
+    width: "70%",
+    marginRight: 8,
+    padding: 8,
+  },
+  goalsContainer: {
+    flex: 5,
+  },
+  goalItem: {
+    margin: 8,
+    padding: 8,
+    borderRadius: 6,
+    backgroundColor: "#5e0acc",
+  },
+  goalText: {
+    color: "white",
+  },
+});
+
+```
+
