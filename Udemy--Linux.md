@@ -1597,3 +1597,8 @@ Download, Install, Configure DNS
   - Create two zone files (**forward.lab** and **reverse.lab**)
   - modify DNS file permission and start the service
 
+## 155. Hostname or IP Lookup
+
+- **nslookup**
+  - brings up own menu. You can type in address and it will return the IP.
+- **dig**
