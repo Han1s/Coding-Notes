@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
 ## 19. Using Flexbox to create layout
 
 - cheatsheet: https://reactnative.dev/docs/flexbox
-- in RN every **view** by default uses **FlexBox** and by default organizes them in **colum**
+- in RN every **view** by default uses **FlexBox** and by default organizes them in **colum**n
 
 ## 24. Differences between iOS and Android Styling
 
@@ -250,5 +250,70 @@ const styles = StyleSheet.create({
   },
 });
 
+```
+
+## 30. Make items pressable
+
+```jsx
+        <Pressable onPress={props.onDeleteItem}>
+            <View style={styles.goalItem}>
+                <Text style={styles.goalText}>{props.text}</Text>
+            </View>
+        </Pressable>
+```
+
+## 31. Add Ripple effect
+
+```jsx
+import {Text, View} from "react-native";
+import {StyleSheet} from "react-native";
+import Pressable from "react-native/Libraries/Components/Pressable/Pressable";
+
+const GoalItem = (props) => {
+    return (
+        <View style={styles.goalItem}>
+            <Pressable
+                android_ripple={{color: '#210644'}}  // Android solution, move padding to text to actually spread the entire component
+                onPress={() => props.onDeleteItem(props.id)}
+                // Object destruct. Ios Solution. pressed is provided via pressable
+                style={({pressed}) => pressed && styles.pressedItem}> 
+                <Text style={styles.goalText}>{props.text}</Text>
+            </Pressable>
+        </View>
+    );
+};
+
+const styles = StyleSheet.create({
+    goalItem: {
+        margin: 8,
+        borderRadius: 6,
+        backgroundColor: "#5e0acc",
+    },
+    pressedItem: {
+      opacity: 0.5
+    },
+    goalText: {
+        padding: 8,
+        color: "white",
+    },
+});
+
+export default GoalItem;
+```
+
+## 33. Modal
+
+```jsx
+    <Modal visible={props.visible} animationType="slide">
+      <View style={styles.inputContainer}>
+        <TextInput
+          value={enteredGoalText}
+          style={styles.textInput}
+          placeholder="Your course goal"
+          onChangeText={goalInputHandler}
+        />
+        <Button title="Add Goal" onPress={addGoalHandler} />
+      </View>
+    </Modal>
 ```
 
