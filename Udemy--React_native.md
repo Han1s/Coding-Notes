@@ -317,3 +317,108 @@ export default GoalItem;
     </Modal>
 ```
 
+## 35. Adding images
+
+```jsx
+        <Image
+          style={styles.image}
+          source={require("../assets/images/goal.png")}
+        />
+```
+
+## 37. Finishing Touches
+
+To edit **status bar:**
+
+```jsx
+return (
+    <>
+      <StatusBar style="light" />
+      <View style={styles.appContainer}>
+        <Button
+          title="Add New Goal"
+          color="#a065ec"
+          onPress={startAddGoalHandler}
+        />
+        <GoalInput
+          onAddGoal={addGoalHandler}
+          visible={modalIsVisible}
+          onCancel={endAddGoalHandler}
+        />
+        <View style={styles.goalsContainer}>
+          <FlatList
+            data={courseGoals}
+            keyExtractor={(item, index) => item.id}
+            renderItem={(itemData) => (
+              <GoalItem
+                id={itemData.item.id}
+                onDeleteItem={deleteGoalHandler}
+                text={itemData.item.text}
+              />
+            )}
+          />
+        </View>
+      </View>
+    </>
+  );
+```
+
+
+
+to change background of the entire **app** go to the **/app.json**
+
+```json
+{
+  "expo": {
+    "name": "RNCourse",
+    "slug": "RNCourse",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "backgroundColor": "#1e085a",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#FFFFFF"
+      }
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    }
+  }
+}
+
+```
+
+# III. Debugging React Native Apps
+
+- logging to the **console**
+- debug **remotely**
+- **react DevTools**
+
+## 42. Debugging remotely
+
+- if you press **?** in expo terminal, you get the list of commands
+- you can open **menu** by pressing **m**
+  - remote debugging then opens the special chrome tab
+
+## 43. Use React Dev tools
+
+- `npm install -g react-devtools`  installs devtools on the computer
+- `react-devtools` runs the **devtools**
+- you can then open the menu and trigger remote debugging to open the component tree
+
+# IV. Deep Dive into Components, Layouts, Styling
