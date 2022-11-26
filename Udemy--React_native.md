@@ -422,3 +422,26 @@ to change background of the entire **app** go to the **/app.json**
 - you can then open the menu and trigger remote debugging to open the component tree
 
 # IV. Deep Dive into Components, Layouts, Styling
+
+## 48. Adding Shadows
+
+```jsx
+const styles = StyleSheet.create({
+   inputContainer: {
+       padding: 16,
+       marginTop: 100,
+       marginHorizontal: 24,
+       borderRadius: 8,
+       backgroundColor: '#72063c',
+       elevation: 4, // Android
+       shadowColor: 'black', // rest down is IOS
+       shadowOffset: {
+           width: 2,
+           height:2,
+       },
+       shadowRadius: 6,
+       shadowOpacity: 0.25
+   }
+});
+```
+
