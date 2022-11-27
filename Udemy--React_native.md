@@ -499,3 +499,110 @@ const styles = StyleSheet.create({
     }
 });
 ```
+
+## 52. Styling custom button
+
+```jsx
+import React from 'react';
+import {Pressable, Text, View, StyleSheet} from "react-native";
+
+const PrimaryButton = ({children}) => {
+    const pressHandler = () => {
+        console.log('pressed');
+    }
+
+    return (
+        <View style={styles.buttonOuterContainer}>
+            <Pressable
+                onPress={pressHandler}
+                style={({pressed}) => pressed
+                    ? [styles.buttonInnerContainer, styles.pressed]
+                    : styles.buttonInnerContainer}
+                android_ripple={{color: "#640233"}}>
+                <Text style={styles.buttonText}>{children}</Text>
+            </Pressable>
+        </View>
+    );
+};
+
+export default PrimaryButton;
+
+const styles = StyleSheet.create({
+    buttonOuterContainer: {
+        borderRadius: 28,
+        margin: 4,
+        overflow: 'hidden'
+    },
+    buttonInnerContainer: {
+        backgroundColor: '#72063c',
+        paddingVertical: 8,
+        paddingHorizontal: 16,
+        elevation: 2,
+    },
+    buttonText: {
+        color: 'white',
+        textAlign: 'center'
+    },
+    pressed: {  // IOS solution
+        opacity: 0.75
+    }
+})
+```
+
+## 55. Adding Linear Gradient
+
+`expo install expo-linear-gradient`
+
+```jsx
+import {StyleSheet, View} from 'react-native';
+import StartGameScreen from "./screens/StartGameScreen";
+import {LinearGradient} from "expo-linear-gradient";
+
+export default function App() {
+  return (
+    <LinearGradient colors={['#4e0329', '#ddb52f']} style={styles.rootScreen}>
+      <StartGameScreen />
+    </LinearGradient>
+  );
+}
+
+const styles = StyleSheet.create({
+  rootScreen: {
+    flex: 1,
+  }
+});
+```
+
+## 56. Adding Image + Gradient
+
+```jsx
+import {StyleSheet, ImageBackground} from 'react-native';
+import StartGameScreen from "./screens/StartGameScreen";
+import {LinearGradient} from "expo-linear-gradient";
+
+export default function App() {
+    return (
+        <LinearGradient colors={['#4e0329', '#ddb52f']} style={styles.rootScreen}>
+            <ImageBackground
+                source={require('./assets/images/background.png')}
+                resizeMode={"cover"}
+                style={styles.rootScreen}
+                imageStyle={styles.backgroundImage}
+            >
+                <StartGameScreen/>
+            </ImageBackground>
+        </LinearGradient>
+    );
+}
+
+const styles = StyleSheet.create({
+    rootScreen: {
+        flex: 1,
+    },
+    backgroundImage: {
+        opacity: 0.15
+    }
+});
+
+```
+
