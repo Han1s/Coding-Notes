@@ -603,6 +603,32 @@ const styles = StyleSheet.create({
         opacity: 0.15
     }
 });
+```
 
+## 61. SafeAreaView
+
+- to make sure the content is not under the notch.
+- currently not supported on android
+
+```jsx
+    rootScreen: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight
+    },
+```
+
+## 63. Managing Colors globally
+
+```jsx
+// /constants/colors.js
+const Colors = {
+  primary500: '#72063c',
+  primary600: '#640233',
+  primary700: '#4e0329',
+  primary800: '#3b021f',
+  accent500: '#ddb52f'
+};
+
+export default Colors;
 ```
 
