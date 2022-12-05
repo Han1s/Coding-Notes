@@ -632,3 +632,196 @@ const Colors = {
 export default Colors;
 ```
 
+## 69. Icons
+
+- use **expo/vector-icons**
+- already installed in expo
+- **ionicons** are nice
+
+```jsx
+import React, {useEffect, useState} from "react";
+import {Alert, StyleSheet, View} from "react-native";
+import Title from "../components/UI/Title";
+import NumberContainer from "../components/Game/NumberContainer";
+import PrimaryButton from "../components/UI/PrimaryButton";
+import Card from "../components/UI/Card";
+import InstructionText from "../components/UI/InstructionText";
+import { Ionicons } from "@expo/vector-icons";
+
+function generateRandomBetween(min, max, exclude) {
+    const rndNum = Math.floor(Math.random() * (max - min)) + min;
+
+    if (rndNum === exclude) {
+        return generateRandomBetween(min, max, exclude);
+    } else {
+        return rndNum;
+    }
+}
+
+let minBoundary = 1;
+let maxBoundary = 100;
+
+const GameScreen = ({userNumber, onGameOver}) => {
+    const initialGuess = generateRandomBetween(1, 100, userNumber)
+    const [currentGuess, setCurrentGuess] = useState(initialGuess);
+
+    useEffect(() => {
+        if (currentGuess === userNumber) {
+            onGameOver();
+        }
+    }, [currentGuess, userNumber, onGameOver]);
+
+
+    const nextGuessHandler = (direction) => {
+        if ((direction === 'lower' && currentGuess < userNumber) ||
+        (direction === 'greater' && currentGuess > userNumber)) {
+            Alert.alert(
+                'Dont lie!',
+                'You know that this is wrong',
+                [{text: 'Sorry!', style: 'cancel'}]
+            )
+            return;
+        }
+
+        if (direction === 'lower') {
+            maxBoundary = currentGuess;
+        } else {
+            minBoundary = currentGuess + 1;
+        }
+
+        const newRndNumber = generateRandomBetween(minBoundary, maxBoundary, currentGuess);
+        setCurrentGuess(newRndNumber);
+    }
+
+    return (
+        <View style={styles.screen}>
+            <Title>Opponent's Guess</Title>
+            <NumberContainer>{currentGuess}</NumberContainer>
+            <Card>
+                <InstructionText style={styles.instructionText}>Higher or lower?</InstructionText>
+                <View style={styles.buttonsContainer}>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={() => nextGuessHandler('lower')}>
+                            <Ionicons name={"md-remove"} size={24} color={"white"} />
+                        </PrimaryButton>
+                    </View>
+                    <View style={styles.buttonContainer}>
+                        <PrimaryButton onPress={() => nextGuessHandler('greater')}>
+                            <Ionicons name={"md-add"} size={24} color={"white"} />
+                        </PrimaryButton>
+                    </View>
+                </View>
+            </Card>
+            {/*<View>LOG ROUNDS</View>*/}
+        </View>
+    );
+};
+
+export default GameScreen;
+
+const styles = StyleSheet.create({
+    screen: {
+        flex: 1,
+        paddingHorizontal: 24
+    },
+    instructionText: {
+      marginBottom: 12
+    },
+    buttonsContainer: {
+        flexDirection: 'row'
+    },
+    buttonContainer: {
+        flex: 1
+    }
+})
+```
+
+## 70. Custom fonts
+
+- `expo install expo-font`
+  - add into **/assets/fonts** folder.
+- `expo install expo-app-loading`
+  - loading package
+
+```jsx
+import {StyleSheet, ImageBackground, SafeAreaView, StatusBar, View} from 'react-native';
+import StartGameScreen from "./screens/StartGameScreen";
+import {LinearGradient} from "expo-linear-gradient";
+import {useState} from "react";
+import GameScreen from "./screens/GameScreen";
+import Colors from "./constants/colors";
+import GameOverScreen from "./screens/GameOverSreen";
+import {useFonts} from "expo-font";
+import AppLoading from "expo-app-loading";
+
+export default function App() {
+    const [userNumber, setUserNumber] = useState(null);
+    const [gameIsOver, setGameOver] = useState(true);
+
+    const [fontsLoaded] = useFonts({
+        'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
+        'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+    })
+
+    if (!fontsLoaded) {
+        return <AppLoading />
+    }
+
+    const pickedNumberHandler = (pickedNumber) => {
+        setUserNumber(pickedNumber);
+        setGameOver(false)
+    }
+
+    const gameOverHandler = () => {
+        setGameOver(true);
+    }
+
+    let screen = <StartGameScreen onPickNumber={pickedNumberHandler} />;
+
+    if (userNumber) {
+        screen = (
+            <GameScreen userNumber={userNumber} onGameOver={gameOverHandler}/>
+        )
+    }
+
+    if (gameIsOver && userNumber) {
+        screen = (
+            <GameOverScreen />
+        )
+    }
+
+    return (
+        <LinearGradient colors={[Colors.primary700, Colors.accent500]} style={styles.rootScreen}>
+            <ImageBackground
+                source={require('./assets/images/background.png')}
+                resizeMode={"cover"}
+                style={styles.rootScreen}
+                imageStyle={styles.backgroundImage}
+            >
+                <View style={styles.rootScreen}>
+                    {screen}
+                </View>
+            </ImageBackground>
+        </LinearGradient>
+    );
+}
+
+const styles = StyleSheet.create({
+    rootScreen: {
+        flex: 1,
+        paddingTop: StatusBar.currentHeight
+    },
+    backgroundImage: {
+        opacity: 0.15
+    },
+});
+```
+
+## 71. Using and styling nested text
+
+- just pass styles down the props and use them at the end of the array to cascade
+
+
+
+# V. Building Adaptive User Interfaces
+
