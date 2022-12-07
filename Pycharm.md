@@ -54,3 +54,9 @@
 - **Ctrl E** opens the opened file history window
 - **Ctrl Shift E** opens the same but with code content
 - **Shift Escape** hides the bottom window that is opened (such as terminal)
+
+# 6. Debugging
+
+- Add expressions to **watchers** with a plus sign to avoid putting them there manually later
+- **Ctrl Alt F8** evaluates expression you are hovering over
+- **Run to cursor** runs even if breakpoints are muted
