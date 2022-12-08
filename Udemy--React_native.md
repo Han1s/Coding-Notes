@@ -1306,3 +1306,8 @@ const styles = StyleSheet.create({
 });
 ```
 
+# VI. Navigation
+
+## 93. Displaying items in a grid
+
+- use **numColumns** property in a **FlatList** component
