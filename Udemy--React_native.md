@@ -1311,3 +1311,194 @@ const styles = StyleSheet.create({
 ## 93. Displaying items in a grid
 
 - use **numColumns** property in a **FlatList** component
+
+## 94. Navigation Package
+
+- **react navigation** package
+- `npm install @react-navigation/native`
+- `npx expo install react-native-screens react-native-safe-area-context`
+- choose one of the navigators (**stack**, **native stack**, etc.)
+  - `expo install @react-navigation/native-stack`
+  - the first child is used as the home page by default
+
+```jsx
+import {StatusBar} from 'expo-status-bar';
+import {StyleSheet} from 'react-native';
+import CategoriesScreen from "./screens/CategoriesScreen";
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator} from "@react-navigation/native-stack";
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+    return (
+        <>
+            <StatusBar style={'dark'}/>
+            <NavigationContainer>
+                <Stack.Navigator>
+                    <Stack.Screen name="MealsCategories" component={CategoriesScreen}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        </>
+    );
+}
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        backgroundColor: '#fff',
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+});
+```
+
+
+
+## 95. Implementing Navigation Between Two Screens
+
+```jsx
+import React from 'react';
+
+import {CATEGORIES} from "../data/dummy-data";
+import {FlatList} from "react-native";
+import CategoryGridTile from "../components/CategoryGridTile";
+
+const CategoriesScreen = ({navigation}) => {
+
+    const renderCategoryItem = (itemData) => {
+        return (
+            <CategoryGridTile title={itemData.item.title} color={itemData.item.color} onPress={() => {
+                navigation.navigate('MealsOverview')
+            }}/>
+        )
+    }
+
+    return (
+        <FlatList
+            data={CATEGORIES}
+            renderItem={renderCategoryItem}
+            numColumns={2}
+            keyExtractor={(item) => item.id}/>
+    );
+};
+
+export default CategoriesScreen;
+```
+
+
+
+## 97. Using useNavigation Hook
+
+- with **stack navigation** you push the page on top of the stack and then you can go back.
+- **native stack** uses native elements for this, and it should be the preference
+  - in case of problem you can fall back to **stack** navigation
+
+``` jsx
+import React from 'react';
+import {Platform, Pressable, StyleSheet, Text, View} from "react-native";
+import { useNavigation } from "@react-navigation/native";
+
+const CategoryGridTile = ({title, color, onPress}) => {
+    const navigation = useNavigation(); // gives you the access to navigation if you wanna navigate from the component that is not registered as a screen
+
+    return (
+        <View style={[styles.gridItem]}>
+            <Pressable
+                onPress={onPress}
+                android_ripple={{color: '#ccc'}}
+                style={({pressed}) => [styles.button, pressed ? styles.buttonPressed : null]}>
+                <View style={[styles.innerContainer, {backgroundColor: color}]}>
+                    <Text style={styles.title}>
+                        {title}
+                    </Text>
+                </View>
+            </Pressable>
+        </View>
+    );
+};
+
+export default CategoryGridTile;
+
+const styles = StyleSheet.create({
+    gridItem: {
+        flex: 1,
+        margin: 16,
+        height: 150,
+        borderRadius: 8,
+        elevation: 4,
+        shadowColor: 'black',
+        shadowOpacity: 0.25,
+        backgroundColor: 'white',
+        shadowOffset: {
+            width: 0,
+            height: 2
+        },
+        shadowRadius: 8,
+        overflow: Platform.OS === 'android' ? 'hidden' : 'visible',
+    },
+    button: {
+        flex: 1
+    },
+    buttonPressed: {
+        opacity: 0.5
+    },
+    innerContainer: {
+        flex: 1,
+        borderRadius: 8,
+        padding: 16,
+        justifyContent: "center",
+        alignItems: 'center'
+    },
+    title: {
+        fontWeight: 'bold',
+        fontSize: 18
+    }
+});
+```
+
+
+
+## 98. pass data between screens
+
+```jsx
+    const renderCategoryItem = (itemData) => {
+        return (
+            <CategoryGridTile title={itemData.item.title} color={itemData.item.color} onPress={() => {
+                navigation.navigate('MealsOverview', {
+                    categoryId: itemData.item.id,
+                    categoryId: itemData.item.id,
+                })
+            }}/>
+        )
+    }
+```
+
+```jsx
+import React from 'react';
+import { MEALS } from "../data/dummy-data";
+import {Text, View, StyleSheet} from "react-native";
+
+const MealsOverviewScreen = ({ route }) => {
+    const { categoryId } = route.params;
+
+    return (
+        <View style={styles.container}>
+            <Text>Meals Overview Screen = {categoryId}</Text>
+        </View>
+    );
+};
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16
+    }
+})
+
+```
+
+- alternatively use **useRoute** hook
+
