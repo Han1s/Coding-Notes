@@ -1502,3 +1502,110 @@ const styles = StyleSheet.create({
 
 - alternatively use **useRoute** hook
 
+## 101. Styling Screen Headers and backgrounds
+
+```jsx
+export default function App() {
+    return (
+        <>
+            <StatusBar style={'dark'}/>
+            <NavigationContainer>
+                <Stack.Navigator screenOptions={{ // GLOBAL
+                    headerStyle: {backgroundColor: '#351401'},
+                    headerTintColor: 'white',
+                    contentStyle: {
+                        backgroundColor: '#351401'
+                    }
+                }}>
+                    <Stack.Screen
+                        options={{
+                            title: 'All Categories',
+                            // headerStyle: {backgroundColor: '#351401'}, // INDIVIDUAL
+                            // headerTintColor: 'white',
+                            // contentStyle: {
+                            //     backgroundColor: '#351401'
+                            // }
+                        }}
+                        name="MealsCategories"
+                        component={CategoriesScreen}/>
+                    <Stack.Screen name="MealsOverview" component={MealsOverviewScreen}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        </>
+    );
+}
+```
+
+## 102. Setting navigation options dynamically
+
+```jsx
+<Stack.Screen
+    name="MealsOverview"
+    component={MealsOverviewScreen}
+    // options={({navigation, route}) => {
+    //     const catId = route.params.categoryId;
+    //     return {
+    //         title: catId
+    //     }}}
+    />
+```
+
+Option 2:
+
+```jsx
+import React, {useLayoutEffect} from 'react';
+import {CATEGORIES, MEALS} from "../data/dummy-data";
+import {FlatList, StyleSheet, View} from "react-native";
+import MealItem from "../components/MealItem";
+
+const MealsOverviewScreen = ({route, navigation}) => {
+    const {categoryId} = route.params;
+
+    useLayoutEffect(() => { // HERE
+        const categoryTitle = CATEGORIES.find((category) => category.id === categoryId).title;
+
+        navigation.setOptions({
+            title: categoryTitle
+        })
+    }, [categoryId, navigation])
+
+    const displayedMeals = MEALS.filter((mealItem) => {
+        return mealItem.categoryIds.includes(categoryId)
+    })
+
+    const renderMealItem = (itemData) => {
+        const item = itemData.item
+        const mealItemProps = {
+            title: item.title,
+            imageUrl: item.imageUrl,
+            affordability: item.affordability,
+            complexity: item.complexity,
+            duration: item.duration
+        }
+
+        return (
+            <MealItem {...mealItemProps} />
+        )
+    }
+
+    return (
+        <View style={styles.container}>
+            <FlatList
+                keyExtractor={(item) => item.id}
+                data={displayedMeals}
+                renderItem={renderMealItem}
+            />
+        </View>
+    );
+};
+
+export default MealsOverviewScreen;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        padding: 16
+    }
+})
+```
+
