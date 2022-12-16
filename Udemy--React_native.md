@@ -1609,3 +1609,63 @@ const styles = StyleSheet.create({
 })
 ```
 
+## 106. Adding buttons to the header
+
+- **option 1**: Good when you dont need to access the state cause it will be in the root component
+
+```jsx
+                    <Stack.Screen name={'MealDetail'}
+                                  component={MealDetailScreen}
+                                  // options={{
+                                  //     headerRight: () => {
+                                  //         return (
+                                  //             <Button title={'Tap me!'} onPress={}/>
+                                  //         )
+                                  //     }
+                                  // }}
+                    />
+```
+
+- **option 2**:
+
+```jsx
+const MealDetailScreen = ({route, navigation}) => {
+    const mealId = route.params.mealId;
+
+    const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+    const headerButtonpresshandler = () => {
+        console.log('pressed');
+    }
+
+    // add button
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <Button title={'tap'} onPress={headerButtonpresshandler}/>
+            )
+        })
+    }, [headerButtonpresshandler, navigation])
+
+    return (
+        <ScrollView style={styles.root}>
+            <Image source={{uri: selectedMeal.imageUrl}} style={styles.image}/>
+            <Text style={styles.title}>{selectedMeal.title}</Text>
+            <MealDetails
+                affordability={selectedMeal.affordability}
+                complexity={selectedMeal.complexity}
+                duration={selectedMeal.duration}
+                textStyle={styles.detailText}/>
+            <View style={styles.listOuterContainer}>
+                <View style={styles.listContainer}>
+                    <Subtitle>Ingredients</Subtitle>
+                    <List data={selectedMeal.ingredients}/>
+                    <Subtitle>Steps</Subtitle>
+                    <List data={selectedMeal.steps}/>
+                </View>
+            </View>
+        </ScrollView>
+    );
+};
+```
+
