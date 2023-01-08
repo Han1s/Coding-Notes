@@ -1315,10 +1315,20 @@ const styles = StyleSheet.create({
 ## 94. Navigation Package
 
 - **react navigation** package
-- `npm install @react-navigation/native`
-- `npx expo install react-native-screens react-native-safe-area-context`
+
+  ```bash
+  npm install @react-navigation/native
+  ```
+
+  ```bash
+  npx expo install react-native-screens react-native-safe-area-context
+  ```
+
 - choose one of the navigators (**stack**, **native stack**, etc.)
-  - `expo install @react-navigation/native-stack`
+  ```bash
+  expo install @react-navigation/native-stack
+  ```
+  
   - the first child is used as the home page by default
 
 ```jsx
@@ -1807,84 +1817,315 @@ export default function App() {
 
 
 
-## 111. Nesting Navigations
+# VII. App-wide state management with context and redux
+
+## 116. Defining context
 
 ```jsx
-import {StatusBar} from 'expo-status-bar';
-import {StyleSheet} from 'react-native';
-import CategoriesScreen from "./screens/CategoriesScreen";
-import {NavigationContainer} from '@react-navigation/native';
-import {createNativeStackNavigator} from "@react-navigation/native-stack";
-import MealsOverviewScreen from "./screens/MealsOverviewScreen";
-import MealDetailScreen from "./screens/MealDetailScreen";
-import {createDrawerNavigator} from '@react-navigation/drawer'
-import FavoritesScreen from "./screens/FavoritesScreen";
+// store/context/favorites-context.js
 
-const Stack = createNativeStackNavigator();
-const Drawer = createDrawerNavigator()
+import { createContext, useState } from "react";
 
-const DrawerNavigator = () => {
-    return (
-        <Drawer.Navigator screenOptions={{
-            headerStyle: {backgroundColor: '#351401'},
-            headerTintColor: 'white',
-            sceneContainerStyle: {backgroundColor: '#3f2f25'},
-            drawerContentStyle: {
-                backgroundColor: '#351401'
-            },
-            drawerInactiveTintColor: 'white',
-            drawerActiveTintColor: '#351401',
-            drawerActiveBackgroundColor: '#e4baa1'
-        }}>
-            <Drawer.Screen
-                component={CategoriesScreen}
-                name={'Categories'}
-                options={{
-                    title: 'All Categories',
-                    drawerIcon: ({color, size}) => <Ionicons name="list" color={color} size={size} />
-                }}
-            />
-            <Drawer.Screen
-                component={FavoritesScreen}
-                options={{
-                    drawerIcon: ({color, size}) => <Ionicons name="star" color={color} size={size} />
-                }}
-                name={'Favorites'}/>
-        </Drawer.Navigator>
-    )
+export const FavoritesContext = createContext({
+  ids: [],
+  addFavorite: () => {},
+  removeFavorite: () => {},
+});
+
+const FavoritesContextProvider = ({ children }) => {
+  const [favoriteMealIds, setFavoriteMealIds] = useState([]);
+
+  const addFavorite = (id) => {
+    setFavoriteMealIds((currentIds) => [...currentIds, id]);
+  };
+
+  const removeFavorite = (id) => {
+    setFavoriteMealIds((currentIds) =>
+      currentIds.filter((mealId) => mealId !== id)
+    );
+  };
+
+  const value = {
+    ids: favoriteMealIds,
+    addFavorite: addFavorite,
+    removeFavorite: removeFavorite,
+  };
+
+  return (
+    <FavoritesContext.Provider value={value}>
+      {children}
+    </FavoritesContext.Provider>
+  );
 };
 
-export default function App() {
-    return (
-        <>
-            <StatusBar style={'light'}/>
-            <NavigationContainer>
-                <Stack.Navigator>
-                    <Stack.Screen
-                        options={{headerShown: false}}
-                        name="Drawer"
-                        component={DrawerNavigator}/>
-                    <Stack.Screen
-                        name="MealsOverview"
-                        component={MealsOverviewScreen}
-                    />
-                    <Stack.Screen name={'MealDetail'}
-                                  component={MealDetailScreen}
-                                  options={{title: 'About the Meal'}}
-                    />
-                </Stack.Navigator>
-            </NavigationContainer>
-        </>
-    );
+export default FavoritesContextProvider;
+
+```
+
+## 117. Using the created context
+
+```jsx
+import { useContext, useLayoutEffect } from "react";
+import { View, Text, Image, StyleSheet, ScrollView } from "react-native";
+
+import IconButton from "../components/IconButton";
+import List from "../components/MealDetail/List";
+import Subtitle from "../components/MealDetail/Subtitle";
+import MealDetails from "../components/MealDetails";
+import { MEALS } from "../data/dummy-data";
+import { FavoritesContext } from "../store/context/favorites-context";
+
+function MealDetailScreen({ route, navigation }) {
+  const favoriteMealsCtx = useContext(FavoritesContext);
+
+  const mealId = route.params.mealId;
+
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+  const mealIsFavorite = favoriteMealsCtx.ids.includes(mealId);
+
+  function changeFavoriteStatusHandler() {
+    if (mealIsFavorite) {
+      favoriteMealsCtx.removeFavorite(mealId);
+    } else {
+      favoriteMealsCtx.addFavorite(mealId);
+    }
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <IconButton
+            icon={mealIsFavorite ? "star" : "star-outline"}
+            color="white"
+            onPress={changeFavoriteStatusHandler}
+          />
+        );
+      },
+    });
+  }, [navigation, changeFavoriteStatusHandler]);
+
+  return (
+    <ScrollView style={styles.rootContainer}>
+      <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
+      <Text style={styles.title}>{selectedMeal.title}</Text>
+      <MealDetails
+        duration={selectedMeal.duration}
+        complexity={selectedMeal.complexity}
+        affordability={selectedMeal.affordability}
+        textStyle={styles.detailText}
+      />
+      <View style={styles.listOuterContainer}>
+        <View style={styles.listContainer}>
+          <Subtitle>Ingredients</Subtitle>
+          <List data={selectedMeal.ingredients} />
+          <Subtitle>Steps</Subtitle>
+          <List data={selectedMeal.steps} />
+        </View>
+      </View>
+    </ScrollView>
+  );
 }
 
+export default MealDetailScreen;
+
 const styles = StyleSheet.create({
-    container: {
-        flex: 1,
-        backgroundColor: '#fff',
-        alignItems: 'center',
-        justifyContent: 'center',
-    },
+  rootContainer: {
+    marginBottom: 32,
+  },
+  image: {
+    width: "100%",
+    height: 350,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 24,
+    margin: 8,
+    textAlign: "center",
+    color: "white",
+  },
+  detailText: {
+    color: "white",
+  },
+  listOuterContainer: {
+    alignItems: "center",
+  },
+  listContainer: {
+    width: "80%",
+  },
 });
 ```
+
+## 119. Redux
+
+```bash
+npm install @reduxjs/toolkit
+npm install react-redux
+```
+
+**Creating**
+
+```jsx
+// /store/redux/store.js
+import { configureStore } from "@reduxjs/toolkit";
+
+export const store = configureStore({
+  reducer: {},
+});
+```
+
+**Providing**
+
+```jsx
+// App.js
+<Provider store={store}>
+    ...App
+</Provider>
+```
+
+**Working with slices**
+
+- creating a slice:
+
+```jsx
+// /store/redux/favorites.js
+import { createSlice } from "@reduxjs/toolkit";
+
+const favoritesSlice = createSlice({
+  name: "favorites",
+  initialState: {
+    ids: [],
+  },
+  reducers: {
+    addFavorite: (state, action) => {
+      state.ids.push(action.payload.id);
+    },
+    removeFavorite: (state, action) => {
+      state.ids.splice(state.ids.indexOf(action.payload.id), 1);
+    },
+  },
+});
+
+export const addFavorite = favoritesSlice.actions.addFavorite;
+export const removeFavorite = favoritesSlice.actions.removeFavorite;
+export default favoritesSlice.reducer;
+```
+
+- merging a slice
+
+```jsx
+// /store/redux/store.js
+import { configureStore } from "@reduxjs/toolkit";
+import favoritesReducer from "./favorites";
+
+export const store = configureStore({
+  reducer: {
+    favoriteMeals: favoritesReducer,
+  },
+});
+```
+
+**Using redux state**
+
+```jsx
+import { useLayoutEffect } from "react";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+
+import IconButton from "../components/IconButton";
+import List from "../components/MealDetail/List";
+import Subtitle from "../components/MealDetail/Subtitle";
+import MealDetails from "../components/MealDetails";
+import { MEALS } from "../data/dummy-data";
+import { useDispatch, useSelector } from "react-redux";
+import { addFavorite, removeFavorite } from "../store/redux/favorites";
+
+function MealDetailScreen({ route, navigation }) {
+  const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids);
+  const dispatch = useDispatch();
+
+  const mealId = route.params.mealId;
+
+  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+  const mealIsFavorite = favoriteMealIds.includes(mealId);
+
+  function changeFavoriteStatusHandler() {
+    if (mealIsFavorite) {
+      dispatch(removeFavorite({ id: mealId }));
+    } else {
+      dispatch(addFavorite({ id: mealId }));
+    }
+  }
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => {
+        return (
+          <IconButton
+            icon={mealIsFavorite ? "star" : "star-outline"}
+            color="white"
+            onPress={changeFavoriteStatusHandler}
+          />
+        );
+      },
+    });
+  }, [navigation, changeFavoriteStatusHandler]);
+
+  return (
+    <ScrollView style={styles.rootContainer}>
+      <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
+      <Text style={styles.title}>{selectedMeal.title}</Text>
+      <MealDetails
+        duration={selectedMeal.duration}
+        complexity={selectedMeal.complexity}
+        affordability={selectedMeal.affordability}
+        textStyle={styles.detailText}
+      />
+      <View style={styles.listOuterContainer}>
+        <View style={styles.listContainer}>
+          <Subtitle>Ingredients</Subtitle>
+          <List data={selectedMeal.ingredients} />
+          <Subtitle>Steps</Subtitle>
+          <List data={selectedMeal.steps} />
+        </View>
+      </View>
+    </ScrollView>
+  );
+}
+
+export default MealDetailScreen;
+
+const styles = StyleSheet.create({
+  rootContainer: {
+    marginBottom: 32,
+  },
+  image: {
+    width: "100%",
+    height: 350,
+  },
+  title: {
+    fontWeight: "bold",
+    fontSize: 24,
+    margin: 8,
+    textAlign: "center",
+    color: "white",
+  },
+  detailText: {
+    color: "white",
+  },
+  listOuterContainer: {
+    alignItems: "center",
+  },
+  listContainer: {
+    width: "80%",
+  },
+});
+```
+
+
+
+# VIII. Expense Tracker App
+
+- good idea to first create screens and the navigation logic and go from there
 
