@@ -2208,3 +2208,48 @@ const styles = StyleSheet.create({
 
 - good idea to first create screens and the navigation logic and go from there
 
+
+
+## 136. Navigating between screens programatically
+
+```jsx
+const ExpenseOverview = () => {
+    return (
+        <BottomTabs.Navigator
+            screenOptions={({navigation}) => ({
+                headerTintColor: "white",
+                tabBarStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                tabBarActiveTintColor: GlobalStyles.colors.accent500,
+                headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                headerRight: ({tintColor}) => (<IconButton icon='add' color={tintColor} size={24} onPress={() => {
+                    navigation.navigate('ManageExpense');
+                }}/>)
+            })}
+        >
+            <BottomTabs.Screen
+                name={"RecentExpenses"}
+                component={RecentExpenses}
+                options={{
+                    title: "Recent Expenses",
+                    tabBarLabel: "Recent",
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name={"hourglass"} color={color} size={size}/>
+                    ),
+                }}
+            />
+            <BottomTabs.Screen
+                name={"AllExpenses"}
+                component={AllExpenses}
+                options={{
+                    title: "All Expenses",
+                    tabBarLabel: "All Expenses",
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name={"calendar"} color={color} size={size}/>
+                    ),
+                }}
+            />
+        </BottomTabs.Navigator>
+    );
+};
+```
+
