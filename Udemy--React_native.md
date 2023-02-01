@@ -2467,3 +2467,80 @@ const ExpensesContextProvider = ({children}) => {
 export default ExpensesContextProvider;
 ```
 
+
+
+## 168. Adding Spinner Overlay
+
+```jsx
+import React from 'react';
+import {ActivityIndicator, StyleSheet, View} from "react-native";
+import {GlobalStyles} from "../../constants/styles";
+
+const LoadingOverlay = () => {
+    return (
+        <View style={styles.container}>
+            <ActivityIndicator size={'large'} color={"white"} />
+        </View>
+    );
+};
+
+export default LoadingOverlay;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 24,
+        backgroundColor: GlobalStyles.colors.primary700
+    }
+})
+```
+
+
+
+## 169. Handling Errors
+
+```jsx
+import React from 'react';
+import {StyleSheet, Text, View} from "react-native";
+import {GlobalStyles} from "../../constants/styles";
+import Button from "./Button";
+
+const ErrorOverlay = ({message, onConfirm}) => {
+    return (
+        <View style={styles.container}>
+                <Text style={[styles.text, styles.title]}>An error occurred!</Text>
+                <Text styles={styles.text}>{message}</Text>
+                <Button onPress={onConfirm}>Okay</Button>
+        </View>
+    );
+};
+
+export default ErrorOverlay;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 24,
+        backgroundColor: GlobalStyles.colors.primary700
+    },
+    text: {
+        textAlign: "center",
+        marginBottom: 8,
+        color: 'white'
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    }
+})
+```
+
+
+
+# XI. User authentication
+
+- you can use firebase **SDK library** (probably preferred) or **Firebase REST auth API**
