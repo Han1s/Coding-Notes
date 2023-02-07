@@ -2208,73 +2208,339 @@ const styles = StyleSheet.create({
 
 - good idea to first create screens and the navigation logic and go from there
 
-## 127. App.js showcase
+
+
+## 136. Navigating between screens programatically
 
 ```jsx
-import { StatusBar } from "expo-status-bar";
-import { NavigationContainer } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import ManageExpense from "./screens/ManageExpense";
-import RecentExpenses from "./screens/RecentExpenses";
-import AllExpenses from "./screens/AllExpenses";
-import { GlobalStyles } from "./constants/styles";
-import { Ionicons } from "@expo/vector-icons";
-
-const Stack = createNativeStackNavigator();
-const BottomTabs = createBottomTabNavigator();
-
 const ExpenseOverview = () => {
-  return (
-    <BottomTabs.Navigator
-      screenOptions={{
-        headerTintColor: "white",
-        tabBarStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-        tabBarActiveTintColor: GlobalStyles.colors.accent500,
-        headerStyle: { backgroundColor: GlobalStyles.colors.primary500 },
-      }}
-    >
-      <BottomTabs.Screen
-        name={"RecentExpenses"}
-        component={RecentExpenses}
-        options={{
-          title: "Recent Expenses",
-          tabBarLabel: "Recent",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name={"hourglass"} color={color} size={size} />
-          ),
-        }}
-      />
-      <BottomTabs.Screen
-        name={"AllExpenses"}
-        component={AllExpenses}
-        options={{
-          title: "All Expenses",
-          tabBarLabel: "All Expenses",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name={"calendar"} color={color} size={size} />
-          ),
-        }}
-      />
-    </BottomTabs.Navigator>
-  );
+    return (
+        <BottomTabs.Navigator
+            screenOptions={({navigation}) => ({
+                headerTintColor: "white",
+                tabBarStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                tabBarActiveTintColor: GlobalStyles.colors.accent500,
+                headerStyle: {backgroundColor: GlobalStyles.colors.primary500},
+                headerRight: ({tintColor}) => (<IconButton icon='add' color={tintColor} size={24} onPress={() => {
+                    navigation.navigate('ManageExpense');
+                }}/>)
+            })}
+        >
+            <BottomTabs.Screen
+                name={"RecentExpenses"}
+                component={RecentExpenses}
+                options={{
+                    title: "Recent Expenses",
+                    tabBarLabel: "Recent",
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name={"hourglass"} color={color} size={size}/>
+                    ),
+                }}
+            />
+            <BottomTabs.Screen
+                name={"AllExpenses"}
+                component={AllExpenses}
+                options={{
+                    title: "All Expenses",
+                    tabBarLabel: "All Expenses",
+                    tabBarIcon: ({color, size}) => (
+                        <Ionicons name={"calendar"} color={color} size={size}/>
+                    ),
+                }}
+            />
+        </BottomTabs.Navigator>
+    );
+};
+```
+
+
+
+## 141. Closing modal programatically
+
+```jsx
+import React, {useLayoutEffect} from "react";
+import {StyleSheet, View} from "react-native";
+import IconButton from "../components/UI/IconButton";
+import {GlobalStyles} from "../constants/styles";
+import Button from "../components/UI/Button";
+
+const ManageExpense = ({route, navigation}) => {
+    const editedExpenseId = route.params?.expenseId;
+    const isEditing = !!editedExpenseId;
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            title: isEditing ? 'Edit Expense' : 'Add Expense',
+        })
+    }, [navigation, isEditing]);
+
+    const deleteExpenseHandler = () => {
+        navigation.goBack();
+    }
+
+    const cancelHandler = () => {
+        navigation.goBack();
+    }
+
+    const confirmHandler = () => {
+        navigation.goBack();
+    }
+
+    return (
+        <View style={styles.container}>
+            <View style={styles.buttons}>
+                <Button style={styles.button} mode={'flat'} onPress={cancelHandler}>Cancel</Button>
+                <Button style={styles.button} onPress={confirmHandler}>{isEditing ? 'Update' : 'Add'}</Button>
+            </View>
+            {isEditing && (
+                <View style={styles.deleteContainer}>
+                    <IconButton icon={'trash'} color={GlobalStyles.colors.error500} size={36}
+                                onPress={deleteExpenseHandler}/>
+                </View>
+            )}
+        </View>
+    );
 };
 
-export default function App() {
-  return (
-    <>
-      <StatusBar style="auto" />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name={"ExpensesOverview"}
-            component={ExpenseOverview}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen name={"ManageExpense"} component={ManageExpense} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </>
-  );
-}
+export default ManageExpense;
+
+const styles = StyleSheet.create({
+    buttons: {
+        flexDirection: 'row',
+        justifyContent: "center",
+        alignItems: "center"
+    },
+    container: {
+        flex: 1,
+        padding: 24,
+        backgroundColor: GlobalStyles.colors.primary800
+    },
+    deleteContainer: {
+        marginTop: 16,
+        paddingTop: 8,
+        borderTopWidth: 2,
+        borderTopColor: GlobalStyles.colors.primary200,
+        alignItems: 'center'
+    },
+    button: {
+        width: 120,
+        marginHorizontal: 8
+    }
+})
 ```
+
+
+
+## 142. App-wide state with context
+
+```jsx
+import {createContext, useReducer} from "react";
+
+const DUMMY_EXPENSES = [
+  {
+    id: "e1",
+    description: "A pair of shoes",
+    amount: 59.99,
+    date: new Date("2021-12-19"),
+  },
+  {
+    id: "e2",
+    description: "A pair of trousers",
+    amount: 89.29,
+    date: new Date("2022-01-05"),
+  },
+  {
+    id: "e3",
+    description: "Some bananas",
+    amount: 5.99,
+    date: new Date("2021-12-01"),
+  },
+  {
+    id: "e4",
+    description: "A book",
+    amount: 14.99,
+    date: new Date("2022-02-19"),
+  },
+  {
+    id: "e5",
+    description: "Another book",
+    amount: 18.59,
+    date: new Date("2022-02-19"),
+  },
+      {
+    id: "e11",
+    description: "A pair of shoes",
+    amount: 59.99,
+    date: new Date("2021-12-19"),
+  },
+  {
+    id: "e12",
+    description: "A pair of trousers",
+    amount: 89.29,
+    date: new Date("2022-01-05"),
+  },
+  {
+    id: "e13",
+    description: "Some bananas",
+    amount: 5.99,
+    date: new Date("2021-12-1"),
+  },
+  {
+    id: "e14",
+    description: "A book",
+    amount: 14.99,
+    date: new Date("2022-19-2"),
+  },
+  {
+    id: "e15",
+    description: "Another book",
+    amount: 18.59,
+    date: new Date("2022-18-2"),
+  },
+];
+
+export const ExpensesContext = createContext({
+    expenses: [],
+    addExpense: ({description, amount, date}) => {
+    },
+    deleteExpense: (id) => {
+    },
+    updateExpense: (id, {description, amount, date}) => {
+    }
+});
+
+const expensesReducer = (state, action) => {
+    switch (action.type) {
+        case 'ADD':
+            const id = new Date().toString() + Math.random().toString();
+            return [{...action.payload, id: id}, ...state]
+        case 'UPDATE':
+            const updatableExpenseIndex = state.findIndex((expense) => expense.id === action.payload.id)
+            const updatableExpense = state[updatableExpenseIndex];
+            const updatedItem = {...updatableExpense, ...action.payload.data};
+            const updatedExpenses = [...state];
+            updatedExpenses[updatableExpenseIndex] = updatedItem;
+            return updatedExpenses;
+        case 'DELETE':
+            return state.filter(expense => expense.id !== action.payload);
+        default:
+            return state;
+    }
+}
+
+const ExpensesContextProvider = ({children}) => {
+    const [expensesState, dispatch] = useReducer(expensesReducer, DUMMY_EXPENSES);
+
+    const addExpense = (expenseData) => {
+        dispatch({
+            type: 'ADD',
+            payload: {
+                expenseData
+            }
+        });
+    }
+
+    const deleteExpense = (id) => {
+        dispatch({
+            type: 'DELETE',
+            payload: id
+        });
+    }
+
+    const updateExpense = (id, expenseData) => {
+        dispatch({
+            type: 'UPDATE',
+            payload: {
+                id: id,
+                data: expenseData
+            }
+        });
+    }
+
+    return (
+        <ExpensesContext.Provider value={{}}>
+            {children}
+        </ExpensesContext.Provider>
+    )
+}
+
+export default ExpensesContextProvider;
+```
+
+
+
+## 168. Adding Spinner Overlay
+
+```jsx
+import React from 'react';
+import {ActivityIndicator, StyleSheet, View} from "react-native";
+import {GlobalStyles} from "../../constants/styles";
+
+const LoadingOverlay = () => {
+    return (
+        <View style={styles.container}>
+            <ActivityIndicator size={'large'} color={"white"} />
+        </View>
+    );
+};
+
+export default LoadingOverlay;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 24,
+        backgroundColor: GlobalStyles.colors.primary700
+    }
+})
+```
+
+
+
+## 169. Handling Errors
+
+```jsx
+import React from 'react';
+import {StyleSheet, Text, View} from "react-native";
+import {GlobalStyles} from "../../constants/styles";
+import Button from "./Button";
+
+const ErrorOverlay = ({message, onConfirm}) => {
+    return (
+        <View style={styles.container}>
+                <Text style={[styles.text, styles.title]}>An error occurred!</Text>
+                <Text styles={styles.text}>{message}</Text>
+                <Button onPress={onConfirm}>Okay</Button>
+        </View>
+    );
+};
+
+export default ErrorOverlay;
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        padding: 24,
+        backgroundColor: GlobalStyles.colors.primary700
+    },
+    text: {
+        textAlign: "center",
+        marginBottom: 8,
+        color: 'white'
+    },
+    title: {
+        fontSize: 20,
+        fontWeight: 'bold',
+    }
+})
+```
+
+
+
+# XI. User authentication
+
+- you can use firebase **SDK library** (probably preferred) or **Firebase REST auth API**
