@@ -2544,3 +2544,8 @@ const styles = StyleSheet.create({
 # XI. User authentication
 
 - you can use firebase **SDK library** (probably preferred) or **Firebase REST auth API**
+
+```bash
+npm install @react-native-async-storage/async-storage
+```
+
