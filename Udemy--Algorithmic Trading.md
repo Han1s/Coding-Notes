@@ -42,9 +42,13 @@
   python3 ./scripts/plot_dataframe.py -s BBRSI -p ADA/BTC --indicators1 bb_lowerband,bb_middleband,bb_upperhand --indicators2 rsi
   ```
 
-## 38. Parameters to otptimize
+## 38. Parameters to optimize
 
 - you wanna check your **sharp ratio**
+
+## 39. Hyperoptimization
+
+- lecture 38 not working, definitely check the example hyperopt.py and the related docs.
 
 # Indicators info
 
