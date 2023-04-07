@@ -91,11 +91,55 @@ https://www.youtube.com/watch?v=pg19Z8LL06w
 
 ## 10. Private docker Registries
 
-TODO
+- You can store them on **Docker Hub**.
+
+## 11. Registry vs Repository
+
+- Registry 
+  - is a service providing storage
+  - collection of repositories
+- Repository
+  - collection of related images with the same name but different versions
 
 
 
-## CLI:
+## 12. Dockerfile - Dockerize Node.js app
+
+- we need to create a definition about how to build an image
+
+- in the root of the app create **Dockerfile**
+
+  - write the definition of the image
+  - Dockerfile start from a parent or a base image - an image your docker is based on
+
+- ```dockerfile
+  FROM node:19-alpine
+  
+  # take the files from the local computer here into the /app/ folder
+  # the slash at the end creates the folder if it doesnt exist yet
+  COPY package.json /app/
+  COPY src/app/
+  
+  # like cd
+  WORKDIR /app
+  
+  RUN npm install
+  
+  # last command starts the application
+  CMD ["node", "server.js"]
+  ```
+
+
+
+## 13. Creating docker image
+
+```bash
+docker build --tag node-app:1.0 .
+```
+
+
+
+# CLI
 
 ```bash
 # List Running containers
