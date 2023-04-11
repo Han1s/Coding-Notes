@@ -2742,3 +2742,13 @@ const styles = StyleSheet.create({
 ## 202. Adding a map Preview
 
 - **maps static** from google
+
+## 203. Add a full map view
+
+- **expo MapView** package
+
+- ```bash
+  npx expo install react-native-maps
+  ```
+
+   
