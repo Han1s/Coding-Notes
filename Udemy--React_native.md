@@ -2832,3 +2832,222 @@ function AllPlaces({ route }) {
 export default AllPlaces;
 ```
 
+
+
+## 213. SQLite on the smartphone
+
+- **expo SQLite**
+
+- ```bash
+  npx expo install expo-sqlite
+  ```
+
+
+
+Definition:
+
+```jsx
+import * as SQLite from "expo-sqlite";
+import {Place} from "../models/place";
+
+const database = SQLite.openDatabase("places.db");
+
+export const init = () => {
+  return new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        `CREATE TABLE IF NOT EXISTS places
+                 (
+                     id       INTEGER PRIMARY KEY NOT NULL,
+                     title    TEXT                NOT NULL,
+                     imageUri TEXT                NOT NULL,
+                     address  TEXT                NOT NULL,
+                     lat      REAL                NOT NULL,
+                     lng      REAL                NOT NULL
+                 )`,
+        [],
+        () => {
+          resolve();
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const insertPlace = (place) => {
+  return new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        `INSERT INTO places (title, imageUri, address, lat, lng)
+                           VALUES (?, ?, ?, ?, ?)`,
+        [
+          place.title,
+          place.imageUri,
+          place.address,
+          place.location.lat,
+          place.location.lng,
+        ],
+        (_, result) => {
+          console.log(result);
+          resolve(result);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+};
+
+export const fetchPlaces = () => {
+  return new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        `SELECT *
+                           FROM places`,
+        [],
+        (_, result) => {
+          console.log(result);
+          const places = [];
+
+          for (const dp of result.rows._array) {
+              places.push(new Place(dp.title, dp.imageUri, {address: dp.address, lat: dp.lat, lng: dp.lng}, dp.id));
+          }
+
+          resolve(places);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+};
+```
+
+Usage:
+
+```jsx
+import {StatusBar} from 'expo-status-bar';
+import {NavigationContainer} from '@react-navigation/native';
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
+
+import AllPlaces from './screens/AllPlaces';
+import AddPlace from './screens/AddPlace';
+import IconButton from './components/UI/IconButton';
+import {Colors} from './constants/colors';
+import Map from './screens/Map';
+import {useEffect, useState} from "react";
+import {init} from "./util/database";
+import AppLoading from "expo-app-loading";
+
+const Stack = createNativeStackNavigator();
+
+export default function App() {
+    const [dbInitialized, setDbInitialized] = useState(false);
+
+    useEffect(() => {
+        init().then(() => {
+            setDbInitialized(true);
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, [])
+
+    if (!dbInitialized) {
+        return <AppLoading />
+    }
+
+    return (
+        <>
+            <StatusBar style="dark"/>
+            <NavigationContainer>
+                <Stack.Navigator
+                    screenOptions={{
+                        headerStyle: {backgroundColor: Colors.primary500},
+                        headerTintColor: Colors.gray700,
+                        contentStyle: {backgroundColor: Colors.gray700},
+                    }}
+                >
+                    <Stack.Screen
+                        name="AllPlaces"
+                        component={AllPlaces}
+                        options={({navigation}) => ({
+                            title: 'Your Favorite Places',
+                            headerRight: ({tintColor}) => (
+                                <IconButton
+                                    icon="add"
+                                    size={24}
+                                    color={tintColor}
+                                    onPress={() => navigation.navigate('AddPlace')}
+                                />
+                            ),
+                        })}
+                    />
+                    <Stack.Screen
+                        name="AddPlace"
+                        component={AddPlace}
+                        options={{
+                            title: 'Add a new Place',
+                        }}
+                    />
+                    <Stack.Screen name="Map" component={Map}/>
+                </Stack.Navigator>
+            </NavigationContainer>
+        </>
+    );
+}
+```
+
+```jsx
+import PlaceForm from "../components/Places/PlaceForm";
+import {insertPlace} from "../util/database";
+
+const AddPlace = ({ navigation }) => {
+  const createPlaceHandler = async (place) => {
+    await insertPlace(place); //  LOG  {"insertId": 1, "rows": {"_array": [], "length": 0}, "rowsAffected": 1}
+    navigation.navigate("AllPlaces", {
+      place,
+    });
+  };
+
+  return <PlaceForm onCreatePlace={createPlaceHandler} />;
+};
+
+export default AddPlace;
+```
+
+```jsx
+import { useEffect, useState } from "react";
+import PlacesList from "../components/Places/PlacesList";
+import { useIsFocused } from "@react-navigation/native";
+import {fetchPlaces} from "../util/database";
+
+function AllPlaces({ route }) {
+  const [loadedPlaces, setLoadedPlaces] = useState([]);
+
+  const isFocused = useIsFocused();
+
+  useEffect(() => {
+    const loadPlaces = async () => {
+      const places = await fetchPlaces();
+      setLoadedPlaces(places);
+    }
+
+    if (isFocused) {
+      loadPlaces().then();
+      // setLoadedPlaces((curPlaces) => [...curPlaces, route.params.place]);
+    }
+  }, [isFocused]);
+
+  return <PlacesList places={loadedPlaces} />;
+}
+
+export default AllPlaces;
+```
+
