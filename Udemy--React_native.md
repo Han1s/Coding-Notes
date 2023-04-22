@@ -2848,7 +2848,7 @@ Definition:
 
 ```jsx
 import * as SQLite from "expo-sqlite";
-import {Place} from "../models/place";
+import { Place } from "../models/place";
 
 const database = SQLite.openDatabase("places.db");
 
@@ -2914,10 +2914,37 @@ export const fetchPlaces = () => {
           const places = [];
 
           for (const dp of result.rows._array) {
-              places.push(new Place(dp.title, dp.imageUri, {address: dp.address, lat: dp.lat, lng: dp.lng}, dp.id));
+            places.push(
+              new Place(
+                dp.title,
+                dp.imageUri,
+                { address: dp.address, lat: dp.lat, lng: dp.lng },
+                dp.id
+              )
+            );
           }
 
           resolve(places);
+        },
+        (_, error) => {
+          reject(error);
+        }
+      );
+    });
+  });
+
+  return promise;
+};
+
+export const fetchPlaceDetails = (id) => {
+  const promise = new Promise((resolve, reject) => {
+    database.transaction((tx) => {
+      tx.executeSql(
+        "SELECT * FROM places WHERE id = ?",
+        [id],
+        (_, result) => {
+          console.log(result);
+          resolve(result.rows._array[0]);
         },
         (_, error) => {
           reject(error);
@@ -3051,3 +3078,118 @@ function AllPlaces({ route }) {
 export default AllPlaces;
 ```
 
+```jsx
+import { ScrollView, Text, View } from "react-native";
+import OutlinedButton from "../components/UI/OutlinedButton";
+import { StyleSheet } from "react-native";
+import { Colors } from "../constants/colors";
+import { Image } from "react-native";
+import { useEffect, useState } from "react";
+import { fetchPlaceDetails } from "../util/database";
+
+const PlaceDetails = ({ route, navigation }) => {
+  const [fetchedPlace, setFetchedPlace] = useState();
+
+  const showOnMapHandler = () => {};
+
+  const selectedPlaceId = route.params.placeId;
+
+  useEffect(() => {
+    const loadPlaceData = async () => {
+      const place = await fetchPlaceDetails(selectedPlaceId);
+      setFetchedPlace(place);
+      navigation.setOptions({
+        title: place.title,
+      });
+    };
+
+    loadPlaceData();
+  }, [selectedPlaceId]);
+
+  if (!fetchedPlace) {
+    return (
+      <View style={styles.fallback}>
+        <Text>Loading Place Data...</Text>
+      </View>
+    );
+  }
+
+  return (
+    <ScrollView>
+      <Image style={styles.image} source={{ uri: fetchedPlace.imageUri }} />
+      <View style={styles.locationContainer}>
+        <View style={styles.addressContainer}>
+          <Text style={styles.address}>{fetchedPlace.address}</Text>
+        </View>
+        <OutlinedButton icon="map" onPress={showOnMapHandler}>
+          View On Map
+        </OutlinedButton>
+      </View>
+    </ScrollView>
+  );
+};
+
+export default PlaceDetails;
+
+const styles = StyleSheet.create({
+  fallback: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  image: {
+    height: "35%",
+    minHeight: 300,
+    width: "100%",
+  },
+  locationContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  addressContainer: {
+    padding: 20,
+  },
+  address: {
+    color: Colors.primary500,
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+  },
+});
+```
+
+# XIII. Build React Native Apps Without Expo
+
+## 222. How does Expo work
+
+- Installs extra runtime on the device / emulator and during development loads the code and executes it.
+- you can still build standalone Apps with **EAS** service.
+- During dev we can move fast thanks to **expo** to reflect changes instantly.
+- For production we build apps without expo.
+
+## 223. Expo Alternatives
+
+- We used **expo managed workflow**
+
+  - we have a project with a lot of config taken from us so we dont have to worry about it.
+  - easy to setup and quick development. No need to worry about configurations.
+  - Allows building cross-platform apps.
+
+- **Expo bare** workflow is when you need more configuration and control.
+
+  - Usually if you need to write some other code such as C++ etc. within our app.
+  - Less expo features.
+  - Relatively easy to setup and work with.
+  - Often we wont use **expo-go**
+  - You need to configure things more often.
+  - Still produce cross-platform apps.
+
+- You can just use **React Native CLI** that doesn't use expo at all
+
+  - more complex setup
+  - convenient developement
+  - Can require more configuration for 3rd party software.
+  - multi-platform support not built in.
+  - You have to build your apps locally. So you cant build IOS on windows for example.
+
+  
