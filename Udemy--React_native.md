@@ -3160,6 +3160,8 @@ const styles = StyleSheet.create({
 
 # XIII. Build React Native Apps Without Expo
 
+- you can always start with managed workflow and eject once you need it
+
 ## 222. How does Expo work
 
 - Installs extra runtime on the device / emulator and during development loads the code and executes it.
@@ -3174,7 +3176,6 @@ const styles = StyleSheet.create({
   - we have a project with a lot of config taken from us so we dont have to worry about it.
   - easy to setup and quick development. No need to worry about configurations.
   - Allows building cross-platform apps.
-
 - **Expo bare** workflow is when you need more configuration and control.
 
   - Usually if you need to write some other code such as C++ etc. within our app.
@@ -3183,7 +3184,6 @@ const styles = StyleSheet.create({
   - Often we wont use **expo-go**
   - You need to configure things more often.
   - Still produce cross-platform apps.
-
 - You can just use **React Native CLI** that doesn't use expo at all
 
   - more complex setup
@@ -3192,4 +3192,85 @@ const styles = StyleSheet.create({
   - multi-platform support not built in.
   - You have to build your apps locally. So you cant build IOS on windows for example.
 
-  
+
+## 224. Setting up a machine
+
+- go to **reactnative.dev** and set up your with react native CLI quickstart.
+- For iOS apps you need macOS system
+- you have to also install bunch of stuff such as **Android Studio** etc.
+
+## 250. Using Bare Workflow
+
+```bash
+expo init
+# Choose minimal workflow
+
+npm run android
+# builds app and starts on the android emulator which you should have running
+```
+
+- you might need to build the app locally and install on the simulators later.
+
+## 250. Using Native Device features with bare workflow
+
+- lets use **location**
+- there are extra instructions for bare projects
+
+## 251. Ejecting to bare workflow
+
+```bash
+expo eject
+```
+
+## 252. Creating Apps with Native CLI
+
+```bash
+npx react-native-init RNNoExpo
+
+npm run android  # to build on android
+```
+
+## 253. Non-Expo Apps & Native Device Features
+
+- its convenient to use community packages instead of expo packages.
+
+# XIV. Publishing React Native Apps
+
+## 232. Publish Apps: An Overview
+
+- publishing means putting them in google or app store
+- you have to differentiate expo apps (even bare workflow) and non-expo apps
+- **expo**
+  - configure your project
+  - build app binaries with Expo's cloud service (no local resources used and you can build for all target platforms)
+  - you can also build the apps for iOS this way even if you don't have a mac
+  - submit to app stores either manually or via expo services
+- **non-expo**
+  - configure your project
+  - build your app binaries locally
+  - submit to app stores.
+
+## 233. Key configuration Items & Considerations
+
+- Permissions
+  - Android: its requested and shown in app store
+  - iOS: define permission request text spinnets
+- App name & Identifier
+  - Set the visible app name, an app version and an unique app identifier (ID)
+- Environment Variables
+  - Store app-wide variables securely (e.g. API keys)
+- Icons & Splash Screen (loading screens)
+  - with expo you get some defaults but you can configure your own
+
+## 234. Configuring Name and Version
+
+- Search for **Expo Application Services**
+- go to `/app.json`
+- check the api for descriptions of the individual fields
+  - **name** - the name we see on the home screen
+  - **version** - is the user facing version (the one you see in the store)
+    - you can setup internal versions for separately android and iOS
+
+## 235. Environment variables
+
+- EAS has some guide on environment variables https://docs.expo.dev/build-reference/variables/
