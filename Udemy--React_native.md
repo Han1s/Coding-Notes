@@ -3274,3 +3274,67 @@ npm run android  # to build on android
 ## 235. Environment variables
 
 - EAS has some guide on environment variables https://docs.expo.dev/build-reference/variables/
+
+## 237. Building Apps With EAS
+
+- for custom icons just replace files in **/assets**
+
+- create account at https://expo.dev/
+
+- ```bash
+  npm install -g eas-cli
+  eas login
+  eas build:configure  # adds eas.json file with extra config
+  ```
+
+- to build APK for android:
+
+```json
+{
+  "cli": {
+    "version": ">= 3.10.0"
+  },
+  "build": {
+    "development": {
+      "developmentClient": true,
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "preview": {
+      "android": { // add this
+        "buildType": "apk"
+      },
+      "distribution": "internal",
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    },
+    "production": {
+      "ios": {
+        "resourceClass": "m-medium"
+      }
+    }
+  },
+  "submit": {
+    "production": {}
+  }
+}
+```
+
+- ```bash
+  eas build -p android --profile preview
+  # id should be reverse url. (com.academind.myrecipebook)
+  # should probably generate keystore
+  ```
+
+- once done you get a link for APK file that is installable on Android device or publishable
+
+- for production you should build an **aab** file
+
+- you can also submit to the store via **EAS**
+
+## 238. Build for iOS and without EXPO
+
+TODO: Check when needed
