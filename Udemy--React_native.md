@@ -62,8 +62,6 @@ const App = props => {
 - download **Expo** apk
 - to install a simulator download **Android Studio** for an emulator on your local machine
 
-
-
 # II. React Native Basics (Course Goals App)
 
 ## 13. Core Components & Components Styling
@@ -3338,3 +3336,123 @@ npm run android  # to build on android
 ## 238. Build for iOS and without EXPO
 
 TODO: Check when needed
+
+## 243. What are local notifications
+
+- notifications triggered by the device on which the app is installed.
+
+- not sent to any other users or devices
+
+- google **expo notifications**
+
+- ```bash
+  expo install expo-notifications
+  ```
+
+- ```json
+  {
+    "expo": {
+      "name": "notifications",
+      "slug": "notifications",
+      "version": "1.0.0",
+      "orientation": "portrait",
+      "icon": "./assets/icon.png",
+      "userInterfaceStyle": "light",
+      "splash": {
+        "image": "./assets/splash.png",
+        "resizeMode": "contain",
+        "backgroundColor": "#ffffff"
+      },
+      "assetBundlePatterns": ["**/*"],
+      "ios": {
+        "supportsTablet": true
+      },
+      "android": {
+        "adaptiveIcon": {
+          "foregroundImage": "./assets/adaptive-icon.png",
+          "backgroundColor": "#ffffff"
+        }
+      },
+      "web": {
+        "favicon": "./assets/favicon.png"
+      },
+      "plugins": [  // setup plugins
+        [
+          "expo-notifications",
+          {
+            "icon": "./local/assets/icon.png",
+            "color": "#ffffff"
+          }
+        ]
+      ]
+    }
+  }
+  ```
+
+## 245. Scheduling notifications
+
+```js
+import { StatusBar } from "expo-status-bar";
+import { Button, StyleSheet, Text, View } from "react-native";
+import * as Notifications from "expo-notifications";
+import { useEffect } from "react";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => {
+    return {
+      shouldPlaySound: false,
+      shouldSetBadge: false,
+      shouldShowAlert: true,
+    };
+  },
+});
+
+export default function App() {
+  useEffect(() => {
+    const subscription = Notifications.addNotificationReceivedListener(
+      (notification) => {
+        console.log(JSON.stringify(notification, null, 2));
+      }
+    );
+
+    return () => {
+      subscription.remove();
+    };
+  }, []);
+
+  const scheduleNotificationHandler = () => {
+    Notifications.scheduleNotificationAsync({
+      content: {
+        title: "My first local notification",
+        body: "This is the body of the notification",
+        data: { userName: "Max" },
+      },
+      trigger: {
+        seconds: 3,
+      },
+    });
+  };
+
+  return (
+    <View style={styles.container}>
+      <Button
+        title="Schedule Notification"
+        onPress={scheduleNotificationHandler}
+      />
+      <StatusBar style="auto" />
+    </View>
+  );
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
+```
+
+
+
