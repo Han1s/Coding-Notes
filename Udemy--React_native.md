@@ -3409,14 +3409,24 @@ Notifications.setNotificationHandler({
 
 export default function App() {
   useEffect(() => {
-    const subscription = Notifications.addNotificationReceivedListener(
+    const subscription1 = Notifications.addNotificationReceivedListener(
       (notification) => {
+        console.log('SUBSCRIPTION 1')
         console.log(JSON.stringify(notification, null, 2));
       }
     );
 
+    // When clicking on notification
+    const subscription2 = Notifications.addNotificationResponseReceivedListener((notification) => {
+        console.log('SUBSCRIPTION 2')
+        console.log(JSON.stringify(notification, null, 2));
+        const userName = notification.notification.request.content.data.userName;
+        console.log(userName);
+    });
+
     return () => {
-      subscription.remove();
+      subscription1.remove();
+      subscription2.remove();
     };
   }, []);
 
@@ -3452,7 +3462,21 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
 });
+
 ```
 
 
 
+## 251. How push notifications work
+
+- the goal is to push notifications to your app installed on other devices (one or multiple)
+- Google / Apple forces you to go through push notification server to push notifications, you cannot send them directly
+- You need to send the message to this server to have it delivered
+- This is sent from either your backend or from inside your app
+- Push notification servers then deliver the push notification to those devices
+
+## 252. Push Notifications Setup
+
+- **expo push notifications**
+- you need **expo push token** which acts as an address to which you send the notification later
+  - push token is a string that is unique for every device
