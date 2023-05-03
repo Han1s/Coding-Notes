@@ -34,3 +34,25 @@
 ## 8. Learning Community
 
 https://academind.com/community/
+
+## 10. Clean Code, Principles & Patterns & Clean Architecture
+
+- Clean Code
+  - Code that is readable and easy to understand
+  - Focuses on single problems / files
+- Patterns & Principles
+  - write code which is maintainable and extensible
+- Clean Code vs Clean Architecture
+  - Clean Code is about writing a code
+  - How you structure the project, separate entities and store data
+  - **Where** you write your code
+
+## 11. Clean Code vs Quick Code
+
+- Always refactor
+- Always improve the code
+- Always review and improve
+- Its iterative process
+- Embrace refactoring
+- Codebase can only stay alive if you continuously refactor and improve it
+- Clean Code should be priority in any project you start
