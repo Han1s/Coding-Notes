@@ -30,3 +30,7 @@
 - Classes & Data Structures
   - missing distinction
   - bloated classes
+
+## 8. Learning Community
+
+https://academind.com/community/
