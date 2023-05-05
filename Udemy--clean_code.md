@@ -127,4 +127,10 @@ https://academind.com/community/
     - `isValid, purchase.isPaid()`
   - provide more details without redundancy
     - `emailIsValid, purchase.isPaid()`
-    - 
+
+# 20. Naming Functions & Methods - Examples
+
+| What Is Stored                              | Bad Names           | Okay Names              | Good Names            |
+| ------------------------------------------- | ------------------- | ----------------------- | --------------------- |
+| Save user data to a database                | process(), handle() | save, storeData         | saveUser, user.store  |
+| user input validation result (true / false) | process(), save()   | validateSave(), check() | validate(), isValid() |
