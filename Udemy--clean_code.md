@@ -56,3 +56,23 @@ https://academind.com/community/
 - Embrace refactoring
 - Codebase can only stay alive if you continuously refactor and improve it
 - Clean Code should be priority in any project you start
+
+# II. Naming - Variables, Functions, Classes and more
+
+## 14. Why good names matter
+
+- names should be meaningful
+- well named things allow readers to understand the code without going through it in detail
+
+## 15. Choosing Good Names
+
+- **Variables & Constants**
+  - data containers
+  - usually use **nouns** or short phrases with **adjectives**
+- **Functions / Methods**
+  - Commands or calculated values
+  - typically **verbs** or short phrases with **adjectives**
+- **Classes**
+  - to create things / objects
+  - typically **nouns** or short phrases with **nouns**
+
