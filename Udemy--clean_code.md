@@ -76,3 +76,55 @@ https://academind.com/community/
   - to create things / objects
   - typically **nouns** or short phrases with **nouns**
 
+## 16. Casing conventions & Programming Languages
+
+- **snake_case**
+  - Python
+- **camelCase**
+  - Java, JavaScript
+- **PascalCase**
+  - Python, Java, Javascript for class names
+- **kebab-case**
+  - Ruby, html
+
+## 17. Naming Variables & Properties - Theory
+
+- Value is an object
+  - describe the value 
+    - `user, database`
+  - you can provide more details without introducing redundancy
+    - `authenticatedUser, sqlDatabase`
+
+- Value is Number or String
+  - describe the value
+    - `name, age`
+  - you can provide more details without introducing redundancy
+    - `firstName, age`
+- Value is Boolean
+  - answer a true / false question
+    - `isActive, loggedIn`
+  - you can provide more details without introducing redundancy
+    - `isActiveUser`
+
+## 17. Naming Variables & Properties - Examples
+
+| What Is Stored                              | Bad Names | Okay Names              | Good Names         |
+| ------------------------------------------- | --------- | ----------------------- | ------------------ |
+| user object (name, email, age)              | u, data   | userData, person        | user, customer     |
+| user input validation result (true / false) | v, val    | correct, validatedInput | isValid, isCorrect |
+
+
+
+## 19. Naming Functions & Methods - Theory
+
+- functions performs an operation
+  - describe that operation
+    - `getUser(), response.send()`
+  - provide more details without redundancy
+    - `getUserByEmail()`
+- function computes a Boolean
+  - answer true or false question
+    - `isValid, purchase.isPaid()`
+  - provide more details without redundancy
+    - `emailIsValid, purchase.isPaid()`
+    - 
