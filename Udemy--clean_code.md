@@ -134,3 +134,23 @@ https://academind.com/community/
 | ------------------------------------------- | ------------------- | ----------------------- | --------------------- |
 | Save user data to a database                | process(), handle() | save, storeData         | saveUser, user.store  |
 | user input validation result (true / false) | process(), save()   | validateSave(), check() | validate(), isValid() |
+
+
+
+## 21. Naming Classes - Theory
+
+- describe the object
+  - `User, Product`
+- Provide more details without redundancy
+  - `Customer, Course`
+- Avoid redundant suffixes - `DatabaseManager`
+
+
+
+## 22. Naming Classes - Examples
+
+| What Is Stored | Bad Names         | Okay Names       | Good Names            |
+| -------------- | ----------------- | ---------------- | --------------------- |
+| A User         | UEntity, ObjA     | UserObj, AppUser | User, Admin           |
+| A Database     | Data, DataStorage | Db, Data         | Database, SQLDatabase |
+
