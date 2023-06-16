@@ -248,3 +248,4 @@ print(rectangle.print_coordinates)
 
 ## 2. Code Structure, Comments & Formatting
 
+- comments are (mostly) bad
