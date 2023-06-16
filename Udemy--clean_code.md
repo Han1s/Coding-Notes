@@ -244,9 +244,7 @@ print(rectangle.print_coordinates)
         
 ```
 
-
-
-## 2. Code Structure, Comments & Formatting
+# II. Code Structure, Comments & Formatting
 
 - comments are (mostly) bad
 - Generally avoid them
@@ -275,3 +273,12 @@ print(rectangle.print_coordinates)
 - Differs between languages
 - follow language-specific conventions and guidelines
 
+## 33. Vertical Formatting
+
+- Code should be readable top-bottom without too many jumps
+- Consider splitting files with multiple concepts into multiple files
+  - as a rule of thumb its good to have only one class per file
+- Different concepts should be separated by spacing
+- Similar concepts shouldn't be separated by spacing
+- Related concepts should be kept close to each other to avoid jumps
+- Ordering also matters based on the language you are using
