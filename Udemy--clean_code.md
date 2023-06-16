@@ -365,3 +365,14 @@ log_storage.create_directory()
 log_storage.insert_file('test.txt', 'Test')
 ```
 
+
+
+# III. Functions
+
+## 40. Analyzing Key Function Parts
+
+- calling the function should be readable
+  - the number and order of the arguments matter
+- working with the function should be easy / readable
+  - the length of the function body matters
+
