@@ -282,3 +282,11 @@ print(rectangle.print_coordinates)
 - Similar concepts shouldn't be separated by spacing
 - Related concepts should be kept close to each other to avoid jumps
 - Ordering also matters based on the language you are using
+
+
+
+## 35. Horizontal Formatting
+
+- avoid very long unreadable sentences
+- break long statements into multiple shorter ones
+- use clear but not unreadably long names
