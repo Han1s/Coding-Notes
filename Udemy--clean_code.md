@@ -376,3 +376,14 @@ log_storage.insert_file('test.txt', 'Test')
 - working with the function should be easy / readable
   - the length of the function body matters
 
+
+
+## 41. Keep the number of Parameters low!
+
+- minimize the number of parameters
+  - 0 is ideal
+  - 1 is good
+  - 2 is acceptable but use with caution
+  - 3 tends to be challenging, avoid if possible
+  - 3 + Should absolutely be avoided
+
