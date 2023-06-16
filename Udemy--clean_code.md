@@ -249,3 +249,18 @@ print(rectangle.print_coordinates)
 ## 2. Code Structure, Comments & Formatting
 
 - comments are (mostly) bad
+- Generally avoid them
+
+## 30. Bad comments
+
+- typically you want to avoid them as they convey redundant information
+- divider comments are also bad, usually its better to split file into multiple files instead
+- commented-out code is also bad practice. Just remove it.
+
+## 31. Good Comments
+
+- legal information
+- add explanation that cannot be replaced by proper naming (e.g. regex or something)
+- comment that warns you of something
+- TODO notes
+- Documentation string especially when sharing code
