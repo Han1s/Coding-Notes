@@ -264,3 +264,14 @@ print(rectangle.print_coordinates)
 - comment that warns you of something
 - TODO notes
 - Documentation string especially when sharing code
+
+## 32. What is Code Formatting About?
+
+- **vertical formatting**
+  - any formatting from the top to the bottom (spacing lines, grouping code, etc)
+- **horizontal formatting**
+  - everything that happens horizontally (indentation, space between code, line width)
+- Formatting is important and greatly improves readability
+- Differs between languages
+- follow language-specific conventions and guidelines
+
