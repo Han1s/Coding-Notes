@@ -387,3 +387,28 @@ log_storage.insert_file('test.txt', 'Test')
   - 3 tends to be challenging, avoid if possible
   - 3 + Should absolutely be avoided
 
+
+
+## 44. Two parameters & when to refactor
+
+- minimize the number of parameters
+- understand when number of parameters is readable
+- code should minimize the cognitive load
+- sometimes rather than a function taking two parameters its better to divide it into two functions
+- sometimes its better to replace multiple parameters with one mapping or normal object
+
+
+
+## 47. Avoid output parameters
+
+- avoid functions that modify parameters and return them if possible
+- its better to use object-oriented approach. E.g. `user.addId()` function call
+
+
+
+## 48. Functions should be small and do one thing!
+
+- should be very small
+- they should do exactly **one thing**
+  - the thing is usually related to the level of abstraction (e.g. validating via low level function and saving via higher level interface)
+- you can achieve that by splitting functions into multiple functions
