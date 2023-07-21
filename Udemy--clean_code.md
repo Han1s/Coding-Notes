@@ -412,3 +412,20 @@ log_storage.insert_file('test.txt', 'Test')
 - they should do exactly **one thing**
   - the thing is usually related to the level of abstraction (e.g. validating via low level function and saving via higher level interface)
 - you can achieve that by splitting functions into multiple functions
+
+
+
+## 49. Why levels of abstraction matter
+
+Functions should do work that's **one level of abstraction below their name**
+
+
+
+## 50. When should you split?
+
+- can you extract a code that work on a same functionality from the function?
+- can you extract a code that requires more interpretation than the surrounding code? (viz. Level of abstraction)
+- for reusability (Dry)
+
+
+
