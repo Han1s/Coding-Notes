@@ -429,3 +429,25 @@ Functions should do work that's **one level of abstraction below their name**
 
 
 
+## 54. Don't Overdo It
+
+- Being as granular as possible wont automatically improve readability
+- you probably shouldn't split if 
+  - you have problem coming up with a name for the extracted function
+  - you're just renaming the operation 
+  - finding the new function will take longer than reading the extracted code
+
+## 55. Understanding & Avoiding (Unexpected) Side Effects
+
+- try keeping functions **pure**
+  - same input generates same output (meaning the same parameter sent there generates the same output)
+- What is **side effect**
+  - operation which changes the overall system or program state `startSession(...)`
+  - they are not bad but unexpected side effects should be avoided (e.g. changing global variable)
+  - The name of a function should signal that a side effect occurs
+  - if you have a side effect choose a function name that implies it or move it to another function / place
+
+
+
+
+
