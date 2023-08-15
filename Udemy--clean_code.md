@@ -531,3 +531,11 @@ function isValid(email, password) {
 
 - you wanna avoid deeply nested control structures if possible
 
+
+
+## 60. Useful Concepts - Overview
+
+- **Avoid Deep Nesting**
+- **Using Factory Functions & Polymorphism**
+- **Prefer Positive Checks**
+- **Utilize Errors**
