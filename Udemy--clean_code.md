@@ -526,3 +526,8 @@ function isValid(email, password) {
   - If yes then its likely a clean code
   - If no consider splitting it
 - Small functions are way easier to test than big functions
+
+# V. Control Structures & Errors
+
+- you wanna avoid deeply nested control structures if possible
+
