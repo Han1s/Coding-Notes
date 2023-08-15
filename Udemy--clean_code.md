@@ -447,6 +447,77 @@ Functions should do work that's **one level of abstraction below their name**
   - The name of a function should signal that a side effect occurs
   - if you have a side effect choose a function name that implies it or move it to another function / place
 
+## 56. Side Effects - A Challenge
+
+Problem
+
+```js
+function connectDatabase() {
+  const didConnect = database.connect();
+  if (didConnect) {
+    return true;
+  } else {
+    console.log('Could not connect to database!');
+    return false;
+  }
+}
+
+function determineSupportAgent(ticket) {
+  if (ticket.requestType === 'unknown') {
+    return findStandardAgent();
+  }
+  return findAgentByRequestType(ticket.requestType);
+}
+
+function isValid(email, password) {
+  if (!email.includes('@') || password.length < 7) {
+    console.log('Invalid input!');
+    return false;
+  }
+  return true;
+}
+```
+
+
+
+Solution
+
+```js
+function initApp() {
+	const success = connectDatabase();
+    if (!success) {
+        console.log('Could not connect to database!');  // could be abstracted as well
+    }
+    // ...
+}
+
+function connectDatabase() {
+    const didConnect = database.connect();
+    return didConnect();
+}
+
+function determineSupportAgent(ticket) {
+  if (ticket.requestType === 'unknown') {
+    return findStandardAgent();
+  }
+  return findAgentByRequestType(ticket.requestType);
+}
+
+function createUser(email, password) {
+    if (!isValid(email, password)) {
+        console.log('Could not connect to database!')
+    }
+    //...
+}
+
+function isValid(email, password) {
+  if (!email.includes('@') || password.length < 7) {
+    return false;
+  }
+  return true;
+}
+```
+
 
 
 
