@@ -520,5 +520,9 @@ function isValid(email, password) {
 
 
 
+## 57. Unit Testing Helps!
 
-
+- Can you easily test a function?
+  - If yes then its likely a clean code
+  - If no consider splitting it
+- Small functions are way easier to test than big functions
