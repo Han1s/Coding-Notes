@@ -816,9 +816,22 @@ function processTransactions(transactions) {
   }
 
   for (const transaction of transactions) {
+    processTransaction(transaction)
+  }
+}
+
+function isEmpty(transactions) {
+    return !transactions || transactions.length === 0
+}
+
+function showErrorMessage(message) {
+    console.log(message)
+}
+
+function processTransaction(transaction) {
     if (transactions.status !== 'OPEN') {
       console.log('Invalid transaction type!');
-      continue;
+      return;
     }
     if (transaction.type === 'PAYMENT') {
       if (transaction.method === 'CREDIT_CARD') {
@@ -839,15 +852,6 @@ function processTransactions(transactions) {
     } else {
       console.log('Invalid transaction type!', transaction);
     }
-  }
-}
-
-function isEmpty(transactions) {
-    return !transactions || transactions.length === 0
-}
-
-function showErrorMessage(message) {
-    console.log(message)
 }
 
 function processCreditCardPayment(transaction) {
@@ -877,5 +881,10 @@ function processPlanPayment(transaction) {
 function processPlanRefund(transaction) {
   console.log('Processing plan refund for amount: ' + transaction.amount);
 }
+```
+
+## 64. Extracting Control Structures Into Functions
+
+```jsx
 ```
 
