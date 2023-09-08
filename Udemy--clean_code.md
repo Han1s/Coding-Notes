@@ -1869,25 +1869,45 @@ function showErrorMessage(message, item) {
     }
 }
 
+throw processWithProcessor(transaction) {
+    const processors = getTransactionProcessors(transaction);
+
+    if (isPayment(transaction)) {
+        processors.processPayment(transaction);
+    } else {
+        processors.processRefund(transaction);
+    }
+}
+
 function processTransaction(transaction) {
     try {
 	    validateTransaction(transaction);
-
-		processByMethod(transaction);
+        processWithProcessor(transaction);
     } catch {
         showErrorMessage(error.message, error.item);
     }
 }
 
-function processByMethod(transaction) {
+function getTransactionProcessors(transaction) {
+    let processors = {
+        processPayment: null,
+        processRefund: null
+    };
+    
     if (usesTransactionMethod(transaction, 'CREDIT_CARD')) {
-        processCreditCardTransaction(transaction);
+        processor.processPayment = processCreditCardPayment;
+        processor.processRefund = processCreditCardRefund;
     } else if (usesTransactionMethod(transaction, 'PAYPAL')) {
-        processPayPalTransaction(transaction);
+        processor.processPayment = processPaypalPayment;
+        processor.processRefund = processPayPalRefund;
     } else if (usesTransactionMethod(transaction, 'PLAN')) {
-        processPlanTransaction(transaction);
+        processor.processPayment = processPlanPayment;
+        processor.processRefund = processPlanRefund;
     }
+    
+    return processors;
 }
+
 
 function usesTransactionMethod(transaction, method) {
     return transaction.method === method;
@@ -1916,30 +1936,6 @@ function isPayment(transaction) {
 
 function isRefund(transaction) {
     return transaction.type === 'REFUND';
-}
-
-function processCreditCardTransaction(transaction) {
-    if (isPayment(transaction)) {
-        processCreditCardPayment()
-    } else if (isRefund(transaction)) {
-        processCreditCardRefund();
-    }
-}
-
-function processPayPalTransaction(transaction) {
-    if (isPayment(transaction)) {
-        processPayPalPayment()
-    } else if (isRefund(transaction)) {
-        processPayPalRefund();
-    }
-}
-
-function processPlanPayment(transaction) {
-	if (isPayment(transaction)) {
-        processPlanPayment()
-    } else if (isRefund(transaction)) {
-        processPlanRefund();
-    }
 }
 
 function processCreditCardPayment(transaction) {
@@ -1971,3 +1967,9 @@ function processPlanRefund(transaction) {
 }
 ```
 
+
+
+## 71. Using Factory Functions and Polymorphism
+
+- **Factory Function** is a function used to produce something (objects, maps, arrays, etc.);
+- **Polymorphism** tbd
