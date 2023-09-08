@@ -1862,11 +1862,9 @@ function isEmpty(transactions) {
     return !transactions || transactions.length === 0
 }
 
-function showErrorMessage(message, item) {
+function showErrorMessage(message, item = {}) {
     console.log(message);
-    if (item) {
-        console.log(item);
-    }
+    console.log(item);
 }
 
 throw processWithProcessor(transaction) {
@@ -1973,3 +1971,12 @@ function processPlanRefund(transaction) {
 
 - **Factory Function** is a function used to produce something (objects, maps, arrays, etc.);
 - **Polymorphism** tbd
+
+
+
+## 72. Working with default parameters
+
+
+
+# VI. Objects, Classes & Data Containers / Structures
+
