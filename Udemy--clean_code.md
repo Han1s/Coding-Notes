@@ -1980,3 +1980,20 @@ function processPlanRefund(transaction) {
 
 # VI. Objects, Classes & Data Containers / Structures
 
+## 78. Objects vs Data containers
+
+- **object**
+  - hides its internals and exposes a public API
+  - contains your business logic
+  - abstractions over concretions
+- **data container / structure**
+  - public internals, almost no API methods
+  - just used to store and transport data
+  - concretions only
+
+
+
+## 80. Classes and polymorphism
+
+- **polymorphism**
+  - the ability of an object to take on many forms
