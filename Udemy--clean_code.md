@@ -1997,3 +1997,107 @@ function processPlanRefund(transaction) {
 
 - **polymorphism**
   - the ability of an object to take on many forms
+
+```js
+type Purchase = any;
+
+let Logistics: any;
+
+class Delivery {
+  private purchase: Purchase;
+
+  constructor(purchase: Purchase) {
+    this.purchase = purchase;
+  }
+
+  deliverProduct() {
+    if (this.purchase.deliveryType === 'express') {
+      Logistics.issueExpressDelivery(this.purchase.product);
+    } else if (this.purchase.deliveryType === 'insured') {
+      Logistics.issueInsuredDelivery(this.purchase.product);
+    } else {
+      Logistics.issueStandardDelivery(this.purchase.product);
+    }
+  }
+
+  trackProduct() {
+    if (this.purchase.deliveryType === 'express') {
+      Logistics.trackExpressDelivery(this.purchase.product);
+    } else if (this.purchase.deliveryType === 'insured') {
+      Logistics.trackInsuredDelivery(this.purchase.product);
+    } else {
+      Logistics.trackStandardDelivery(this.purchase.product);
+    }
+  }
+}
+```
+
+to:
+
+```ts
+type Purchase = any;
+
+let Logistics: any;
+
+interface Delivery {
+    deliverProduct();
+    trackProduct();
+}
+
+class DeliveryImplementation {
+  protected purchase: Purchase;  // protected means it cant be accessed from outside but can be accessed by children
+
+  constructor(purchase: Purchase) {
+    this.purchase = purchase;
+  }
+}
+
+class ExpressDelivery extends DeliveryImplementation implements Delivery {
+    deliverProduct() {
+      Logistics.issueExpressDelivery(this.purchase.product);
+    }
+    
+    trackProduct() {
+      Logistics.trackExpressdDelivery(this.purchase.product);
+    }
+};
+
+class InsuredDelivery extends DeliveryImplementation implements Delivery {
+    deliverProduct() {
+      Logistics.issueInsuredDelivery(this.purchase.product);
+	}
+    
+  trackProduct() {
+  	Logistics.trackInsuredDelivery(this.purchase.product);
+  }
+};
+
+class StandardDelivery extends DeliveryImplementation implements Delivery {
+    deliverProduct() {
+    	Logistics.issueStandardDelivery(this.purchase.product);
+    }
+    
+    trackProduct() {
+    	Logistics.trackStandardDelivery(this.purchase.product);
+    }
+};
+
+function createDelivery(purchase) {
+    if (purchase.deliveryType === 'express') {
+        delivery = new ExpressDelivery({});
+    } else if (purchase.deliveryType === 'insured') {
+        delivery = new InsuredDelivery({});
+    } else {
+        delivery = new StandardDelivery({});
+    }
+    
+    return delivery;
+}
+
+lety delivery: Delivery = createDelivery({});
+
+
+const delivery = new Delivery({})
+delivery.deliverProduct();
+```
+
