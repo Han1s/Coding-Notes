@@ -2161,3 +2161,13 @@ class DeliveryJob {
 }
 ```
 
+
+
+## 84. SOLID principles
+
+- write classes in a solid way
+  - **S** - single responsibility principle
+  - **O** - open-closed principle
+  - **L** - Liskov substitution principle
+  - **I** - interface segregation principle
+  - **D** - dependency inversion principle
