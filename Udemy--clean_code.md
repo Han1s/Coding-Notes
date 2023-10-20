@@ -2101,3 +2101,14 @@ const delivery = new Delivery({})
 delivery.deliverProduct();
 ```
 
+
+
+## 81. Classes Should be small
+
+- typically prefer many small classes over a few large classes
+- classes should adhere to the **single responsibility principle**
+- A **Product** class should be responsible for product-related issues
+
+
+
+## 82. Understanding Cohesion
