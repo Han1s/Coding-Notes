@@ -2119,3 +2119,45 @@ delivery.deliverProduct();
 - The goal is to have high cohesion
 - If you start splitting the classes the cohesion will grow
 
+
+
+## 83. 'Law of Demeter' and why you should 'Tell, not Ask'
+
+- **Law of Demeter** 
+  -  e.g. `this.customer.lastPurchase.date` - you should avoid this
+  - Drilling too deeply is discouraged (with exception of data containers)
+  - Do not depend on the internals of 'strangers'- meaning objects which you do not know directly
+  - **Code in a method may only access direct internals (properties and methods) of:**
+    - **the object it belongs to**
+    - **objects that are stored in properties of that object**
+    - **objects which are received as method parameters**
+    - **objects which are created in the method**
+  - you should ideally tell other classes what to do
+
+```js
+class Customer {
+  lastPurchase: any;
+
+  getLastPurchaseDate() {
+    return this.lastPurchase.date;
+  }
+}
+
+class DeliveryJob {
+  customer: any;
+  warehouse: any;
+
+  constructor(customer, warehouse) {
+    this.customer = customer;
+    this.warehouse = warehouse;
+  }
+
+  deliverLastPurchase() {
+    // const date = this.customer.lastPurchase.date;
+    // const date = this.customer.getLastPurchaseDate();
+    // this.warehouse.deliverPurchasesByDate(this.customer, date);
+    this.warehouse.deliverPurchase(this.customer.lastPurchase);
+  }
+}
+```
+
