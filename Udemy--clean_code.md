@@ -2112,3 +2112,10 @@ delivery.deliverProduct();
 
 
 ## 82. Understanding Cohesion
+
+- **Cohesion** defines how much are your class methods using the class properties
+- **Maximum cohesion** - all methods use all properties, this is a highly cohesive object
+- **No cohesion** - no methods use any class properties. Avoid this.
+- The goal is to have high cohesion
+- If you start splitting the classes the cohesion will grow
+
