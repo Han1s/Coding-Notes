@@ -2180,3 +2180,8 @@ class DeliveryJob {
 - SRP means its usually related to a single group in case of classes
 - smaller classes are easier to read
 
+
+
+## 86. Open-Closed Principle (OCP)
+
+- classes should be open for extension but closed for modification
