@@ -2185,3 +2185,10 @@ class DeliveryJob {
 ## 86. Open-Closed Principle (OCP)
 
 - classes should be open for extension but closed for modification
+
+
+
+## 87.  Liskov Substitution principle
+
+- Objects should be replaceable with instances of their sublasses without altering the behavior
+
