@@ -2171,3 +2171,12 @@ class DeliveryJob {
   - **L** - Liskov substitution principle
   - **I** - interface segregation principle
   - **D** - dependency inversion principle
+
+
+
+## 85. Single Responsibility Principle and Why it matters
+
+- classes should have a single responsibility - a class shouldn't change for more than one reason.
+- SRP means its usually related to a single group in case of classes
+- smaller classes are easier to read
+
