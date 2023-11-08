@@ -33,3 +33,53 @@
   - `=100+200`returns 300
   - `=B1+B2`returns the result
 
+## 18. Relative Versus Absolute Cell Reference In Formulas
+
+- **absolute cell references**
+  - refers to the particular cells
+  - `=B4+B5+B6`
+  - `=E8/$E$9` - the dollar signs mark the value as absolute
+- **relative cell references**
+  - copying formulas changes the formulas relative to the column / row
+  - it performs the same formula relative to the location
+
+## 10. Order of operation
+
+- in Formulas use **Formulas Auditing** -> **Evaluate Formula** to debug formulas
+
+
+
+# IV. Working with Basic Excel Functions
+
+- **Excel Function** is a predefined calculation
+  - `=SUM(B4:B8)`
+- 3 Parts of an Excel Function
+  - **=**
+  - **Function Name**
+  - **Arguments**
+- use **argument window** which is the little **fx** in the function window
+- there is several hundred function
+
+
+
+## 21. SUM()
+
+## 22. MIN() & MAX()
+
+## 23. AVERAGE()
+
+## 24. COUNT()
+
+- counts the number of numeric values
+
+## 25. Adjacent Cells Error in Excel Calculations
+
+- the small green corner gives tips if you click the warning
+- you can accept or ignore the error
+
+## 26. AutoSum command
+
+- automatically sum up cells
+- just select the empty cells and click
+- `Alt = ` 
+
