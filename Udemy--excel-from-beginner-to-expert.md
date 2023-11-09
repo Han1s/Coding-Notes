@@ -83,3 +83,68 @@
 - just select the empty cells and click
 - `Alt = ` 
 
+## 28. Using Autofill
+
+- the little box in the right bottom corner
+- just drag to spread formulas
+
+
+
+## V. Modifying an Excel Worksheet
+
+## 30. Inserting and Deleting Rows and Columns
+
+- `ctr +`inserts row
+- `ctrl -` deletes row
+- `ctrl shift +`inserts column
+- `ctrl shift - deletes column`
+
+## 31. Changing the width and height of cells
+
+- to automatically adjust column just double click the  column border between letters
+- you can also adjust multiple columns by selecting all of them by dragging the border a bit\
+
+## 32. Hiding and unhiding rows and columns
+
+- hiding from printing as well
+- just right click and hide
+
+
+
+# VI. Formatting Data
+
+## 40. Formatting Data as Currency values
+
+- **home -> number**
+
+
+
+## 42. Format Painter
+
+- **home -> clipboard -> format painter**
+  - 1 click - copy one cell
+  - 2 clicks - copy until Esc
+
+## 43. Creating Styles to Format Data
+
+- similar to word
+- **home -> styles**
+
+## 44. Merging and Centering Cells
+
+- **home -> alignment -> merge and center**
+  - use carefully
+  - good especially for titles
+
+## 45. Conditional Formatting
+
+- applies formatting based on condition
+- **home -> styles -> conditional formatting**
+- to edit the rule **conditional formatting -> Manage rules**
+
+
+
+# VII. Inserting Images and Shapes
+
+
+
