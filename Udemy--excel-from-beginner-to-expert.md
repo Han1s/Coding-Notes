@@ -146,5 +146,38 @@
 
 # VII. Inserting Images and Shapes
 
+## 49. Formatting Shapes
+
+- use **shape format** tab when selecting shape
+
+## 50. Working with Smart Arts
+
+- usually used in powerpoint
+- in **insert -> illustrations -> smartart**
+- many options are online as well
 
 
+
+# VIII. Creating Basic Charts in Excel
+
+`=[cell]` connects the cell to another cell and shows the same thing (maybe for titles and stuff)
+
+- pie charts are better for a single row of data
+- refer to the cheetsheet about the data in the pdf
+
+
+
+# IX. Printing an Excel Worksheet
+
+- if you scroll out youll see the lines dividing the print sheets
+- choose scaling as well
+- you can reduce margins as well
+- **page layout view** in **view > page layout**
+- you can edit the header and footer as well
+- you can print specific cells as well or use print area
+
+
+
+# X. Templates
+
+- basic structure is completed for you and just fill data
