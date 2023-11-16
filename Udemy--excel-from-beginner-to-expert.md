@@ -181,3 +181,45 @@
 # X. Templates
 
 - basic structure is completed for you and just fill data
+- use templates from the preconfigured one
+- to create a tyemplate you need to change the save type to **excep template**
+
+
+
+# XIV. Working with an Excel list
+
+- always format the first row as headers
+- make sure there are no empty rows or columns in the list
+
+
+
+## 71. Sorting a List Using Single Level Sort
+
+- you can sort via **data** tab -> **sort & filter**
+
+## 72. Sorting a list using multi-level sorts
+
+- **data** > **sort & filter** > **Sort** > **Add level**
+
+## 73. Using custom sorts
+
+- for example for month names
+- **data** > **sort & filter** > **Sort** > **sort by** > **custo**
+
+## 74. Using Auto Filter tools
+
+- click in the list and click on **data** > **filter**
+  - arrows will appear in the header
+
+## 75. Subtotals in the list
+
+- first you need to sort the column based on what you want
+- **data > outline > subtotal**
+
+## 76. Format a list as a table
+
+- click in the list
+- **home > styles > format as table**
+
+
+
