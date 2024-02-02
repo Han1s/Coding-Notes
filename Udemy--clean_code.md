@@ -2190,5 +2190,72 @@ class DeliveryJob {
 
 ## 87.  Liskov Substitution principle
 
-- Objects should be replaceable with instances of their sublasses without altering the behavior
+- Objects should be replaceable with instances of their subclasses without altering the behavior
+
+
+
+## 88. Interface Segregation Principle
+
+- many client-specific interfaces are better than one general purpose interface
+
+```ts
+// WRONG APPROACH
+interface Database {
+    connect(uri: string);
+    storeData(data: any)
+}
+
+class SQLDatabase implements Database {
+    connect(uri: string) {
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+
+class InMemoryDatabase implements Database {
+    connect(uri: string) {  // this is not needed here, we have a wrong interface
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+```
+
+
+
+```ts
+// CORRECT APPROACH
+interface Database {
+    storeData(data: any)
+}
+
+interface RemoteDatabase {
+    connect(uri: string);
+}
+
+class SQLDatabase implements Database, RemoteDatabase {
+    connect(uri: string) {
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+
+class InMemoryDatabase implements Databas {
+    connect(uri: string) {  // this is not needed here, we have a wrong interface
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+```
 
