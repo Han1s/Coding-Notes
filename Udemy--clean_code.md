@@ -2327,6 +2327,13 @@ class App {
 
 const sqlDatabase = new SQLDatabase();
 sqlDatabase.connect('my-url');
-const app = new App(sqlDat);
+const app = new App(sqlDatabase);
 ```
 
+
+
+## 93. Possible Next Steps
+
+- **Clean Architecture**
+- **Test Driven Development**
+- 
