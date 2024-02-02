@@ -2176,7 +2176,7 @@ class DeliveryJob {
 
 ## 85. Single Responsibility Principle and Why it matters
 
-- classes should have a single responsibility - a class shouldn't change for more than one reason.
+- **classes should have a single responsibility** - a class shouldn't change for more than one reason.
 - SRP means its usually related to a single group in case of classes
 - smaller classes are easier to read
 
@@ -2184,13 +2184,13 @@ class DeliveryJob {
 
 ## 86. Open-Closed Principle (OCP)
 
-- classes should be open for extension but closed for modification
+- **classes should be open for extension but closed for modification**
 
 
 
 ## 87.  Liskov Substitution principle
 
-- Objects should be replaceable with instances of their subclasses without altering the behavior
+- **Objects should be replaceable with instances of their subclasses without altering the behavior**
 
 
 
@@ -2248,7 +2248,7 @@ class SQLDatabase implements Database, RemoteDatabase {
     }
 }
 
-class InMemoryDatabase implements Databas {
+class InMemoryDatabase implements Database {
     connect(uri: string) {  // this is not needed here, we have a wrong interface
         // Connecting...
     }
@@ -2257,5 +2257,76 @@ class InMemoryDatabase implements Databas {
         // Storing data...
     }
 }
+```
+
+
+
+## 89. Dependency Inversion Principle (DIP)
+
+- **you should depend upon abstractions, not concretions**
+
+
+
+```ts
+interface Database {
+    storeData(data: any)
+}
+
+interface RemoteDatabase {
+    connect(uri: string);
+}
+
+class SQLDatabase implements Database, RemoteDatabase {
+    connect(uri: string) {
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+
+class InMemoryDatabase implements Database {
+    connect(uri: string) {  // this is not needed here, we have a wrong interface
+        // Connecting...
+    }
+    
+    storeData(data: any) {
+        // Storing data...
+    }
+}
+
+// WRONG APPROACH
+class App {
+    private database: SQLDatabase | InMemoryDatabase;
+    
+    constructor(database: SQLDatabase | InMemoryDatabase) {  // This depends on concretion
+        if (database instanceof SQLDatabase) {
+            database.connect('my-url');
+        }
+        this.database = database;
+    }
+    
+    saveSettings() {
+        this.database.storeData('Some data');
+    }
+}
+
+// CORRECT APPROACH
+class App {
+    private database: SQLDatabase | InMemoryDatabase;
+    
+    constructor(database: Database) {  // This depends on concretion
+        this.database = database;
+    }
+    
+    saveSettings() {
+        this.database.storeData('Some data');
+    }
+}
+
+const sqlDatabase = new SQLDatabase();
+sqlDatabase.connect('my-url');
+const app = new App(sqlDat);
 ```
 
