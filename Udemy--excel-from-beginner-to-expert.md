@@ -223,6 +223,19 @@
 
 ## 77. Conditional Formatting to Find Duplicates
 
-- `ctrl + shift + a` selects all cells in a column up until column
+- `ctrl + shift + down arrow` selects all cells in a column up until column
 - highlight cells => home => conditional formatting => highlight duplicates
 
+## 78. Removing Duplicates
+
+- if you have table Design -> remove duplicates
+- if not data -> remove duplicates
+
+
+
+# 15. Excel List Functions
+
+## 79. DSUM()
+
+- we can add criteria to the **SUM()** function. E.g. where category is x.
+- you need to write List header ('Category') into a cell and the filtered category ('Rent') below it, then you add those two to the criteria
