@@ -163,7 +163,7 @@
 `=[cell]` connects the cell to another cell and shows the same thing (maybe for titles and stuff)
 
 - pie charts are better for a single row of data
-- refer to the cheetsheet about the data in the pdf
+- refer to the cheatsheet about the data in the pdf
 
 
 
@@ -204,7 +204,7 @@
 ## 73. Using custom sorts
 
 - for example for month names
-- **data** > **sort & filter** > **Sort** > **sort by** > **custo**
+- **data** > **sort & filter** > **Sort** > **sort by** > **custom**
 
 ## 74. Using Auto Filter tools
 
@@ -221,5 +221,8 @@
 - click in the list
 - **home > styles > format as table**
 
+## 77. Conditional Formatting to Find Duplicates
 
+- `ctrl + shift + a` selects all cells in a column up until column
+- highlight cells => home => conditional formatting => highlight duplicates
 
