@@ -247,3 +247,7 @@
 ## 82. DSUM() with AND criteria
 
 - you just write another category and value next to it and include it
+
+## 82. DAVERAGE()
+
+- you use it the same way the DSUM()
