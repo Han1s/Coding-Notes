@@ -248,6 +248,12 @@
 
 - you just write another category and value next to it and include it
 
-## 82. DAVERAGE()
+## 83. DAVERAGE()
 
 - you use it the same way the DSUM()
+
+## 84. DCOUNT()
+
+- it will only count numbers
+- DCOUNTA() will count everything
+
