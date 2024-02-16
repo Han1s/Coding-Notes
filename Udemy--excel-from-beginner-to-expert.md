@@ -257,3 +257,6 @@
 - it will only count numbers
 - DCOUNTA() will count everything
 
+## 85. SUBTOTAL()
+
+- its similar as DSUM or DAVERAGE but if you **filter** the list it actually accounts for it compared to those
