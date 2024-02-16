@@ -243,3 +243,7 @@
 ## 81. DSUM() with OR criteria
 
 - you just write another category and include it in the criteria
+
+## 82. DSUM() with AND criteria
+
+- you just write another category and value next to it and include it
