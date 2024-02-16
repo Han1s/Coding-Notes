@@ -239,3 +239,7 @@
 
 - we can add criteria to the **SUM()** function. E.g. where category is x.
 - you need to write List header ('Category') into a cell and the filtered category ('Rent') below it, then you add those two to the criteria
+
+## 81. DSUM() with OR criteria
+
+- you just write another category and include it in the criteria
