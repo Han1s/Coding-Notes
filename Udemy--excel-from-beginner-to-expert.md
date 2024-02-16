@@ -260,3 +260,8 @@
 ## 85. SUBTOTAL()
 
 - its similar as DSUM or DAVERAGE but if you **filter** the list it actually accounts for it compared to those
+
+
+
+# 16. Excel Data Validation
+
