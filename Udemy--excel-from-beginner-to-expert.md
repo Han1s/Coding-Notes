@@ -265,3 +265,7 @@
 
 # 16. Excel Data Validation
 
+## 87. Creating Excel Validation Sheet
+
+= select cells and then via **data** tab - **data validation**
+
