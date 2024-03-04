@@ -277,3 +277,9 @@
 
 
 
+## 90. Dynamic Formulas by Using Excel Data Validation Techniques
+
+- you can also reference list as options
+
+
+
