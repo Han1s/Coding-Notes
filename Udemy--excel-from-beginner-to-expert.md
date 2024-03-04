@@ -269,3 +269,11 @@
 
 = select cells and then via **data** tab - **data validation**
 
+
+
+## 89. Adding a Custom Excel Data Validation error
+
+- warning allows pressing fowrad with the incorrect value
+
+
+
