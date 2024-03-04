@@ -283,3 +283,19 @@
 
 
 
+# XVII. Importing Data From Excel
+
+## 92. Importing Data from Text Files
+
+- e.g. **tab-delimited / csv** file
+  - **Data >  From TEXT/CSV**
+- You can also import **databases** from e.g. **Microsoft Access**
+  - this is a connected document, meaning if the db gets edited excel gets updated as well after refresh
+
+
+
+## 97. Exporint Data
+
+- sometimes if an app does not communicate with excel directly its a good way to transfer data via csv or something
+  - you can either use **file > export** or **save as...**, both of them lead to the same result
+
