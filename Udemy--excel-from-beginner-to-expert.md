@@ -336,6 +336,8 @@
 
 ## 104. Drilling into Pivot Tables
 
+- if you double click on a value this creates a new sheet and gives you a data that makes up that value
+
 
 
 
