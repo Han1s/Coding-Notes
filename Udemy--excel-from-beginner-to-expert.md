@@ -318,5 +318,25 @@
 ## 101. Grouping PivotTable Data
 
 - in **[pivotTableName] Analyze** you can group and ungroup fields
+
 - the order of groups in the drag and drop fields matters
+
+  
+
+## 102. Formatting PivotTable Data
+
+- **value field settings** in dragables > **number format**
+
+## 103. Modifying PivotTable Calculations
+
+- by default we get a **sum** for a number for example and **count** for a string
+- **value field settings** in dragables > **average**
+- What if we wanna see increase / decrease?
+  - **value field settings** > **show values as** > **% difference from previous**
+
+## 104. Drilling into Pivot Tables
+
+
+
+
 
