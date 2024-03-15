@@ -344,7 +344,7 @@
 
 ## 106. Filtering PivotTable Data
 
-
+- drag a field into a filter dragable
 
 
 
