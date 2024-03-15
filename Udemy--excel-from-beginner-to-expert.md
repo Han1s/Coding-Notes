@@ -315,3 +315,8 @@
 
 - take the headers and drag them in the corresponding section
 
+## 101. Grouping PivotTable Data
+
+- in **[pivotTableName] Analyze** you can group and ungroup fields
+- the order of groups in the drag and drop fields matters
+
