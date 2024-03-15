@@ -346,6 +346,10 @@
 
 - drag a field into a filter dragable
 
+## 107. Filtering with a slicer tool
+
+- **analyze > insert slicer**
+
 
 
 
