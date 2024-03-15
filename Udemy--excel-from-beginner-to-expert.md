@@ -338,6 +338,14 @@
 
 - if you double click on a value this creates a new sheet and gives you a data that makes up that value
 
+## 105. Creating a Pivot Chart
+
+- **analyze > pivot chart**
+
+## 106. Filtering PivotTable Data
+
+
+
 
 
 
