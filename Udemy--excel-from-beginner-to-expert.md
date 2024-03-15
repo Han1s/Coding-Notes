@@ -299,3 +299,19 @@
 - sometimes if an app does not communicate with excel directly its a good way to transfer data via csv or something
   - you can either use **file > export** or **save as...**, both of them lead to the same result
 
+
+
+# XVIII. Pivot tables
+
+- its a summarization of a large list into a pivot table structure
+
+## 99. Creating a Pivot Table
+
+- format the list as a table (click into a list **> home > format as table**)
+- name the table in **table design** tab
+- **insert > pivot table > new tab**
+
+## 100. Modify Pivot Table Calculations
+
+- take the headers and drag them in the corresponding section
+
