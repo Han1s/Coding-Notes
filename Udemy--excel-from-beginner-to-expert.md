@@ -373,3 +373,11 @@
 ## 113. Create PivotTable based on Data Models
 
 - from dataset **home > pivot table > create**
+
+## 114. Excel Power Pivot KPIs (key performance indicators)
+
+- KPIs are a way to add visuals to your data model
+- go to a table **> manage > home > calculations > AutoSum > average > create KPI** 
+  - KPI will now appear in the PivotTable options
+- you can also dat icons via conditional formatting
+
