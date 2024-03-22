@@ -381,3 +381,15 @@
   - KPI will now appear in the PivotTable options
 - you can also dat icons via conditional formatting
 
+# 20. Working with large Sets of Data in Excel
+
+## 115. Using the Freeze Panes Tool
+
+- **View > window > Freeze Panes** works for everything above selected
+
+## 116. Grouping Data (Columns and Rows)
+
+- **select column > data > outline > group**
+
+
+
