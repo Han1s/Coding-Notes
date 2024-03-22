@@ -352,5 +352,11 @@
 
 # XIV. Excel Power Pivot
 
+## 109. Why Power Pivot
 
+- it connects multiple tables
+
+## 110. Activating the PowerPivot Tool
+
+- **file > options > addins > power pivot**
 
