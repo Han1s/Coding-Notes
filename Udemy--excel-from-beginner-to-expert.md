@@ -360,3 +360,16 @@
 
 - **file > options > addins > power pivot**
 
+## 111. Creating model with powerpivot
+
+- click on table **> power pivot > add to data model** for both tables
+- now we have to **relate** the table sets
+
+## 112. Model Relationship
+
+- **home > diagram view > grab the relationship from the parent to the child**
+  - you can also right click the header and **create a relationship** with a child
+
+## 113. Create PivotTable based on Data Models
+
+- from dataset **home > pivot table > create**
