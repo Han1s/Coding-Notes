@@ -350,7 +350,7 @@
 
 - **analyze > insert slicer**
 
-
+# XIV. Excel Power Pivot
 
 
 
