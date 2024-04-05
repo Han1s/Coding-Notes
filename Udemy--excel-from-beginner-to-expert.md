@@ -391,5 +391,16 @@
 
 - **select column > data > outline > group**
 
+## 117. Printing Large Sets of Data
 
+- if it overreaches the height:	
+  - **page layout > page setup > print titles > sheet > rows to repeat at top**
+- if the width overreaches:
+  - **page layout > page setup > print titles > sheet > page order > over, then down**
 
+## 118. Linking Worksheets (3D Formulas)
+
+- to reference other sheets (years represent sheet names)
+  - 2013'!B4+'2014'!B4+'2015'!B4
+
+## 119. Consolidating Data from multiple Worksheets
