@@ -294,7 +294,7 @@
 
 
 
-## 97. Exporint Data
+## 97. Exporting Data
 
 - sometimes if an app does not communicate with excel directly its a good way to transfer data via csv or something
   - you can either use **file > export** or **save as...**, both of them lead to the same result
@@ -404,3 +404,5 @@
   - 2013'!B4+'2014'!B4+'2015'!B4
 
 ## 119. Consolidating Data from multiple Worksheets
+
+- **Data > Data Tools > Consolidate**
