@@ -1,0 +1,186 @@
+{
+  "main": {
+    "id": "88888516878d60ad",
+    "type": "split",
+    "children": [
+      {
+        "id": "ceba2e0d80502e04",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "6e856cb198840566",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Learn React.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Learn React"
+            }
+          },
+          {
+            "id": "92675a601552cacc",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Learn React.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Learn React"
+            }
+          }
+        ],
+        "currentTab": 1
+      }
+    ],
+    "direction": "vertical"
+  },
+  "left": {
+    "id": "91d1513d344241cf",
+    "type": "split",
+    "children": [
+      {
+        "id": "e32ff21b5e588877",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "60b44c403243dfdc",
+            "type": "leaf",
+            "state": {
+              "type": "file-explorer",
+              "state": {
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-folder-closed",
+              "title": "Files"
+            }
+          },
+          {
+            "id": "6db9cc2d337b9e12",
+            "type": "leaf",
+            "state": {
+              "type": "search",
+              "state": {
+                "query": "",
+                "matchingCase": false,
+                "explainSearch": false,
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical"
+              },
+              "icon": "lucide-search",
+              "title": "Search"
+            }
+          },
+          {
+            "id": "1ca6c77f831eea10",
+            "type": "leaf",
+            "state": {
+              "type": "bookmarks",
+              "state": {},
+              "icon": "lucide-bookmark",
+              "title": "Bookmarks"
+            }
+          }
+        ]
+      }
+    ],
+    "direction": "horizontal",
+    "width": 300
+  },
+  "right": {
+    "id": "0c8104a1b0e3787e",
+    "type": "split",
+    "children": [
+      {
+        "id": "b3e9831261bebabc",
+        "type": "tabs",
+        "children": [
+          {
+            "id": "30df5d03284c89fd",
+            "type": "leaf",
+            "state": {
+              "type": "backlink",
+              "state": {
+                "file": "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
+                "collapseAll": false,
+                "extraContext": false,
+                "sortOrder": "alphabetical",
+                "showSearch": false,
+                "searchQuery": "",
+                "backlinkCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-coming-in",
+              "title": "Backlinks for Udemy -- Unit testing for Typescript & NodeJS Developers with Jest"
+            }
+          },
+          {
+            "id": "e4be81262f264040",
+            "type": "leaf",
+            "state": {
+              "type": "outgoing-link",
+              "state": {
+                "file": "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
+                "linksCollapsed": false,
+                "unlinkedCollapsed": true
+              },
+              "icon": "links-going-out",
+              "title": "Outgoing links from Udemy -- Unit testing for Typescript & NodeJS Developers with Jest"
+            }
+          },
+          {
+            "id": "995f5752feb36bdd",
+            "type": "leaf",
+            "state": {
+              "type": "tag",
+              "state": {
+                "sortOrder": "frequency",
+                "useHierarchy": true
+              },
+              "icon": "lucide-tags",
+              "title": "Tags"
+            }
+          },
+          {
+            "id": "33a0f773aa04511a",
+            "type": "leaf",
+            "state": {
+              "type": "outline",
+              "state": {
+                "file": "Learn React.md"
+              },
+              "icon": "lucide-list",
+              "title": "Outline of Learn React"
+            }
+          }
+        ],
+        "currentTab": 3
+      }
+    ],
+    "direction": "horizontal",
+    "width": 342.5
+  },
+  "left-ribbon": {
+    "hiddenItems": {
+      "switcher:Open quick switcher": false,
+      "graph:Open graph view": false,
+      "canvas:Create new canvas": false,
+      "daily-notes:Open today's daily note": false,
+      "templates:Insert template": false,
+      "command-palette:Open command palette": false
+    }
+  },
+  "active": "92675a601552cacc",
+  "lastOpenFiles": [
+    "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
+    "JS + React Interview questions.md",
+    "Learn React.md"
+  ]
+}
