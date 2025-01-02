@@ -27,12 +27,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Learn React.md",
+                "file": "Youtube--Docker_crash_course_for_absolute_beginners.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Learn React"
+              "title": "Youtube--Docker_crash_course_for_absolute_beginners"
             }
           }
         ],
@@ -154,10 +154,10 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Learn React.md"
+                "file": "Youtube--Docker_crash_course_for_absolute_beginners.md"
               },
               "icon": "lucide-list",
-              "title": "Outline of Learn React"
+              "title": "Outline of Youtube--Docker_crash_course_for_absolute_beginners"
             }
           }
         ],
@@ -179,8 +179,11 @@
   },
   "active": "92675a601552cacc",
   "lastOpenFiles": [
+    "Youtube--airbnb_clone.md",
+    "Youtube--Docker_crash_course_for_absolute_beginners.md",
+    "VIM Libor Tutorial.md",
+    "Learn React.md",
     "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
-    "JS + React Interview questions.md",
-    "Learn React.md"
+    "JS + React Interview questions.md"
   ]
 }
