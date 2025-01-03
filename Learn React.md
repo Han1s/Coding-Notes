@@ -292,3 +292,16 @@ function PlaceImage({ place }) {
 ```
 
 
+## Scaling app with reducer and Context
+
+TODO:
+
+# Escape Hatches
+
+## Referencing values with refs
+
+- when you want a component to "remember" some information but you don't want that information to trigger new renders, you can use a **ref**
+- typical use cases:
+	- storing **timeout ID**
+	- storing and manipulating **DOM elements**
+	- storing other objects that are not necessary to calculate the JSX
