@@ -305,3 +305,21 @@ TODO:
 	- storing **timeout ID**
 	- storing and manipulating **DOM elements**
 	- storing other objects that are not necessary to calculate the JSX
+
+## Manipulating the DOM with Refs
+- if you want to scroll somewhere after the state is changed use `flushSync`
+```jsx
+          flushSync(() => {
+            if (index < catList.length - 1) {
+              setIndex(index + 1);
+            } else {
+              setIndex(0);
+            }
+          });
+          imgRef.current.scrollIntoView({
+            behavior: 'smooth',
+            block: 'nearest',
+            inline: 'center'
+          });
+```
+
