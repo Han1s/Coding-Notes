@@ -323,3 +323,35 @@ TODO:
           });
 ```
 
+## Synchronizing with Effects
+- effects are typically used to 'step out' of your React code and synchronize with some external systems such as APIs, widgets, network, etc.
+- effects run as a result of rendering AFTER the render
+- if initial `useEffect` subscribes to something, the cleanup function should unsubscribe
+- if effect fetches something, the cleanup should **abort** the fetch or ignore its result;
+```jsx
+useEffect(() => {
+  let ignore = false;
+
+  async function startFetching() {
+    const json = await fetchTodos(userId);
+    if (!ignore) {
+      setTodos(json);
+    }
+  }
+
+  startFetching();
+
+  return () => {
+    ignore = true;
+  };
+}, [userId]);
+```
+- you cant ignore a request that already happened. But the cleanup function should ensure that the fetch that's not relevant anymore does not keep affecting the application
+
+Effects
+- Unlike events, effects are caused by rendering itself rather than a particular interaction
+- effects let you synchronize a component with some external system
+- in strict mode developement, react mounts components twice to stress-test effects
+	- if your effect breaks because of remounting, you need to implement a cleanup function
+
+TODO: exercises
