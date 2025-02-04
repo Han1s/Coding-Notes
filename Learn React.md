@@ -351,7 +351,106 @@ useEffect(() => {
 Effects
 - Unlike events, effects are caused by rendering itself rather than a particular interaction
 - effects let you synchronize a component with some external system
-- in strict mode developement, react mounts components twice to stress-test effects
+- in strict mode development, react mounts components twice to stress-test effects
 	- if your effect breaks because of remounting, you need to implement a cleanup function
 
-TODO: exercises
+
+## You might not need an Effect
+- Don't Need
+	- when you need to update a state when some props or state change you should not need an effect
+	- you don't need effect to transform data for rendering
+	- you don't need effects to handle user events
+	- when something can be calculated from existing props or state, don't put it in state but calculate it during rendering
+- Do need
+	- when synchronizing with external systems
+	- perhaps also fetch data with effects (synchronize with current search query or something)
+- Always
+	- check whether you can reset all state with a key
+	- check whether you can calculate everything during rendering
+
+
+In case the root calculation is expensive you can use `useMemo` hook
+```jsx
+import { useMemo, useState } from 'react';
+
+function TodoList({ todos, filter }) {
+  const [newTodo, setNewTodo] = useState('');
+  const visibleTodos = useMemo(() => {
+    // ✅ Does not re-run unless todos or filter change
+    return getFilteredTodos(todos, filter);
+  }, [todos, filter]);
+  // ...
+}
+```
+you can measure how expensive a calculation is by
+```jsx
+console.time('filter array');
+const visibleTodos = getFilteredTodos(todos, filter);
+console.timeEnd('filter array');
+```
+you can also use `CPU throttling` option in chrome
+
+
+### Resetting all state when a prop changes
+usually the best way is to setup a key to let a react know it's a different component
+```jsx
+export default function ProfilePage({ userId }) {
+  const [comment, setComment] = useState('');
+
+  // 🔴 Avoid: Resetting state on prop change in an Effect
+  useEffect(() => {
+    setComment('');
+  }, [userId]);
+  // ...
+}
+```
+
+```jsx
+export default function ProfilePage({ userId }) {
+  return (
+    <Profile
+      userId={userId}
+      key={userId}
+    />
+  );
+}
+
+function Profile({ userId }) {
+  // ✅ This and any other state below will reset on key change automatically
+  const [comment, setComment] = useState('');
+  // ...
+}
+
+```
+
+You can add ignore flags for debounced functions like this
+```jsx
+function SearchResults({ query }) {
+  const [results, setResults] = useState([]);
+  const [page, setPage] = useState(1);
+  useEffect(() => {
+    let ignore = false;
+    fetchResults(query, page).then(json => {
+      if (!ignore) {
+        setResults(json);
+      }
+    });
+    return () => {
+      ignore = true;
+    };
+  }, [query, page]);
+
+  function handleNextPageClick() {
+    setPage(page + 1);
+  }
+  // ...
+}
+```
+
+Summary:
+- The code that runs because a component was **displayed** should be in `useEffect` the rest should be in `events`
+- if you need to update the state of several components, it's better to do it during a single event
+- when you need to synchronize state, its better to lift it up
+- if you are fetching data with effects, implement cleanup to avoid **race conditions**
+
+TODO: Exercises
