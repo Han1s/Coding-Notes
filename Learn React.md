@@ -453,4 +453,15 @@ Summary:
 - when you need to synchronize state, its better to lift it up
 - if you are fetching data with effects, implement cleanup to avoid **race conditions**
 
-TODO: Exercises
+## Lifecycle of Reactive Effects
+- component `mounts` when added to the screen
+- component `updates` when receiving new props or state
+- component `unmounts` when removed from the screen
+- you should add two separate `useEffects` for two separate `synchronization processes`
+
+What to do in case of unwanted dependencies
+- Check that your Effect represents an independent synchronization process. If your Effect doesn’t synchronize anything, it might be unnecessary. If it synchronizes several independent things, split it up.
+- If you want to read the latest value of props or state without “reacting” to it and re-synchronizing the Effect, you can split your Effect into a reactive part (which you’ll keep in the Effect) and a non-reactive part (which you’ll extract into something called an Effect Event). Read about separating Events from Effects.
+- Avoid relying on objects and functions as dependencies. If you create objects and functions during rendering and then read them from an Effect, they will be different on every render. This will cause your Effect to re-synchronize every time. [Read more about removing unnecessary dependencies from Effects.](https://react.dev/learn/removing-effect-dependencies)
+- Always have the linter suppression removed
+TODO: exercise 4 & 5

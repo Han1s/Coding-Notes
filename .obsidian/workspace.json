@@ -107,7 +107,7 @@
       }
     ],
     "direction": "horizontal",
-    "width": 300
+    "width": 439.5
   },
   "right": {
     "id": "0c8104a1b0e3787e",
@@ -197,11 +197,11 @@
   },
   "active": "c42457fdbd07859a",
   "lastOpenFiles": [
+    "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
+    "Learn React.md",
     "NextJS_tutorial.md",
     "Youtube--Docker_crash_course_for_absolute_beginners.md",
-    "Learn React.md",
     "Complete React Course.md",
-    "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
     "Youtube--airbnb_clone.md",
     "VIM Libor Tutorial.md",
     "JS + React Interview questions.md"
