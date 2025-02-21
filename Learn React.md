@@ -464,4 +464,32 @@ What to do in case of unwanted dependencies
 - If you want to read the latest value of props or state without “reacting” to it and re-synchronizing the Effect, you can split your Effect into a reactive part (which you’ll keep in the Effect) and a non-reactive part (which you’ll extract into something called an Effect Event). Read about separating Events from Effects.
 - Avoid relying on objects and functions as dependencies. If you create objects and functions during rendering and then read them from an Effect, they will be different on every render. This will cause your Effect to re-synchronize every time. [Read more about removing unnecessary dependencies from Effects.](https://react.dev/learn/removing-effect-dependencies)
 - Always have the linter suppression removed
-TODO: exercise 4 & 5
+
+## Separating Events from Effects
+- event handlers run in response to specific interactions (e.g. because the specific button was clicked)
+- effects run whenever synchronization is needed
+
+To separate effect events use `useEffectEvent`:
+```jsx
+function ChatRoom({ roomId, theme }) {
+  const onConnected = useEffectEvent(() => {
+    showNotification('Connected!', theme);
+  });
+
+  useEffect(() => {
+    const connection = createConnection(serverUrl, roomId);
+    connection.on('connected', () => {
+      onConnected();
+    });
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId]); // ✅ All dependencies declared
+  // ...
+```
+- **effect events** are similar to event handlers but are triggered from effects
+- they help you break the chain between reactivity of effects and code that should not be reactive
+- they are for now only experimental
+- effect events can only be called from inside effects
+- never pass them to other components or hooks
+
+TODO: exercises
