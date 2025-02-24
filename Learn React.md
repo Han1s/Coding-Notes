@@ -492,4 +492,48 @@ function ChatRoom({ roomId, theme }) {
 - effect events can only be called from inside effects
 - never pass them to other components or hooks
 
-TODO: exercises
+## Removing Effect Dependencies
+- always listen to the linter
+- avoid suppressing the linter, it leads to very confusing bugs
+- you have to convince the linter that the dependency is not reactive
+	- e.g. by moving it outside the component
+	- or by declaring `UseEffectEvent`
+- when removing effects, always:
+	- ask yourself whether the code should be an event maybe
+	- ask yourself whether the effect is doing several unrelated things
+- if possible, avoid objects and functions as effect dependencies, instead move them outside of the component, inside the effect, or extract primitive values out of them
+
+unintuitive cases:
+```jsx
+function ChatRoom({ options }) {
+  const [message, setMessage] = useState('');
+
+  const { roomId, serverUrl } = options;
+  useEffect(() => {
+    const connection = createConnection({
+      roomId: roomId,
+      serverUrl: serverUrl
+    });
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId, serverUrl]); // ✅ All dependencies declared
+  // ...
+```
+
+```jsx
+function ChatRoom({ getOptions }) {
+  const [message, setMessage] = useState('');
+
+  const { roomId, serverUrl } = getOptions();
+  useEffect(() => {
+    const connection = createConnection({
+      roomId: roomId,
+      serverUrl: serverUrl
+    });
+    connection.connect();
+    return () => connection.disconnect();
+  }, [roomId, serverUrl]); // ✅ All dependencies declared
+  // ...
+```
+
+TODO: Exercise 4
