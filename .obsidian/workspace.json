@@ -55,16 +55,30 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Learn React.md",
+                "file": "Udemy--React_native.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Learn React"
+              "title": "Udemy--React_native"
+            }
+          },
+          {
+            "id": "02e16b1d4876f4ed",
+            "type": "leaf",
+            "state": {
+              "type": "markdown",
+              "state": {
+                "file": "Udemy--Playwright Web Automation Testing From Zero to Hero.md",
+                "mode": "source",
+                "source": false
+              },
+              "icon": "lucide-file",
+              "title": "Udemy--Playwright Web Automation Testing From Zero to Hero"
             }
           }
         ],
-        "currentTab": 3
+        "currentTab": 4
       }
     ],
     "direction": "vertical"
@@ -183,13 +197,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Learn React.md",
+                "file": "Udemy--Playwright Web Automation Testing From Zero to Hero.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Learn React"
+              "title": "Outline of Udemy--Playwright Web Automation Testing From Zero to Hero"
             }
           }
         ],
@@ -209,11 +223,12 @@
       "command-palette:Open command palette": false
     }
   },
-  "active": "d06bed1be84493e3",
+  "active": "02e16b1d4876f4ed",
   "lastOpenFiles": [
     "Udemy--React_native.md",
-    "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
+    "Udemy--Playwright Web Automation Testing From Zero to Hero.md",
     "Learn React.md",
+    "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
     "NextJS_tutorial.md",
     "Youtube--Docker_crash_course_for_absolute_beginners.md",
     "Complete React Course.md",
