@@ -80,7 +80,6 @@ const App = props => {
 - Views are usually meant to hold boxes that form a component. Its a container
 
 
-
 ## 15. Styling React Native Apps
 
 - **inline styles** or **StyleSheet Objects**
