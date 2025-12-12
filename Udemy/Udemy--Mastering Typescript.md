@@ -188,3 +188,146 @@ interface Engineer extends Person, Employee {
 - interfaces have to be objects, type can be anything
 - with types you cannot use `extend` keyword, you have to use `&`
 - its better to gravitate to interfaces
+
+
+## 10. Compiling typescript
+- bunch of options
+- managed via **tsconfig.json** file
+- `tsc [filename].ts` converts the file to javascript
+	- or use playground online
+- `tsc --watch` for hot update
+- `tsc` in a specific folder converts all typescript files
+	- this also includes the nested files as the default include is `**`
+- bunch of config you can use, like subfiles you want to compile etc.
+- **outDir** specifies the output directory
+- **target** specifies the ES version
+
+
+TODO: next sections
+
+## 14. Generics
+- allow us to define reusable functions and classes that work with multiple types.
+- these types have relationship between input and output
+
+```ts
+function identity<T>(item: T): T {
+	return item;
+}
+
+// to call
+identity<numver>(7);
+```
+
+```ts
+function getRandomElement<T>(list: T[]): T {
+	const randIdx = Math.floor(Math.random() * list.length);
+	return list[randIdx];
+}
+
+getRandomElement<string>(['a', 'b', 'c', 'd']);
+```
+- in many cases TS can infer the type from the function call, but not in every case
+```ts
+getRandomElement(['a', 'b', 'c', 'd']) // works as well
+
+const btn = document.querySelector<HTMLButtonElement>('.btn'); // cannot infer
+```
+- in arrow functions you have to add trailing coma when working in **jsx** files due to recognition of html elements
+```ts
+const getRandomElement = <T,>(element: T): T =>  {...}
+```
+- when working with multiple types:
+```ts
+function merge<T, U>(object1: T, object2: U) {
+	return {
+	...object1,
+	...object2
+	}
+}
+```
+- adding **type constraints**:
+```ts
+function merge<T extends object, U extends object>(object1: T, object2: U) {
+	return {
+	...object1,
+	...object2
+	}
+}
+```
+- **default type parameters**
+```ts
+function makeEmptyArray<T = number>(): T[] {
+	return [];
+}
+
+const bools = makeEmptyArray<boolean>();
+```
+- you can also write **generic classes**
+```ts
+interface Song {
+	title: string
+	artist: string
+}
+
+interface Video {
+	title: string;
+	creator: string;
+	resolution: string
+}
+
+class Playlist<T> {
+	public queue: T[] = [];
+	add(el: T) {
+		this.queue.push(el);
+	}
+}
+
+const songs = new Playlist<Song>();
+const videos = new Playlist<Video>();
+videos.add(...)
+```
+
+
+## 15. Type narrowing
+- works great when working with primitive types
+```ts
+typeof 'abc' // 'string'
+typeof 12345 // number
+typeof ['1'] // object
+```
+- trythy guard
+```ts
+const el = document.getElementById('idk');
+if (el) {
+	el.something // ts knows it is not null;
+}
+```
+- **equalitty narrowing**
+```ts
+function someDemo(x: string | number, y: string | boolean) {
+	if (x === y) {
+		// x and y must both be string according to ts
+		// if I used == it could be a string / number
+	}
+}
+```
+- **narrowing with the in operator**
+```ts
+interface Movie { 
+	title: string,
+	duration: number
+}
+
+interface TVShow {
+	title: string,
+	numEpisodes: number,
+	episodeDuration: number
+}
+
+function getRuntime(media: Movie | TVSHow) {
+	if ('numEpisodes')  in media) {
+		... // ts knows it is TVShow
+	}
+}
+```
+- **instance of** tells us whether it is instance of a class
