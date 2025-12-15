@@ -203,7 +203,12 @@ interface Engineer extends Person, Employee {
 - **target** specifies the ES version
 
 
-TODO: next sections
+## 11. DOM mini project
+- **type assertions**
+```ts
+const mysterty: unknown = "Hello World";
+const numChars = (mystery as string).length;
+```
 
 ## 14. Generics
 - allow us to define reusable functions and classes that work with multiple types.
@@ -331,3 +336,52 @@ function getRuntime(media: Movie | TVSHow) {
 }
 ```
 - **instance of** tells us whether it is instance of a class
+```ts
+function printFullDate(date: string | Date) {
+	if (date instanceof Date) {
+		console.log(date.toUTCString());
+	} else {
+		console.log(new Date(date).toUTCString());
+	}
+}
+```
+- **exhaustive checking**
+```ts
+function getFarmAnimalSound(animal: Pig | Rooster | Cow | Sheep) {
+	switch (animal.kind) {
+		case "pig":
+			return "Oink!";
+		case "cow":
+			return "Moooo!":;
+		case "rooster";
+			return "Cockadoodledoo!";
+		default:
+			// gets triggered cause sheep is not caught
+			const _exhaustiveCheck: never = animal;
+			return _exhaustiveCheck;
+	}
+}
+```
+
+
+### Type predicates
+- allows us to write custom functions to narrow the type of a value
+- these functions have **predicate** return type
+```ts
+function isCat(animal: Cat | Dog): animal is Cat {
+	return (animal as Cat).numLives !== undefined;
+}
+```
+
+### Discriminated unions
+- a property based on which we can discriminate the type
+- sort of like a **__typename** in GQL
+
+
+## 16. Type Declarations
+- **.d.ts** files
+	- these are files that contain type declarations
+- if a library does not have a type declaration
+	- you can usually just install it from **@types/....** package **DefinitelyTyped**
+	- `npm install --save-dev @types/[packageName]`
+	- the list available at https://www.typescriptlang.org/dt/search
