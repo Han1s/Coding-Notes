@@ -385,3 +385,12 @@ function isCat(animal: Cat | Dog): animal is Cat {
 	- you can usually just install it from **@types/....** package **DefinitelyTyped**
 	- `npm install --save-dev @types/[packageName]`
 	- the list available at https://www.typescriptlang.org/dt/search
+
+## 17. Modules
+- **namespaces** are outdated
+- modules serve a purpose of separating code
+- if a file contains **export** its automatically treated as a module
+- if you have a file without a default export or top level await it is considered a **script** and not a **module**.
+	- Scripts declare things globally.
+
+## 19. React & Typescript
