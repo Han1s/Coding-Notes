@@ -210,6 +210,40 @@ const mysterty: unknown = "Hello World";
 const numChars = (mystery as string).length;
 ```
 
+## 12. Classes
+```ts
+class Player {
+	#score = 0;  // if property starts with a hash, its a private property
+	#numLives = 10;  // these get initialized for all players
+	constructor(first, last) {
+		this.first = first;
+		this.last = last;
+	}
+	get fullName() {
+		return `${this.first} ${this.last}`;
+	}
+	get score() {
+		return this.#score
+	}
+	// getScore() {
+	//	return this.#score
+	// }
+	taunt() {
+		console.log('Booyah!')
+	}
+	loseLife() {
+		this.#numLives -= 1;
+	}
+	#secret() {. // private method
+		console.log('secret')
+	}
+}
+
+const player1 = new Player('blue', 'steele');
+player1.taunt();
+console.log(player1.fullName)
+```
+
 ## 14. Generics
 - allow us to define reusable functions and classes that work with multiple types.
 - these types have relationship between input and output
