@@ -352,7 +352,7 @@ There are 3 types of root on linux
 ## 60. File Ownership
 
 - there are 2 owners of a file or directory
-- **user** and a **grouo**
+- **user** and a **group**
 - **chown**
   - changes the ownership of a file
 - **chgrp**

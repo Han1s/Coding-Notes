@@ -69,12 +69,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "Articles/Hexagonal-Inspired Architecture in React.md",
+                "file": "FrontEnd masters/The last algorithms course you'll need/Introduction.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Hexagonal-Inspired Architecture in React"
+              "title": "Introduction"
             }
           }
         ],
@@ -197,13 +197,13 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "Articles/Hexagonal-Inspired Architecture in React.md",
+                "file": "FrontEnd masters/The last algorithms course you'll need/Introduction.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
               },
               "icon": "lucide-list",
-              "title": "Outline of Hexagonal-Inspired Architecture in React"
+              "title": "Outline of Introduction"
             }
           }
         ],
@@ -226,7 +226,14 @@
   },
   "active": "a203fb3b9324e346",
   "lastOpenFiles": [
+    "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
     "Learn React.md",
+    "FrontEnd masters/Next.js Fundamentals",
+    "FrontEnd masters/The last algorithms course you'll need/Introduction.md",
+    "FrontEnd masters/The last algorithms course you'll need",
+    "Udemy/Udemy--Linux.md",
+    "FrontEnd masters",
+    "Udemy/Udemy--Mastering Typescript.md",
     "Articles/Hexagonal-Inspired Architecture in React.md",
     "Articles",
     "JS + React Interview questions.md",
@@ -239,7 +246,6 @@
     "Untitled 3.base",
     "Udemy/Udemy--React_native.md",
     "Udemy/Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
-    "Udemy/Udemy--Mastering Typescript.md",
     "Udemy--React_native.md",
     "Udemy--Playwright Web Automation Testing From Zero to Hero.md",
     "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
