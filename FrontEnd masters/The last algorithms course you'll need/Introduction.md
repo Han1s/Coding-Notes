@@ -22,3 +22,27 @@ books recommendation:
 - Linear search
 	-its a very good practice to first visualize the problem, discuss it with boxes and arrows, and then program it.
  - Binary search (if it is ordered)
+
+## Linked Lists
+- ordering of operations is very important
+- deleting and inserting is **O(1)**
+- to get a specific value you have to traverse the list
+- foundation concept
+```tsx
+interface LinkedList<T> {
+	get length(): number;
+	insertAt(item: T, index: number): void;
+	remove(item: T): T | undefined;
+	removeAt(index: number): T | undefined;
+	append(item: T): void;
+	prepend(item: T): void;
+	get(index: number): T | undefined;
+}
+```
+### Queue
+- fifo structure
+- singly linked list
+
+### Stack
+- opposite (backwards) of a queue
+- you only add or remove from a head
