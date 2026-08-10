@@ -46,3 +46,18 @@ interface LinkedList<T> {
 ### Stack
 - opposite (backwards) of a queue
 - you only add or remove from a head
+
+## Arrays
+- **Arrays vs list**
+	- cannot insert, you can only overwrite
+	- O(1) everything
+	- size is fixed
+	- arrays list operate best when treated like stack.
+		- you dont have remove from the front
+	- arrays have allocated memory that cannot be expanded, array list (like in javascript) can get expanded. They provide popping and pushing but indexing stays at O(1).
+- **RingBuffer**
+	- we have index based head and index based tail
+	- for example logs
+
+## Recursion
+- function that calls itself until it returns a base case
