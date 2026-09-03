@@ -46,3 +46,6 @@ interface LinkedList<T> {
 ### Stack
 - opposite (backwards) of a queue
 - you only add or remove from a head
+
+### Recursion
+- good for maze solution
