@@ -184,3 +184,10 @@ export const signout = async () => {
 - Push all the data as much down as possible
 	- 'use cache' when the data are static
 	- use suspense when the data are dynamic
+- just replace api calls with **server action**
+
+## Caching and API Routes
+- only for dynamic pages basically
+- `suspense` is for getting down a to a component that is fetching
+- `use cache` is getting down to the function that is fetching]
+- revalidate only happens on server actions
