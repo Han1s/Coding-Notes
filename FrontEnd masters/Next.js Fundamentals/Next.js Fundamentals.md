@@ -180,4 +180,7 @@ export const signout = async () => {
 }
 ```
 
-### useActionState hook
+## Authentication
+- Push all the data as much down as possible
+	- 'use cache' when the data are static
+	- use suspense when the data are dynamic
