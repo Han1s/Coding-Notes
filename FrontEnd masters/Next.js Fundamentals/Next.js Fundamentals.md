@@ -191,3 +191,16 @@ export const signout = async () => {
 - `suspense` is for getting down a to a component that is fetching
 - `use cache` is getting down to the function that is fetching]
 - revalidate only happens on server actions
+
+### memoizing
+- ```jsx
+  import { cache } from 'react';
+  export const getCurrentUser = cache(async () => {
+	  console.log('getting user');
+  })
+  ```
+- the function gets memoized per request
+- it works only in production, not in development
+
+## API route
+- designed to be used in serverless environment
