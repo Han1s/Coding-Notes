@@ -204,3 +204,13 @@ export const signout = async () => {
 
 ## API route
 - designed to be used in serverless environment
+- often needed for developer API/webhooks/etc
+
+## Middleware
+- intersects any request getting to the nextjs app
+- it runs on the edge
+### Edge javascript
+- lightweight javascript environment
+- more similar to the web than to node
+- sometime middleware might work on dev (because it executed via Node) and then fail on production because it uses edge
+- vercel has **edge config** to use as edge storage
