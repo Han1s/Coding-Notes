@@ -28,6 +28,19 @@ console.log(`Server started on port ${PORT}`);
 - hashing
 	- MD5 most common
 		- very predictable and not very long
+		- not secure
+		- used for validation of files (here is the file, here is md5, compare on your end)
 	- SHA1
+		- more rigurous
 	- SHA256
+		- golden standard
+		- used by bitcoin
 	- openssl is a cryprography toolkit program
+- **SALT**
+	- random number that is unique to the process
+
+### SSh
+- public key & private key
+- you connect with you private key and put public key to a server
+- if only you hold the private key only you can read the message
+- you can add the private key to the keychain so you don't have to specify it every time you ssh to a server
