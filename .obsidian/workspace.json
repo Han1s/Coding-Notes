@@ -97,12 +97,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "FrontEnd masters/Fullstack for frontend developers V3/How does internet works.md",
+                "file": "FrontEnd masters/Javascript the Hard Parts, v3/Principles of JavaScript.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "How does internet works"
+              "title": "Principles of JavaScript"
             }
           }
         ],
@@ -227,7 +227,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "FrontEnd masters/Fullstack for frontend developers V3/How does internet works.md",
+                "file": "FrontEnd masters/Javascript the Hard Parts, v3/Principles of JavaScript.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -256,13 +256,16 @@
   },
   "active": "2faa39d95802994d",
   "lastOpenFiles": [
-    "FrontEnd masters/Fullstack for frontend developers V3/Servers.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/How does internet works.md",
+    "FrontEnd masters/Javascript the Hard Parts, v3",
+    "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
+    "FrontEnd masters/Javascript the Hard Parts, v3/Principles of JavaScript.md",
     "FrontEnd masters/Fullstack for frontend developers V3/Command Line.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/GIT.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/Internet.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/Servers.md",
     "FrontEnd masters/Fullstack for frontend developers V3/Introduction.md",
     "FrontEnd masters/Frontend system design/Frontend System Design.md",
     "FrontEnd masters/Fullstack for frontend developers V3",
-    "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
     "Codevolution.md",
     "FrontEnd masters/Frontend system design",
     "Youtube/TanStack Query - How to become a React Query God.md",
@@ -288,9 +291,6 @@
     "Udemy--React_native.md",
     "Udemy--Playwright Web Automation Testing From Zero to Hero.md",
     "Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
-    "NextJS_tutorial.md",
-    "Youtube--Docker_crash_course_for_absolute_beginners.md",
-    "Complete React Course.md",
-    "Youtube--airbnb_clone.md"
+    "NextJS_tutorial.md"
   ]
 }

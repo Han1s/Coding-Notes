@@ -1,0 +1,1 @@
+- you can then connect git repo to the server
