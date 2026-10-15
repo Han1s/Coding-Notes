@@ -180,4 +180,37 @@ export const signout = async () => {
 }
 ```
 
-### useActionState hook
+## Authentication
+- Push all the data as much down as possible
+	- 'use cache' when the data are static
+	- use suspense when the data are dynamic
+- just replace api calls with **server action**
+
+## Caching and API Routes
+- only for dynamic pages basically
+- `suspense` is for getting down a to a component that is fetching
+- `use cache` is getting down to the function that is fetching]
+- revalidate only happens on server actions
+
+### memoizing
+- ```jsx
+  import { cache } from 'react';
+  export const getCurrentUser = cache(async () => {
+	  console.log('getting user');
+  })
+  ```
+- the function gets memoized per request
+- it works only in production, not in development
+
+## API route
+- designed to be used in serverless environment
+- often needed for developer API/webhooks/etc
+
+## Middleware
+- intersects any request getting to the nextjs app
+- it runs on the edge
+### Edge javascript
+- lightweight javascript environment
+- more similar to the web than to node
+- sometime middleware might work on dev (because it executed via Node) and then fail on production because it uses edge
+- vercel has **edge config** to use as edge storage
