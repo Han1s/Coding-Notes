@@ -1,3 +1,5 @@
+****
+
 ## Execution context
 - its a place where you can execute a code
 - a function has its own execution context

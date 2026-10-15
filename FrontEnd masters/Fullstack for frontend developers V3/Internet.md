@@ -65,10 +65,30 @@
 	- @
 	- www
 
-## First actions to take on a servere
+## First actions to take on a server
 - update software
+	- `apt update`
+	- `apt upgrade`
 - restart your server
 - create new user
+	- never run as root
+		- `adduser <username>`
+	- add user to sudo group
+		- `usermod -aG sudo <username>`
+	- switch user
+		- `su <username>`
+	- check sudo access
+		- `sudo cat /var/log/auth.log`
 - make that user a superuser
 - enable login for new user
+	- create authorized_keys file
+		- `~/.ssh/authorized_keys`
+	- paste your public key
+	- now you can login with `<username>@[ip]`
 - disable root login
+	- change file permission
+	- `chmod 644 ~/.ssh/authorized_keys`
+- disable root login
+	- `sudo vi /etc/ssh/sshd_config`
+- restart ssh daemon
+	- `sudo service sshd restart`
