@@ -111,12 +111,12 @@
             "state": {
               "type": "markdown",
               "state": {
-                "file": "FrontEnd masters/Fullstack for frontend developers V3/Application setup.md",
+                "file": "FrontEnd masters/Fullstack for frontend developers V3/7. GIT.md",
                 "mode": "source",
                 "source": false
               },
               "icon": "lucide-file",
-              "title": "Application setup"
+              "title": "7. GIT"
             }
           }
         ],
@@ -241,7 +241,7 @@
             "state": {
               "type": "outline",
               "state": {
-                "file": "FrontEnd masters/Fullstack for frontend developers V3/Application setup.md",
+                "file": "FrontEnd masters/Fullstack for frontend developers V3/7. GIT.md",
                 "followCursor": false,
                 "showSearch": false,
                 "searchQuery": ""
@@ -270,17 +270,17 @@
   },
   "active": "cc954dc908e5b178",
   "lastOpenFiles": [
-    "FrontEnd masters/Fullstack for frontend developers V3/Internet.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/Application setup.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/Introduction.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/Servers.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/Command Line.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/6. Application setup.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/5. Internet.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/3. Servers.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/2. Command Line.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/1. Introduction.md",
     "FrontEnd masters/Javascript the Hard Parts, v3/Principles of javascript.md",
     "FrontEnd masters/Javascript the Hard Parts, v3/Callbacks & Higher order functions.md",
     "FrontEnd masters/Javascript the Hard Parts, v3/Terminology.md",
     "FrontEnd masters/Javascript the Hard Parts, v3",
     "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/GIT.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/7. GIT.md",
     "FrontEnd masters/Frontend system design/Frontend System Design.md",
     "FrontEnd masters/Fullstack for frontend developers V3",
     "Codevolution.md",
