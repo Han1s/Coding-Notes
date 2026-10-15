@@ -19,10 +19,24 @@ books recommendation:
 	-  array is allocated space in memory
 
 ## Search
-- Linear search
-	-its a very good practice to first visualize the problem, discuss it with boxes and arrows, and then program it.
- - Binary search (if it is ordered)
+- its a very good practice to first visualize the problem, discuss it with boxes and arrows, and then program it.
+### Linear search
+	- used by `indexOf`
+```ts
+export default function linear_search(haystack: number[], needle: number): boolean {
+    for (let i = 0; i < haystack.length; i++) {
+        if (haystack[i] === needle) {
+            return true;
+        }
+    }
 
+    return false;
+}
+```
+### Binary search
+- only applicable if the list is ordered
+- if you half the input its usually **O(logN)**. If you also scan it its **O(NlogN)**
+- good rule of thumb is **low is always inclusive**, **high is always exclusive**
 ## Linked Lists
 - ordering of operations is very important
 - deleting and inserting is **O(1)**
