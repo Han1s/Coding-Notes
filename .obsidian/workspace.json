@@ -171,8 +171,14 @@
   },
   "active": "16e47b72649f3e3b",
   "lastOpenFiles": [
-    "FrontEnd masters/Fullstack for frontend developers V3/8. Security.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/Useful.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/1. Introduction.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/6. Application setup.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/5. Internet.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/2. Command Line.md",
     "FrontEnd masters/Fullstack for frontend developers V3/9. Continuous integration & Deployment.md",
+    "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
+    "FrontEnd masters/Fullstack for frontend developers V3/8. Security.md",
     "FrontEnd masters/Fullstack for frontend developers V3/7. GIT.md",
     "FrontEnd masters/The last algorithms course you'll need/The last algorithms course you'll need.md",
     "Youtube/TanStack Query - How to become a React Query God.md",
@@ -180,16 +186,11 @@
     "FrontEnd masters/Javascript the Hard Parts, v3/Principles of JavaScript.md",
     "FrontEnd masters/Javascript the Hard Parts, v3/Callbacks & Higher order functions.md",
     "FrontEnd masters/Javascript the Hard Parts, v3",
-    "FrontEnd masters/Fullstack for frontend developers V3/6. Application setup.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/5. Internet.md",
     "FrontEnd masters/Fullstack for frontend developers V3/3. Servers.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/2. Command Line.md",
-    "FrontEnd masters/Fullstack for frontend developers V3/1. Introduction.md",
     "FrontEnd masters/Fullstack for frontend developers V3",
     "FrontEnd masters/Frontend system design/Frontend System Design.md",
     "FrontEnd masters/Frontend system design",
     "Articles/Concurrency.md",
-    "FrontEnd masters/Next.js Fundamentals/Next.js Fundamentals.md",
     "Learn React.md",
     "FrontEnd masters/Next.js Fundamentals",
     "FrontEnd masters/The last algorithms course you'll need",
@@ -205,7 +206,6 @@
     "Untitled.base",
     "Untitled 1.base",
     "Udemy/Udemy--React_native.md",
-    "Udemy/Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md",
-    "Udemy--React_native.md"
+    "Udemy/Udemy -- Unit testing for Typescript & NodeJS Developers with Jest.md"
   ]
 }

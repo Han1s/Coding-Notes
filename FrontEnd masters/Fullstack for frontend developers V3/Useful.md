@@ -1,0 +1,1 @@
+- `sudo !!` reruns the command with sudo permissions
